@@ -9,6 +9,9 @@ class IstrazivanjeRepository {
 
     private var mojaIstrazivanja: ArrayList<Istrazivanje> = arrayListOf()
 
+    init {
+        upisiMeNaIstrazivanje("ETF istraživanje")
+    }
     fun getAll():List<Istrazivanje>{
        return dajListuIstrazivanja()
     }

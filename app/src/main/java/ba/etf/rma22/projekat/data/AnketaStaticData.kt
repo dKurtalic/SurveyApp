@@ -25,12 +25,12 @@ fun dajListuAnketa():List<Anketa>{
     buducnost, uradjena, nije uradjena i prosla, nije uradjena i u toku
      */
     return listOf(
-        Anketa("Anketa 0","ETF istraživanje", petiDatum, drugiDatum, prviDatum, 24, "Grupa0", 0.9F),
-        Anketa("Anketa1","PMF straživanje",cetvrtiDatum, cetvrtiDatum, null, 30,"Grupa1",0F),
-        Anketa("Anketa urađena", "MF istraživanje", prviDatum, drugiDatum, treciDatum, 60, "Grupa2",1F),
-        Anketa("Anketa 2", "PFSA istraživanje", petiDatum, prviDatum, null, 10, "Grupa3",0F),
-        Anketa("Aktivna anketa", "Veliko istraživanje", treciDatum, drugiDatum, null, 20, "Grupa4",0F),
-        Anketa("Mala anketa", "Malo istraživanje", petiDatum, treciDatum, prviDatum, 15,"Grupa5",0.9F),
+        Anketa("Anketa 0","ETF istraživanje", petiDatum, drugiDatum, prviDatum, 24, "Grupa0", 0.9F), //done
+        Anketa("Anketa1","PMF istraživanje",cetvrtiDatum, cetvrtiDatum, null, 30,"Grupa1",0F), //future
+        Anketa("Anketa urađena", "MF istraživanje", prviDatum, drugiDatum, treciDatum, 60, "Grupa2",1F), //done
+        Anketa("Anketa 2", "PFSA istraživanje", petiDatum, prviDatum, null, 10, "Grupa3",0F), //past
+        Anketa("Aktivna anketa", "Veliko istraživanje", treciDatum, drugiDatum, null, 20, "Grupa4",0F), //active
+        Anketa("Mala anketa", "Malo istraživanje", petiDatum, treciDatum, prviDatum, 15,"Grupa5",0.9F),//done
 
     )
 }

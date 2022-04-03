@@ -7,7 +7,9 @@ import java.util.ArrayList
 
 class GrupaRepository {
     private var mojeGrupe: ArrayList<Grupa> = arrayListOf()
-
+    init {
+        upisiMe("Grupa0")
+    }
     fun upisiMe(naziv:String){
         var g:Grupa=getAllGroups().stream().filter {grupa->grupa.naziv.equals(naziv)}.findFirst().get()
         if (!mojeGrupe.contains(g))

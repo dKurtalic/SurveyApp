@@ -10,6 +10,9 @@ import java.util.*
 object AnketaRepository {
 
     private var mojeAnkete: ArrayList<Anketa> = arrayListOf()
+    init {
+        upisiMe("ETF istraživanje","Grupa0")
+    }
 
     fun upisiMe(istrazivanje: String, grupa: String){
         var a: Anketa = getAll().stream().filter { anketa -> anketa.nazivIstrazivanja.equals(istrazivanje) &&
