@@ -8,4 +8,8 @@ data class Istrazivanje (
         return naziv
     }
 
+    override fun equals(other: Any?): Boolean {
+        return other is Istrazivanje && this.naziv.equals(other.naziv) && this.godina==other.godina
+    }
+
 }

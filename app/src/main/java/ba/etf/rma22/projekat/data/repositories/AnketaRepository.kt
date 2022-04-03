@@ -2,13 +2,25 @@ package ba.etf.rma22.projekat.data.repositories
 
 import ba.etf.rma22.projekat.data.dajListuAnketa
 import ba.etf.rma22.projekat.data.models.Anketa
+import ba.etf.rma22.projekat.data.models.Grupa
+import ba.etf.rma22.projekat.data.models.Istrazivanje
 import java.time.LocalDateTime
 import java.util.*
 
 object AnketaRepository {
 
+    private var mojeAnkete: ArrayList<Anketa> = arrayListOf()
+
+    fun upisiMe(istrazivanje: String, grupa: String){
+        var a: Anketa = getAll().stream().filter { anketa -> anketa.nazivIstrazivanja.equals(istrazivanje) &&
+                anketa.nazivGrupe.equals(grupa)}.findFirst().get()
+        if (!mojeAnkete.contains(a))
+       mojeAnkete.add(a)
+    }
+
+
   fun getMyAnkete():List<Anketa>{
-      return dajListuAnketa().ifEmpty { emptyList() }
+      return mojeAnkete;
     }
     fun getAll():List<Anketa>{
         return dajListuAnketa().ifEmpty { emptyList() }

@@ -12,4 +12,8 @@ data class Anketa(
     val nazivGrupe: String,
     val progres: Float,
 
-)
+) {
+    override fun equals(other: Any?): Boolean {
+        return other is Anketa && this.naziv.equals(other.naziv) && this.nazivIstrazivanja.equals(other.nazivIstrazivanja)
+    }
+}

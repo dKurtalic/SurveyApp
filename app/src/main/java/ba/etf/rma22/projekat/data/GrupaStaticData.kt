@@ -4,11 +4,11 @@ import ba.etf.rma22.projekat.data.models.Grupa
 
 fun dajListuGrupa(): List<Grupa> {
     return listOf(
-        Grupa("Grupica","Istrazivanje"),
-        Grupa("Grupa1", "Istraživanje broj 1"),
-        Grupa("Grupa2", "Istraživanje 2"),
-        Grupa("Grupa3", "Istrazivanje2"),
-        Grupa("Grupa4", "Veliko istrazivanje"),
-        Grupa("Grupa5", "Malo istrazivanje")
+        Grupa("Grupa0","ETF istraživanje"),
+        Grupa("Grupa1", "PMF istraživanje"),
+        Grupa("Grupa2", "MF istraživanje"),
+        Grupa("Grupa3", "PFSA istraživanje"),
+        Grupa("Grupa4", "Veliko istraživanje"),
+        Grupa("Grupa5", "Malo istraživanje")
     )
 }

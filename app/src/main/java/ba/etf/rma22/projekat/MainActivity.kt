@@ -14,6 +14,9 @@ import ba.etf.rma22.projekat.viewmodel.AnketaViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
+   companion object{
+       var godina=0
+   }
 
     private lateinit var listaAnketa: RecyclerView
     private lateinit var anketaAdapter: AnketaAdapter
@@ -39,6 +42,7 @@ class MainActivity : AppCompatActivity() {
         val adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, opcije)
         spinner.adapter=adapter
         postaviSpinner()
+        spinner.setSelection(1)
 
         //upisDugme
         upisDugme=findViewById(R.id.upisDugme)
