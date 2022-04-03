@@ -5,7 +5,7 @@ import ba.etf.rma22.projekat.data.models.Istrazivanje
 import java.util.stream.Collector
 import kotlin.streams.toList
 
-class IstrazivanjeRepository {
+object IstrazivanjeRepository {
 
     private var mojaIstrazivanja: ArrayList<Istrazivanje> = arrayListOf()
 

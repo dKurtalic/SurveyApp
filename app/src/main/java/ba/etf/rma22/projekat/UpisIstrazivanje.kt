@@ -19,12 +19,12 @@ class UpisIstrazivanje:AppCompatActivity() {
     private lateinit var istrazivanja: IstrazivanjeRepository
     private lateinit var grupe: GrupaRepository
     private lateinit var dodajIstrazivanjeDugme: FloatingActionButton
-    private lateinit var grupaRepository:GrupaRepository
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.upis_istrazivanje_layout)
-        grupaRepository= GrupaRepository()
+
         odabirGodina=findViewById(R.id.odabirGodina)
         var opcijeGodine:List<String> = listOf("1","2","3","4","5")
         val adapterGodine = ArrayAdapter<String> (this, android.R.layout.simple_list_item_1, opcijeGodine)
@@ -32,13 +32,13 @@ class UpisIstrazivanje:AppCompatActivity() {
         odabirGodina.setSelection(MainActivity.godina)
 
         odabirIstrazivanja=findViewById(R.id.odabirIstrazivanja)
-        istrazivanja= IstrazivanjeRepository()
+        istrazivanja= IstrazivanjeRepository
         val adapterIstrazivanja = ArrayAdapter (this, android.R.layout.simple_list_item_1, istrazivanja.istrazivanjaNaKojaNisamUpisana())
         odabirIstrazivanja.adapter=adapterIstrazivanja
 
 
         odabirGrupa=findViewById(R.id.odabirGrupa)
-        grupe= GrupaRepository()
+        grupe= GrupaRepository
         val adapterGrupe = ArrayAdapter (this, android.R.layout.simple_list_item_1, grupe.getAllGroups())
         odabirGrupa.adapter=adapterGrupe
 
@@ -94,8 +94,8 @@ class UpisIstrazivanje:AppCompatActivity() {
     private fun upisiMe(){
         MainActivity.godina=odabirGodina.selectedItemPosition
         AnketaRepository.upisiMe(odabirIstrazivanja.selectedItem.toString(), odabirGrupa.selectedItem.toString())
-        istrazivanja.upisiMeNaIstrazivanje(odabirIstrazivanja.selectedItem.toString())
-        grupaRepository.upisiMe(odabirGrupa.selectedItem.toString())
+        IstrazivanjeRepository.upisiMeNaIstrazivanje(odabirIstrazivanja.selectedItem.toString())
+        GrupaRepository.upisiMe(odabirGrupa.selectedItem.toString())
         Toast.makeText(this, "Uspješno ste upisani!", Toast.LENGTH_SHORT).show()
     }
 

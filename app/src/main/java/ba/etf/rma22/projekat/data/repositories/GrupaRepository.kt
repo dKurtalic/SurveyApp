@@ -5,7 +5,7 @@ import ba.etf.rma22.projekat.data.models.Anketa
 import ba.etf.rma22.projekat.data.models.Grupa
 import java.util.ArrayList
 
-class GrupaRepository {
+object GrupaRepository {
     private var mojeGrupe: ArrayList<Grupa> = arrayListOf()
     init {
         upisiMe("Grupa0")
