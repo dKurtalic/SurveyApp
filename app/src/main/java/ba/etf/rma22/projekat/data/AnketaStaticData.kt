@@ -5,17 +5,17 @@ import java.util.*
 
 fun dajListuAnketa():List<Anketa>{
     val kalendar: Calendar= Calendar.getInstance()
-    kalendar.set(2006,11,5)
+    kalendar.set(2006,6,5)
     val prviDatum: Date=kalendar.time
-    kalendar.set(2025,3,1)
+    kalendar.set(2025,5,1)
     val drugiDatum:Date=kalendar.time
-    kalendar.set(2020,1,1)
+    kalendar.set(2020,7,1)
     val treciDatum:Date=kalendar.time
-    kalendar.set(2030,1,2)
+    kalendar.set(2030,5,2)
     val cetvrtiDatum:Date=kalendar.time
     kalendar.set(2002,6,5)
     val petiDatum:Date=kalendar.time
-    kalendar.set(2019,11,9)
+    kalendar.set(2019,7,9)
     val sestiDatum:Date=kalendar.time
     kalendar.set(2016,10,21)
     val sedmiDatum:Date=kalendar.time

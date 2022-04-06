@@ -25,5 +25,8 @@ object IstrazivanjeRepository {
     fun zaSpinner(godina:Int):ArrayList<Istrazivanje>{
         return getAll().stream().filter { istr -> !(mojaIstrazivanja.contains(istr)) && istr.godina==godina}.toList().ifEmpty { praznaLista } as ArrayList<Istrazivanje>
     }
+    fun getUpisani():List<Istrazivanje>{
+        return mojaIstrazivanja
+    }
 
 }
