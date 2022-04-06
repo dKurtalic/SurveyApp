@@ -40,9 +40,9 @@ class AnketaAdapter(private var anketaArray:List<Anketa>):
             val context : Context=holder.datumTekst.context
             val id=context.resources.getIdentifier(statusAnkete,"drawable",context.packageName)
             holder.imageView.setImageResource(id)
-            var pom=anketaArray[position].progres
-            if (((pom*10).toInt()%2!=0)) pom+=0.6F
-        holder.progres.progress= ((pom).roundToInt())/10
+            var pom=dajProgres(anketaArray[position].progres)
+          //  if (((pom*10).toInt()%2!=0)) pom+=0.6F
+            holder.progres.progress= pom
 
 
             if (statusAnkete.equals("plava")) holder.datumTekst.text="Anketa urađena: "+ dajDatum(anketaArray[position].datumRada)
@@ -50,7 +50,13 @@ class AnketaAdapter(private var anketaArray:List<Anketa>):
             else if (statusAnkete.equals("zelena")) holder.datumTekst.text="Vrijeme zatvaranja: "+dajDatum(anketaArray[position].datumKraj)
             else holder.datumTekst.text="Anketa zatvorena: "+dajDatum(anketaArray[position].datumKraj)
     }
-
+    private fun dajProgres (progres: Float):Int{
+        var p= progres * 100
+        if ((p%2).roundToInt()!=0) {
+            p+=10
+        }
+        return p.toInt()
+    }
 
 
     private fun dajDatum(datum:Date?):String{

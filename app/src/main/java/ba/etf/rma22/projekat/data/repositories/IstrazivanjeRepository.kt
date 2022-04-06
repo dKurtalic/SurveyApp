@@ -8,7 +8,7 @@ import kotlin.streams.toList
 object IstrazivanjeRepository {
 
     private var mojaIstrazivanja: ArrayList<Istrazivanje> = arrayListOf()
-
+    private var praznaLista: ArrayList<String> = arrayListOf("")
     init {
         upisiMeNaIstrazivanje("ETF istraživanje")
     }
@@ -22,8 +22,8 @@ object IstrazivanjeRepository {
         var i:Istrazivanje = getAll().stream().filter { istr->istr.naziv.equals(nazivIstrazivanja) }.findFirst().get()
         if (!mojaIstrazivanja.contains(i)) mojaIstrazivanja.add(i)
     }
-    fun istrazivanjaNaKojaNisamUpisana():ArrayList<Istrazivanje>{
-        return getAll().stream().filter { istr -> !(mojaIstrazivanja.contains(istr))}.toList() as ArrayList<Istrazivanje>
+    fun zaSpinner(godina:Int):ArrayList<Istrazivanje>{
+        return getAll().stream().filter { istr -> !(mojaIstrazivanja.contains(istr)) && istr.godina==godina}.toList().ifEmpty { praznaLista } as ArrayList<Istrazivanje>
     }
 
 }

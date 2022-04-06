@@ -33,7 +33,7 @@ class UpisIstrazivanje:AppCompatActivity() {
 
         odabirIstrazivanja=findViewById(R.id.odabirIstrazivanja)
         istrazivanja= IstrazivanjeRepository
-        val adapterIstrazivanja = ArrayAdapter (this, android.R.layout.simple_list_item_1, istrazivanja.istrazivanjaNaKojaNisamUpisana())
+        val adapterIstrazivanja = ArrayAdapter (this, android.R.layout.simple_list_item_1, istrazivanja.zaSpinner(odabirGodina.selectedItem.toString().toInt()))
         odabirIstrazivanja.adapter=adapterIstrazivanja
 
 
@@ -84,7 +84,7 @@ class UpisIstrazivanje:AppCompatActivity() {
 
     }
     private fun popuniSpinnerIstrazivanja() {
-        var adapterIstrazivanja2 = ArrayAdapter(this, android.R.layout.simple_list_item_1, istrazivanja.getIstrazivanjeByGodina(odabirGodina.selectedItem.toString().toInt()))
+        var adapterIstrazivanja2 = ArrayAdapter(this, android.R.layout.simple_list_item_1, istrazivanja.zaSpinner(odabirGodina.selectedItem.toString().toInt()))
         odabirIstrazivanja.adapter=adapterIstrazivanja2
     }
     private fun popuniSpinnerGrupa(){

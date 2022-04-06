@@ -10,6 +10,7 @@ import java.util.*
 object AnketaRepository {
 
     private var mojeAnkete: ArrayList<Anketa> = arrayListOf()
+    private var praznaLista: ArrayList<String> =arrayListOf(" ")
     init {
         upisiMe("ETF istraživanje","Grupa0")
     }
