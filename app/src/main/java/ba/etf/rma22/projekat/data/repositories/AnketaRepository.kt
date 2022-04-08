@@ -10,7 +10,6 @@ import java.util.*
 object AnketaRepository {
 
     private var mojeAnkete: ArrayList<Anketa> = arrayListOf()
-    private var praznaLista: ArrayList<String> =arrayListOf(" ")
     init {
         upisiMe("ETF istraživanje","Grupa0")
     }
@@ -30,21 +29,21 @@ object AnketaRepository {
         return dajListuAnketa().ifEmpty { emptyList() }
     }
     fun getDone():List<Anketa>{
-        var vrati= dajListuAnketa().filter { anketa->anketa.datumRada!=null }
+        var vrati= getMyAnkete().filter { anketa->anketa.datumRada!=null }
         return vrati.ifEmpty { emptyList() }
     }
     fun getFuture():List<Anketa>{
         val kalendar: Calendar = Calendar.getInstance()
         kalendar.set(LocalDateTime.now().year,LocalDateTime.now().monthValue, LocalDateTime.now().dayOfMonth)
         val danasnjiDatum: Date =kalendar.time
-        var vrati= dajListuAnketa().filter { anketa->anketa.datumPocetak.after(danasnjiDatum) }
+        var vrati= getMyAnkete().filter { anketa->anketa.datumPocetak.after(danasnjiDatum) }
         return vrati.ifEmpty { emptyList() }
     }
     fun getNotTaken():List<Anketa>{
         val kalendar: Calendar = Calendar.getInstance()
         kalendar.set(LocalDateTime.now().year,LocalDateTime.now().monthValue, LocalDateTime.now().dayOfMonth)
         val danasnjiDatum: Date =kalendar.time
-        var vrati= dajListuAnketa().filter { anketa->anketa.datumRada==null && anketa.datumKraj.before(danasnjiDatum) }
+        var vrati= getMyAnkete().filter { anketa->anketa.datumRada==null && anketa.datumKraj.before(danasnjiDatum) }
         return vrati.ifEmpty { emptyList() }
     }
 

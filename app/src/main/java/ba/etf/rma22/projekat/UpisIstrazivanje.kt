@@ -27,7 +27,7 @@ class UpisIstrazivanje:AppCompatActivity() {
 
         odabirGodina=findViewById(R.id.odabirGodina)
         var opcijeGodine:List<String> = listOf("1","2","3","4","5")
-        val adapterGodine = ArrayAdapter<String> (this, android.R.layout.simple_list_item_1, opcijeGodine)
+        val adapterGodine = ArrayAdapter(this, android.R.layout.simple_list_item_1, opcijeGodine)
         odabirGodina.adapter=adapterGodine
         odabirGodina.setSelection(MainActivity.godina)
 
@@ -44,7 +44,7 @@ class UpisIstrazivanje:AppCompatActivity() {
 
         odabirGodina.onItemSelectedListener = object : AdapterView.OnItemSelectedListener  {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-               if (odabirGodina.selectedItem.toString()!=null)  {
+               if (odabirGodina.selectedItem.toString()!=null )  {
                    odabirIstrazivanja.isEnabled=true
                    popuniSpinnerIstrazivanja()
                    popuniSpinnerGrupa()
@@ -58,6 +58,8 @@ class UpisIstrazivanje:AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                     popuniSpinnerIstrazivanja()
                     popuniSpinnerGrupa()
+                    odabirIstrazivanja.isEnabled=false
+                    odabirGrupa.isEnabled=false
             }
 
         }
@@ -74,6 +76,7 @@ class UpisIstrazivanje:AppCompatActivity() {
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 popuniSpinnerGrupa()
+                odabirGrupa.isEnabled=false
             }
 
         }
