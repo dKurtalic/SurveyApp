@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         //postavljanje recyclerView-a
         listaAnketa=findViewById<RecyclerView>(R.id.listaAnketa)
         listaAnketa.layoutManager= GridLayoutManager(this,2,GridLayoutManager.VERTICAL, false)
-        listaAnketa.addItemDecoration(RVItemDecorator(15,0))
+
         anketaAdapter= AnketaAdapter(listOf())
         listaAnketa.adapter=anketaAdapter
         anketaAdapter.updateAnkete(anketaViewModel.getAll())
