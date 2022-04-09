@@ -24,6 +24,7 @@ class UpisIstrazivanje:AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.upis_istrazivanje_layout)
+        dodajIstrazivanjeDugme=findViewById(R.id.dodajIstrazivanjeDugme)
 
         odabirGodina=findViewById(R.id.odabirGodina)
         var opcijeGodine:List<String> = listOf("1","2","3","4","5")
@@ -46,12 +47,14 @@ class UpisIstrazivanje:AppCompatActivity() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                if (odabirGodina.selectedItem.toString()!=null )  {
                    odabirIstrazivanja.isEnabled=true
+                   dodajIstrazivanjeDugme.isEnabled=false
                    popuniSpinnerIstrazivanja()
                    popuniSpinnerGrupa()
                }
                 else  {
                     odabirIstrazivanja.isEnabled=false
                     odabirGrupa.isEnabled=false
+                    dodajIstrazivanjeDugme.isEnabled=false
                }
             }
 
@@ -60,28 +63,42 @@ class UpisIstrazivanje:AppCompatActivity() {
                     popuniSpinnerGrupa()
                     odabirIstrazivanja.isEnabled=false
                     odabirGrupa.isEnabled=false
+                    dodajIstrazivanjeDugme.isEnabled=false
             }
 
         }
         odabirIstrazivanja.onItemSelectedListener = object : AdapterView.OnItemSelectedListener  {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if (odabirIstrazivanja.selectedItem.toString()!=null)  {
+                    dodajIstrazivanjeDugme.isEnabled=false
                     odabirGrupa.isEnabled=true
                     popuniSpinnerGrupa()
                 }
                 else  {
                     odabirGrupa.isEnabled=false
+                    dodajIstrazivanjeDugme.isEnabled=false
                 }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 popuniSpinnerGrupa()
                 odabirGrupa.isEnabled=false
+                dodajIstrazivanjeDugme.isEnabled=false;
+            }
+
+        }
+        odabirGrupa.onItemSelectedListener = object : AdapterView.OnItemSelectedListener  {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                dodajIstrazivanjeDugme.isEnabled = odabirGrupa.selectedItem.toString()!=null
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                dodajIstrazivanjeDugme.isEnabled=false;
             }
 
         }
 
-        dodajIstrazivanjeDugme=findViewById(R.id.dodajIstrazivanjeDugme)
+
         dodajIstrazivanjeDugme.setOnClickListener {upisiMe()}
 
 
