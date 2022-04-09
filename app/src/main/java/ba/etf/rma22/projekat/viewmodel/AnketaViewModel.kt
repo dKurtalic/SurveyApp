@@ -7,28 +7,18 @@ import java.time.LocalDateTime
 import java.util.*
 
 class AnketaViewModel {
-    fun dajAnkete():List<Anketa>{
-        return AnketaRepository.getMyAnkete()
-    }
-    fun getMyAnkete():List<Anketa>{
-        return dajListuAnketa()
-    }
+
     fun getAll():List<Anketa>{
-        return dajListuAnketa()
+        return AnketaRepository.getAll()
     }
     fun getDone():List<Anketa>{
-        return dajListuAnketa().filter { anketa->anketa.datumRada!=null }
+        return AnketaRepository.getDone()
     }
     fun getFuture():List<Anketa>{
-        val kalendar: Calendar = Calendar.getInstance()
-        kalendar.set(LocalDateTime.now().year, LocalDateTime.now().monthValue, LocalDateTime.now().dayOfMonth)
-        val danasnjiDatum: Date =kalendar.time
-        return dajListuAnketa().filter { anketa->anketa.datumPocetak.after(danasnjiDatum) }
+        return AnketaRepository.getFuture()
     }
     fun getNotTaken():List<Anketa>{
-        val kalendar: Calendar = Calendar.getInstance()
-        kalendar.set(LocalDateTime.now().year, LocalDateTime.now().monthValue, LocalDateTime.now().dayOfMonth)
-        val danasnjiDatum: Date =kalendar.time
-        return dajListuAnketa().filter { anketa->anketa.datumRada==null && anketa.datumKraj.before(danasnjiDatum) }
+        return AnketaRepository.getNotTaken()
     }
+
 }

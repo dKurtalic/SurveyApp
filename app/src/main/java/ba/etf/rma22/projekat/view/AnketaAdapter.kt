@@ -17,7 +17,6 @@ import kotlin.time.Duration.Companion.days
 
 class AnketaAdapter(private var anketaArray:List<Anketa>):
     RecyclerView.Adapter<AnketaAdapter.AnketaViewHolder>()  {
-    lateinit var status:String
 
     inner class AnketaViewHolder(pogled: View): RecyclerView.ViewHolder(pogled){
         val nazivAnkete=pogled.findViewById<TextView>(R.id.nazivAnkete)
@@ -31,7 +30,6 @@ class AnketaAdapter(private var anketaArray:List<Anketa>):
         val pogled=LayoutInflater.from(vg.context).inflate(R.layout.anketa_layout,vg,false)
         return AnketaViewHolder(pogled)
     }
-
 
     override fun onBindViewHolder(holder: AnketaViewHolder, position: Int) {
             holder.nazivAnkete.text=anketaArray[position].naziv
@@ -66,12 +64,11 @@ class AnketaAdapter(private var anketaArray:List<Anketa>):
         godina+=1900
         var danString:String
         var mjesecString: String
-        var godinaString:String
         if (dan<10) danString ="0"+dan
             else danString=dan.toString()
         if (mjesec<10) mjesecString="0"+mjesec
             else mjesecString=mjesec.toString()
-        return danString+"."+mjesecString+"."+godina
+        return "$danString.$mjesecString.$godina"
     }
 
     private fun dajStatusAnkete(position : Int):String {
@@ -80,10 +77,11 @@ class AnketaAdapter(private var anketaArray:List<Anketa>):
         val danasnjiDatum:Date=kalendar.time
         if (anketaArray[position].datumRada!=null) return "plava"
         else if (anketaArray[position].datumPocetak.after(danasnjiDatum)) return "zuta"
-
-        else if(anketaArray[position].datumRada==null && anketaArray[position].datumKraj.after(danasnjiDatum)) return  "zelena"
-            else return "crvena"
-        return "crvena"
+        else if(anketaArray[position].datumPocetak.before(danasnjiDatum) &&
+            anketaArray[position].datumKraj.after(danasnjiDatum)) return "zelena"
+        else if (anketaArray[position].datumPocetak.before(danasnjiDatum) &&
+            anketaArray[position].datumKraj.before(danasnjiDatum) && anketaArray[position].datumRada==null) return "crvena"
+        return "zelena"
     }
 
     override fun getItemCount(): Int {

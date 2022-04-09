@@ -11,19 +11,27 @@ object AnketaRepository {
 
     private var mojeAnkete: ArrayList<Anketa> = arrayListOf()
     init {
-        upisiMe("ETF istraživanje","Grupa0")
+        upisiMeNaAnketu("ETF istraživanje","Anketa 0")
+        upisiMeNaAnketu("ETF istraživanje","O zagađenju")
+        upisiMeNaAnketu("ETF istraživanje", "O obrazovanju")
+        upisiMeNaAnketu("ETF istraživanje", "O online nastavi")
     }
 
     fun upisiMe(istrazivanje: String, grupa: String){
-        var a: Anketa = getAll().stream().filter { anketa -> anketa.nazivIstrazivanja.equals(istrazivanje) &&
-                anketa.nazivGrupe.equals(grupa)}.findFirst().get()
+        var a: Anketa = getAll().stream().filter { ank -> ank.nazivIstrazivanja.equals(istrazivanje) &&
+                ank.nazivGrupe.equals(grupa)}.findFirst().get()
         if (!mojeAnkete.contains(a))
-       mojeAnkete.add(a)
+            mojeAnkete.add(a)
+    }
+    fun upisiMeNaAnketu(istrazivanje: String, anketa: String){
+        var a: Anketa = getAll().stream().filter { ank -> ank.nazivIstrazivanja.equals(istrazivanje) &&
+                ank.naziv.equals(anketa)}.findFirst().get()
+        if (!mojeAnkete.contains(a))
+            mojeAnkete.add(a)
     }
 
-
   fun getMyAnkete():List<Anketa>{
-      return mojeAnkete;
+      return mojeAnkete.ifEmpty { emptyList()};
     }
     fun getAll():List<Anketa>{
         return dajListuAnketa().ifEmpty { emptyList() }
