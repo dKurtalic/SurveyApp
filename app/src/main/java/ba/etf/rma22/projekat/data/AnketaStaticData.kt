@@ -25,9 +25,9 @@ fun dajListuAnketa():List<Anketa>{
 
     return listOf(
         Anketa("Anketa 0","ETF istraživanje", sedmiDatum, osmiDatum, sestiDatum, 24, "Grupa0", 0.9F), //done korisnikova
-        Anketa ("O zagađenju", "ETF istraživanje", drugiDatum, cetvrtiDatum, null, 100, "Grupa1",0F), //future korisnikova
+        Anketa ("O zagađenju", "ETF istraživanje", drugiDatum, cetvrtiDatum, null, 100, "Grupa0",0F), //future korisnikova
         Anketa ("O obrazovanju", "ETF istraživanje", petiDatum,treciDatum,  null,90, "Grupa0", 0F), // past korisnikova
-        Anketa ("O online nastavi", "ETF istraživanje",treciDatum,drugiDatum,null,19,"Grupa1",0F), //korisnikova active
+        Anketa ("O online nastavi", "ETF istraživanje",treciDatum,drugiDatum,null,19,"Grupa0",0F), //korisnikova active
         Anketa("Anketa1","PMF istraživanje",cetvrtiDatum, cetvrtiDatum, null, 30,"Grupa0",0F), //future
         Anketa("Anketa PMF","PMF istraživanje",drugiDatum, cetvrtiDatum, null, 30,"Grupa1",0F), //future
         Anketa("Anketa urađena", "MF istraživanje", prviDatum, drugiDatum, treciDatum, 60, "Grupa2",0.5F), //done

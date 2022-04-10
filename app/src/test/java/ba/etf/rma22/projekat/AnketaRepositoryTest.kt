@@ -44,7 +44,7 @@ class AnketaRepositoryTest {
         val futureAnkete=AnketaRepository.getFuture()
         assertEquals(futureAnkete.size,1)
         assertThat(futureAnkete,hasItem<Anketa>(hasProperty("nazivIstrazivanja", Is("ETF istraživanje"))))
-        assertThat(futureAnkete,hasItem<Anketa>(hasProperty("nazivGrupe", Is("Grupa1"))))
+        assertThat(futureAnkete,hasItem<Anketa>(hasProperty("nazivGrupe", Is("Grupa0"))))
         assertThat(futureAnkete,hasItem<Anketa>(hasProperty("trajanje", Is(100))))
         assertThat(futureAnkete,hasItem<Anketa>(hasProperty("naziv", Is("O zagađenju"))))
     }

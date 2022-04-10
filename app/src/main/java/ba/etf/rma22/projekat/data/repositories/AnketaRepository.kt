@@ -6,29 +6,24 @@ import ba.etf.rma22.projekat.data.models.Grupa
 import ba.etf.rma22.projekat.data.models.Istrazivanje
 import java.time.LocalDateTime
 import java.util.*
+import kotlin.streams.toList
 
 object AnketaRepository {
 
     private var mojeAnkete: ArrayList<Anketa> = arrayListOf()
     init {
-        upisiMeNaAnketu("ETF istraživanje","Anketa 0")
-        upisiMeNaAnketu("ETF istraživanje","O zagađenju")
-        upisiMeNaAnketu("ETF istraživanje", "O obrazovanju")
-        upisiMeNaAnketu("ETF istraživanje", "O online nastavi")
+        upisiMe("ETF istraživanje","Grupa0")
     }
 
     fun upisiMe(istrazivanje: String, grupa: String){
-        var a: Anketa = getAll().stream().filter { ank -> ank.nazivIstrazivanja.equals(istrazivanje) &&
-                ank.nazivGrupe.equals(grupa)}.findFirst().get()
-        if (!mojeAnkete.contains(a))
-            mojeAnkete.add(a)
+        var a = getAll().stream().filter { ank -> ank.nazivIstrazivanja.equals(istrazivanje) &&
+                ank.nazivGrupe.equals(grupa)}.toList()
+        for (ank in a){
+        if (!mojeAnkete.contains(ank))
+            mojeAnkete.add(ank)
+        }
     }
-    fun upisiMeNaAnketu(istrazivanje: String, anketa: String){
-        var a: Anketa = getAll().stream().filter { ank -> ank.nazivIstrazivanja.equals(istrazivanje) &&
-                ank.naziv.equals(anketa)}.findFirst().get()
-        if (!mojeAnkete.contains(a))
-            mojeAnkete.add(a)
-    }
+
 
   fun getMyAnkete():List<Anketa>{
       return mojeAnkete.ifEmpty { emptyList()};
