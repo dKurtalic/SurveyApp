@@ -2,8 +2,6 @@ package ba.etf.rma22.projekat.data.repositories
 
 import ba.etf.rma22.projekat.data.dajListuAnketa
 import ba.etf.rma22.projekat.data.models.Anketa
-import ba.etf.rma22.projekat.data.models.Grupa
-import ba.etf.rma22.projekat.data.models.Istrazivanje
 import java.time.LocalDateTime
 import java.util.*
 import kotlin.streams.toList
