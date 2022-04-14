@@ -1,5 +1,6 @@
 package ba.etf.rma22.projekat.view
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,9 +9,11 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import ba.etf.rma22.projekat.MainActivity
 import ba.etf.rma22.projekat.R
 import ba.etf.rma22.projekat.data.repositories.AnketaRepository
 import ba.etf.rma22.projekat.viewmodel.AnketaViewModel
@@ -21,10 +24,12 @@ class FragmentAnkete(): Fragment() {
         fun newInstance():FragmentAnkete=FragmentAnkete()
     }
 
+
     private lateinit var anketaAdapter: AnketaAdapter
     private lateinit var listaAnketa: RecyclerView
     private var anketaViewModel= AnketaViewModel()
     private lateinit var spinner: Spinner
+    var fragments= arrayListOf(this,FragmentIstrazivanje())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,9 +49,13 @@ class FragmentAnkete(): Fragment() {
         spinner.adapter=adapterSpinner
         postaviSpinner()
         spinner.setSelection(1)
+
+
         return view
 
     }
+
+
 
     private fun postaviSpinner(){
         spinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {

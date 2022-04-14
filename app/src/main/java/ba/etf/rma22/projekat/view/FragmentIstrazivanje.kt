@@ -1,6 +1,7 @@
 package ba.etf.rma22.projekat.view
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,14 +9,16 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import ba.etf.rma22.projekat.MainActivity
 import ba.etf.rma22.projekat.R
 import ba.etf.rma22.projekat.data.repositories.AnketaRepository
 import ba.etf.rma22.projekat.data.repositories.GrupaRepository
 import ba.etf.rma22.projekat.data.repositories.IstrazivanjeRepository
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+
 
 class FragmentIstrazivanje: Fragment() {
     companion object{
@@ -105,7 +108,6 @@ class FragmentIstrazivanje: Fragment() {
                 dodajIstrazivanjeDugme.isEnabled=false;
             }
         }
-
         dodajIstrazivanjeDugme.setOnClickListener {upisiMe(view.context)}
         return view
     }
@@ -119,11 +121,13 @@ class FragmentIstrazivanje: Fragment() {
         odabirGrupa.adapter=adapterGrupa2
     }
     private fun upisiMe(context:Context){
-        MainActivity.godina=odabirGodina.selectedItemPosition
+        FragmentAnkete.godina=odabirGodina.selectedItemPosition
         AnketaRepository.upisiMe(odabirIstrazivanja.selectedItem.toString(), odabirGrupa.selectedItem.toString())
         IstrazivanjeRepository.upisiMeNaIstrazivanje(odabirIstrazivanja.selectedItem.toString())
         GrupaRepository.upisiMe(odabirGrupa.selectedItem.toString())
-        Toast.makeText(context, "Uspješno ste upisani!", Toast.LENGTH_SHORT).show()
-    }
 
+        MainActivity.vpAdapter.refreshFragment(1,FragmentPoruka(odabirGrupa.selectedItem.toString(),
+                                                odabirIstrazivanja.selectedItem.toString()))
+        }
 }
+
