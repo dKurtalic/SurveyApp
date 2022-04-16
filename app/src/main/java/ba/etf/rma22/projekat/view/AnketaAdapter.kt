@@ -15,7 +15,9 @@ import java.util.*
 import kotlin.math.roundToInt
 import kotlin.time.Duration.Companion.days
 
-class AnketaAdapter(private var anketaArray:List<Anketa>):
+class AnketaAdapter(
+    private var anketaArray:List<Anketa>,
+    private val onItemClick: (anketa:Anketa)->Unit):
     RecyclerView.Adapter<AnketaAdapter.AnketaViewHolder>()  {
 
     inner class AnketaViewHolder(pogled: View): RecyclerView.ViewHolder(pogled){
@@ -47,7 +49,10 @@ class AnketaAdapter(private var anketaArray:List<Anketa>):
             else if (statusAnkete.equals("zuta")) holder.datumTekst.text="Vrijeme aktiviranja: "+dajDatum(anketaArray[position].datumPocetak)
             else if (statusAnkete.equals("zelena")) holder.datumTekst.text="Vrijeme zatvaranja: "+dajDatum(anketaArray[position].datumKraj)
             else holder.datumTekst.text="Anketa zatvorena: "+dajDatum(anketaArray[position].datumKraj)
+
+        holder.itemView.setOnClickListener { onItemClick(anketaArray[position]) }
     }
+
     private fun dajProgres (progres: Float):Int{
         var p= progres * 100
         if ((p%2).roundToInt()!=0) {

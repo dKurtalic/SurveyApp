@@ -1,21 +1,21 @@
 package ba.etf.rma22.projekat.view
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ba.etf.rma22.projekat.MainActivity
 import ba.etf.rma22.projekat.R
+import ba.etf.rma22.projekat.data.models.Anketa
 import ba.etf.rma22.projekat.data.repositories.AnketaRepository
+import ba.etf.rma22.projekat.data.repositories.PitanjaAnketaRepository
 import ba.etf.rma22.projekat.viewmodel.AnketaViewModel
 
 class FragmentAnkete(): Fragment() {
@@ -29,7 +29,6 @@ class FragmentAnkete(): Fragment() {
     private lateinit var listaAnketa: RecyclerView
     private var anketaViewModel= AnketaViewModel()
     private lateinit var spinner: Spinner
-    var fragments= arrayListOf(this,FragmentIstrazivanje())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,10 +36,12 @@ class FragmentAnkete(): Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         var view=inflater.inflate(R.layout.fragment_anketa,container,false)
-        anketaAdapter= AnketaAdapter(anketaViewModel.getAll())
+        anketaAdapter= AnketaAdapter(arrayListOf()){ otvoriAnketu(it)}
         listaAnketa=view.findViewById(R.id.listaAnketa)
-        listaAnketa.layoutManager=GridLayoutManager(view.context,2,GridLayoutManager.VERTICAL,false)
         listaAnketa.adapter=anketaAdapter
+        anketaAdapter.updateAnkete(anketaViewModel.getAll())
+        listaAnketa.layoutManager=GridLayoutManager(view.context,2,GridLayoutManager.VERTICAL,false)
+
 
 
         spinner=view.findViewById(R.id.filterAnketa)
@@ -52,6 +53,21 @@ class FragmentAnkete(): Fragment() {
 
 
         return view
+
+    }
+    private fun otvoriAnketu(anketa: Anketa) {
+       var pitanja= PitanjaAnketaRepository.getPitanja(anketa.naziv,anketa.nazivIstrazivanja)
+        if(pitanja.isNotEmpty()){
+
+            MainActivity.vpAdapter.removeAll()
+           var brojac=0
+            for (i in pitanja){
+                MainActivity.vpAdapter.add(brojac, FragmentPitanje(i.tekst,i.opcije))
+                brojac++
+            }
+        }
+
+
 
     }
 
@@ -80,6 +96,7 @@ class FragmentAnkete(): Fragment() {
         else if (spinner.selectedItem.toString()=="Prošle ankete") anketaAdapter.updateAnkete(
             AnketaRepository.getNotTaken())
     }
+
 
 
 }

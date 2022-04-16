@@ -1,5 +1,6 @@
 package ba.etf.rma22.projekat.view
 
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -26,6 +27,13 @@ class ViewPagerAdapter(
     fun remove(index: Int) {
         fragments.removeAt(index)
         notifyItemChanged(index)
+    }
+    fun removeAll(){
+
+        var size:Int= itemCount
+        size-=1
+        Log.v("tag", "Size: $size")
+        for (i in size downTo 0) remove(i)
     }
     override fun getItemId(position: Int): Long {
         return fragments[position].hashCode().toLong()
