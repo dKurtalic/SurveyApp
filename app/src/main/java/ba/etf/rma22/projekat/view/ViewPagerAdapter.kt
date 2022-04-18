@@ -13,6 +13,9 @@ class ViewPagerAdapter(
     override fun getItemCount(): Int {
         return fragments.size
     }
+    fun getItem(index:Int): Fragment {
+        return fragments[index]
+    }
     override fun createFragment(position: Int): Fragment {
         return fragments[position]
     }
@@ -24,17 +27,31 @@ class ViewPagerAdapter(
         fragments.add(index, fragment)
         notifyItemChanged(index)
     }
+    fun addAll(list:List<Fragment>) {
+        var brojac=0
+        for (i in list) {
+            fragments.add(i)
+            notifyItemChanged(brojac)
+            brojac++
+        }
+
+    }
     fun remove(index: Int) {
         fragments.removeAt(index)
         notifyItemChanged(index)
     }
     fun removeAll(){
-
         var size:Int= itemCount
         size-=1
-        Log.v("tag", "Size: $size")
-        for (i in size downTo 0) remove(i)
+
+        for (i in size downTo 0){
+            remove(i)
+            notifyItemChanged(i)
+        }
+        notifyDataSetChanged()
+
     }
+
     override fun getItemId(position: Int): Long {
         return fragments[position].hashCode().toLong()
     }

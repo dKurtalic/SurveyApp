@@ -8,10 +8,9 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import ba.etf.rma22.projekat.R
 
-class FragmentPoruka(grupa:String,istrazivanje:String): Fragment() {
+class FragmentPoruka(tekstStr:String): Fragment() {
     lateinit var tvPoruka:TextView
-    var istrazivanjeStr=istrazivanje
-    var grupaStr=grupa
+    var tekst=tekstStr
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -19,7 +18,7 @@ class FragmentPoruka(grupa:String,istrazivanje:String): Fragment() {
     ): View? {
         var view=inflater.inflate(R.layout.fragment_poruka,container,false)
         tvPoruka=view.findViewById(R.id.tvPoruka)
-        tvPoruka.text="Uspješno ste upisani u grupu: "+grupaStr+" istraživanja "+istrazivanjeStr+"!"
+        tvPoruka.text=tekst
         return view
     }
 

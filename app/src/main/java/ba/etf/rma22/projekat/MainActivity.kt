@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import ba.etf.rma22.projekat.view.FragmentAnkete
@@ -21,16 +22,19 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         viewPager=findViewById(R.id.viewpager)
         fragments= arrayListOf(FragmentAnkete(),FragmentIstrazivanje())
         vpAdapter= ViewPagerAdapter(fragments,this)
         viewPager.adapter=vpAdapter
         viewPager.registerOnPageChangeCallback(object:ViewPager2.OnPageChangeCallback(){
            override fun onPageSelected(position:Int){
-               vpAdapter.refreshFragment(1,FragmentIstrazivanje())
+              if (viewPager.currentItem==0 && vpAdapter.itemCount>=2 && vpAdapter.getItem(1) is FragmentPoruka){
+                  vpAdapter.refreshFragment(1,FragmentIstrazivanje())
+
+              }
                super.onPageSelected(position)
-           }
-        })
+                }
+            }
+        )
         }
     }

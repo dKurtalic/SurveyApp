@@ -45,9 +45,9 @@ fun dajSvaPitanja():List<Pitanje>{
         Pitanje("Aktivna anketa_2", "Da li smatrate da je Sarajevo atraktivno turističko odredište?",listOf("Da","Ne")),
         Pitanje("Mala anketa_1", "Da li podržavate zabranu pušenja u zatvorenim prostorima?",listOf("Da","Ne")),
         Pitanje("Mala anketa_2", "Da li ste pušač/ica?",listOf("Da","Ne")),
-        Pitanje("Aktivna anketa_1","Koliko stranih jezika govorite?",listOf("0","1","2","3","4","5+")),
-        Pitanje("Aktivna anketa_2","Koji je, po Vašem mišljenju, najefikasniji način učenja jezika?",listOf("Slušanje strane muzike", "Učenje gramatike", "Duolingo", "Gledanje stanih video sadržaja")),
-        Pitanje("Aktivna anketa_3","Da li ste ikada koristili aplikaciju Duolingo?",listOf("Da","Ne"))
+        //Pitanje("Aktivna anketa_1","Koliko stranih jezika govorite?",listOf("0","1","2","3","4","5+")),
+        //Pitanje("Aktivna anketa_2","Koji je, po Vašem mišljenju, najefikasniji način učenja jezika?",listOf("Slušanje strane muzike", "Učenje gramatike", "Duolingo", "Gledanje stanih video sadržaja")),
+        //Pitanje("Aktivna anketa_3","Da li ste ikada koristili aplikaciju Duolingo?",listOf("Da","Ne"))
     )
 
 }

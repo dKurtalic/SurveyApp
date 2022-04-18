@@ -41,7 +41,6 @@ class AnketaAdapter(
             val id=context.resources.getIdentifier(statusAnkete,"drawable",context.packageName)
             holder.imageView.setImageResource(id)
             var pom=dajProgres(anketaArray[position].progres)
-          //  if (((pom*10).toInt()%2!=0)) pom+=0.6F
             holder.progres.progress= pom
 
 

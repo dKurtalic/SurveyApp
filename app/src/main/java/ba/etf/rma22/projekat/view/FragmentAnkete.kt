@@ -42,36 +42,36 @@ class FragmentAnkete(): Fragment() {
         anketaAdapter.updateAnkete(anketaViewModel.getAll())
         listaAnketa.layoutManager=GridLayoutManager(view.context,2,GridLayoutManager.VERTICAL,false)
 
-
-
         spinner=view.findViewById(R.id.filterAnketa)
         val opcije: List<String> = listOf("Sve moje ankete", "Sve ankete", "Urađene ankete", "Buduće ankete", "Prošle ankete")
         val adapterSpinner = ArrayAdapter(view.context, android.R.layout.simple_list_item_1, opcije)
         spinner.adapter=adapterSpinner
         postaviSpinner()
         spinner.setSelection(1)
-
-
         return view
 
     }
     private fun otvoriAnketu(anketa: Anketa) {
-       var pitanja= PitanjaAnketaRepository.getPitanja(anketa.naziv,anketa.nazivIstrazivanja)
-        if(pitanja.isNotEmpty()){
+        var status=anketa.dajStatusAnkete()
+        if (status!="zuta"){
+            var pitanja= PitanjaAnketaRepository.getPitanja(anketa.naziv,anketa.nazivIstrazivanja)
+            if(pitanja.isNotEmpty()){
+                MainActivity.vpAdapter.removeAll()
+                var brojac=0
+                for (i in pitanja){
+                    MainActivity.vpAdapter.add(brojac, FragmentPitanje(i.tekst,i.opcije,anketa,brojac))
+                    brojac++
+                }
 
-            MainActivity.vpAdapter.removeAll()
-           var brojac=0
-            for (i in pitanja){
-                MainActivity.vpAdapter.add(brojac, FragmentPitanje(i.tekst,i.opcije))
-                brojac++
+                MainActivity.vpAdapter.add(brojac,FragmentPredaj(anketa))
+                PitanjaAnketaRepository.otvorenaAnketa(anketa.naziv)
+
             }
         }
 
-
+        //
 
     }
-
-
 
     private fun postaviSpinner(){
         spinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {

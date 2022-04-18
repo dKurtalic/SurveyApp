@@ -8,6 +8,7 @@ import kotlin.streams.toList
 
 object AnketaRepository {
 
+
     private var mojeAnkete: ArrayList<Anketa> = arrayListOf()
     init {
         upisiMe("ETF istraživanje","Grupa0")
