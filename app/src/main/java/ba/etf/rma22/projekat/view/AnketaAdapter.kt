@@ -13,7 +13,6 @@ import ba.etf.rma22.projekat.data.models.Anketa
 import java.time.LocalDateTime
 import java.util.*
 import kotlin.math.roundToInt
-import kotlin.time.Duration.Companion.days
 
 class AnketaAdapter(
     private var anketaArray:List<Anketa>,
@@ -43,13 +42,16 @@ class AnketaAdapter(
             var pom=dajProgres(anketaArray[position].progres)
             holder.progres.progress= pom
 
+           postaviIzgledAnkete(anketaArray[position].dajStatusAnkete(),holder,position)
 
-            if (statusAnkete.equals("plava")) holder.datumTekst.text="Anketa urađena: "+ dajDatum(anketaArray[position].datumRada)
-            else if (statusAnkete.equals("zuta")) holder.datumTekst.text="Vrijeme aktiviranja: "+dajDatum(anketaArray[position].datumPocetak)
-            else if (statusAnkete.equals("zelena")) holder.datumTekst.text="Vrijeme zatvaranja: "+dajDatum(anketaArray[position].datumKraj)
-            else holder.datumTekst.text="Anketa zatvorena: "+dajDatum(anketaArray[position].datumKraj)
 
         holder.itemView.setOnClickListener { onItemClick(anketaArray[position]) }
+    }
+    private fun postaviIzgledAnkete(statusAnkete: String, holder: AnketaViewHolder,position:Int){
+        if (statusAnkete.equals("plava")) holder.datumTekst.text="Anketa urađena: "+ dajDatum(anketaArray[position].datumRada)
+        else if (statusAnkete.equals("zuta")) holder.datumTekst.text="Vrijeme aktiviranja: "+dajDatum(anketaArray[position].datumPocetak)
+        else if (statusAnkete.equals("zelena")) holder.datumTekst.text="Vrijeme zatvaranja: "+dajDatum(anketaArray[position].datumKraj)
+        else holder.datumTekst.text="Anketa zatvorena: "+dajDatum(anketaArray[position].datumKraj)
     }
 
     private fun dajProgres (progres: Float):Int{

@@ -14,21 +14,33 @@ data class Anketa(
     val progres: Float,
 
 ) {
+    private var status:String=""
+    init {
+        dajStatusAnkete()
+    }
     override fun equals(other: Any?): Boolean {
         return other is Anketa && this.naziv.equals(other.naziv) && this.nazivIstrazivanja.equals(other.nazivIstrazivanja)
     }
-    fun dajStatusAnkete():String{
+    fun IzracunajStatusAnkete():String{
             val kalendar: Calendar= Calendar.getInstance()
             kalendar.set(LocalDateTime.now().year, LocalDateTime.now().monthValue, LocalDateTime.now().dayOfMonth)
             val danasnjiDatum:Date=kalendar.time
-            if (datumRada!=null) return "plava"
-            else if (datumPocetak.after(danasnjiDatum)) return "zuta"
+            if (datumRada!=null) status="plava"
+            else if (datumPocetak.after(danasnjiDatum)) status="zuta"
             else if(datumPocetak.before(danasnjiDatum) &&
-               datumKraj.after(danasnjiDatum)) return "zelena"
+               datumKraj.after(danasnjiDatum))  status="zelena"
             else if (datumPocetak.before(danasnjiDatum) &&
-               datumKraj.before(danasnjiDatum) && datumRada==null) return "crvena"
-            return "zelena"
+               datumKraj.before(danasnjiDatum) && datumRada==null) status="crvena"
+            return status
         }
+    fun dajStatusAnkete():String {
+        if (status=="") status=IzracunajStatusAnkete()
+        return status
+    }
+
+    fun promijeniStatusAnkete(noviStatus:String){
+        status=noviStatus
+    }
 
 
 }

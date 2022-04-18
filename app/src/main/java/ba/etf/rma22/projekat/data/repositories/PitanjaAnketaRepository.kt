@@ -25,14 +25,17 @@ object PitanjaAnketaRepository {
     fun dajBrojPitanja(nazivAnkete:String,nazivIstrazivanja: String):Int{
         return getPitanja(nazivAnkete,nazivIstrazivanja).size
     }
-    fun upisiOdgovor(nazivAnkete:String,odgovor:String){
+    fun upisiOdgovor(nazivAnkete:String,odgovor:String,brojac:Int){
         if (mojiOdgovori.containsKey(nazivAnkete)){
-            mojiOdgovori.getValue(nazivAnkete).add(odgovor)
-            Log.v("UpisiOdg", mojiOdgovori.getValue(nazivAnkete).size.toString())
+            mojiOdgovori.getValue(nazivAnkete)[brojac] = odgovor
     }
+        Log.v("ta","brojac:"+brojac)
+       // for (i in mojiOdgovori.getValue(nazivAnkete)) Log.v("log","Logovi:"+i+" velicina: "+ mojiOdgovori.getValue(nazivAnkete).size)
     }
-    fun otvorenaAnketa(nazivAnkete:String){
-        if (!mojiOdgovori.containsKey(nazivAnkete)) mojiOdgovori[nazivAnkete] = mutableListOf()
+    fun otvorenaAnketa(anketa:Anketa){
+        if (!mojiOdgovori.containsKey(anketa.naziv)) mojiOdgovori[anketa.naziv] = mutableListOf()
+        for (i in 0..dajBrojPitanja(anketa.naziv,anketa.nazivIstrazivanja))
+            mojiOdgovori.get(anketa.naziv)!!.add("")
     }
     fun dajOdgovoreZaAnketu(nazivAnkete:String):List<String>{
         var vrati:MutableList<String> = mutableListOf()

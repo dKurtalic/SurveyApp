@@ -1,7 +1,7 @@
 package ba.etf.rma22.projekat.view
 
 import android.os.Bundle
-import android.util.Log
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,7 +45,7 @@ class FragmentPitanje(tekstStr:String, odgovoriLista:List<String>,anketa: Anketa
             if (anketa.dajStatusAnkete()!="crvena" && anketa.dajStatusAnkete()!="plava"){
             var odg=view.findViewById<TextView>(R.id.answ)
             listAdapter.obojiOdgovor(odg)
-            PitanjaAnketaRepository.upisiOdgovor(anketaNaziv,odg.text.toString())
+            PitanjaAnketaRepository.upisiOdgovor(anketaNaziv,odg.text.toString(),redniBroj)
             }
         }
         dugmeZaustavi.setOnClickListener { prekiniAnketu() }

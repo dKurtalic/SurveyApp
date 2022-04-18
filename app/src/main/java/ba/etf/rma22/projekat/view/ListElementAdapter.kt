@@ -1,7 +1,6 @@
 package ba.etf.rma22.projekat.view
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,8 +28,7 @@ ArrayAdapter<String>(context, layoutResource, elements) {
         answer=view.findViewById(R.id.answ)
         answer.text=elements[position]
 
-       // var trenutnaPozicija=MainActivity.viewPager.currentItem
-        Log.v("trenunta pozicija", trenutnaPozicija.toString())
+
         if (PitanjaAnketaRepository.dajOdgovoreZaAnketu(anketa.naziv).size>trenutnaPozicija){
         if (PitanjaAnketaRepository.dajOdgovoreZaAnketu(anketa.naziv)[trenutnaPozicija] ==answer.text.toString())
             obojiOdgovor(answer)
@@ -46,24 +44,9 @@ ArrayAdapter<String>(context, layoutResource, elements) {
         else view1.setTextColor(black)
     }
 
-    fun oznaciOdgovorene(anketaNaziv:String,odgovori:List<String>) {
-        var answers :List<String> = PitanjaAnketaRepository.dajOdgovoreZaAnketu(anketaNaziv)
-        if (answers.contains(answer.text.toString())) {
-            Log.v("eeee", answers.get(0))
-           // obojiOdgovor(answer)
-         }
-       /* var brojac=0
-        for (i in answers) {
-            if (odgovori.contains(i)) {
-              if(pogled.findViewById<ListView>(R.id.odgovoriLista).get(brojac).toString()==i)
-                  obojiOdgovor(pogled.findViewById<ListView>(R.id.odgovoriLista).get(brojac))
-                Log.v("novi", "Selektuje se $brojac. odgovor")
-            }
-            brojac++
-        }
 
-        */
-    }
+
+
 
     override fun getCount(): Int {
         return elements.size

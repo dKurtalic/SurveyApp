@@ -1,7 +1,6 @@
 package ba.etf.rma22.projekat.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,11 +20,12 @@ import ba.etf.rma22.projekat.viewmodel.AnketaViewModel
 class FragmentAnkete(): Fragment() {
     companion object{
         var godina=0
+        lateinit var anketaAdapter: AnketaAdapter
         fun newInstance():FragmentAnkete=FragmentAnkete()
     }
 
 
-    private lateinit var anketaAdapter: AnketaAdapter
+
     private lateinit var listaAnketa: RecyclerView
     private var anketaViewModel= AnketaViewModel()
     private lateinit var spinner: Spinner
@@ -64,7 +64,7 @@ class FragmentAnkete(): Fragment() {
                 }
 
                 MainActivity.vpAdapter.add(brojac,FragmentPredaj(anketa))
-                PitanjaAnketaRepository.otvorenaAnketa(anketa.naziv)
+                PitanjaAnketaRepository.otvorenaAnketa(anketa)
 
             }
         }
