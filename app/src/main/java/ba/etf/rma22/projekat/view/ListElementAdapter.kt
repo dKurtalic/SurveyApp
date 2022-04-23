@@ -5,22 +5,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.ListView
 import android.widget.TextView
 import androidx.annotation.LayoutRes
-import androidx.core.view.get
-import ba.etf.rma22.projekat.MainActivity
 import ba.etf.rma22.projekat.R
 import ba.etf.rma22.projekat.data.models.Anketa
-import ba.etf.rma22.projekat.data.repositories.PitanjaAnketaRepository
+import ba.etf.rma22.projekat.data.models.Pitanje
+import ba.etf.rma22.projekat.data.models.PitanjeAnketa
+import ba.etf.rma22.projekat.data.repositories.PitanjeAnketaRepository
 
 class ListElementAdapter(context: Context,
                          @LayoutRes private val layoutResource: Int,
-                         private var elements: List<String>,anketa: Anketa,trenutnaPozicija:Int
+                         private var elements: List<String>,anketa: Anketa,trenutnaPozicija:Int,
+                         pitanje: Pitanje
 ):
 ArrayAdapter<String>(context, layoutResource, elements) {
     private var trenutnaPozicija=trenutnaPozicija
     private lateinit var answer:TextView
+    private var pitanje=pitanje
     var anketa=anketa
     override fun getView(position: Int, newView: View?, parent: ViewGroup): View {
         var view=newView
@@ -28,11 +29,25 @@ ArrayAdapter<String>(context, layoutResource, elements) {
         answer=view.findViewById(R.id.answ)
         answer.text=elements[position]
 
+      /*  var pa=PitanjeAnketa(pitanje.naziv, anketa.naziv, anketa.nazivIstrazivanja)
+        if (pa.daLiJeOdgovoreno()){
+            if (answer.text.toString()==pa.dajOdgovor())
+                obojiOdgovor(answer)
+        }
 
-        if (PitanjaAnketaRepository.dajOdgovoreZaAnketu(anketa.naziv).size>trenutnaPozicija){
-        if (PitanjaAnketaRepository.dajOdgovoreZaAnketu(anketa.naziv)[trenutnaPozicija] ==answer.text.toString())
+       */
+
+        var pom=PitanjeAnketaRepository.dajOdgovorZaPitanje(pitanje,anketa)
+        if (answer.text.toString()==pom){
             obojiOdgovor(answer)
         }
+
+       /* if (PitanjeAnketaRepository.dajOdgovoreZaAnketu(anketa.naziv).size>trenutnaPozicija){
+        if (PitanjeAnketaRepository.dajOdgovoreZaAnketu(anketa.naziv)[trenutnaPozicija] ==answer.text.toString())
+            obojiOdgovor(answer)
+        }
+
+        */
 
         return view
     }
@@ -43,10 +58,6 @@ ArrayAdapter<String>(context, layoutResource, elements) {
         if (p.currentTextColor!=plava) view1.setTextColor(plava)
         else view1.setTextColor(black)
     }
-
-
-
-
 
     override fun getCount(): Int {
         return elements.size

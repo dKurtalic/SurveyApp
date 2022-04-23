@@ -3,7 +3,7 @@ package ba.etf.rma22.projekat.data
 import ba.etf.rma22.projekat.data.models.Pitanje
 import ba.etf.rma22.projekat.data.models.PitanjeAnketa
 
-fun dajPitanjeAnkete():List<PitanjeAnketa>{
+fun dajSvaPitanjaPoIdu():List<PitanjeAnketa>{
     return listOf(
         PitanjeAnketa("Anketa1_1", "Anketa1","PMF istraživanje"),
         PitanjeAnketa("Anketa1_2","Anketa1","PMF istraživanje"),

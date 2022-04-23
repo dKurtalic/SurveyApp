@@ -5,4 +5,8 @@ class Pitanje(
     var tekst: String,
     var opcije: List<String>
 ) {
+
+
+
+
 }

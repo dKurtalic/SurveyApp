@@ -14,12 +14,14 @@ data class Anketa(
     val progres: Float,
 
 ) {
+
+
     private var status:String=""
     init {
         dajStatusAnkete()
     }
     override fun equals(other: Any?): Boolean {
-        return other is Anketa && this.naziv.equals(other.naziv) && this.nazivIstrazivanja.equals(other.nazivIstrazivanja)
+        return other is Anketa && this.naziv == other.naziv && this.nazivIstrazivanja == other.nazivIstrazivanja
     }
     fun IzracunajStatusAnkete():String{
             val kalendar: Calendar= Calendar.getInstance()

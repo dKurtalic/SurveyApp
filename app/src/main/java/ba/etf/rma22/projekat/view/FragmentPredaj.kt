@@ -8,11 +8,11 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.viewpager2.widget.ViewPager2
 import ba.etf.rma22.projekat.MainActivity
 import ba.etf.rma22.projekat.R
 import ba.etf.rma22.projekat.data.models.Anketa
-import ba.etf.rma22.projekat.data.models.PitanjeAnketa
-import ba.etf.rma22.projekat.data.repositories.PitanjaAnketaRepository
+import ba.etf.rma22.projekat.data.repositories.PitanjeAnketaRepository
 import kotlin.math.roundToInt
 
 class FragmentPredaj(anketaa: Anketa): Fragment() {
@@ -21,6 +21,8 @@ class FragmentPredaj(anketaa: Anketa): Fragment() {
     var nazivIstrazivanja=anketaa.nazivIstrazivanja
     lateinit var progresTekst: TextView
     lateinit var dugmePredaj: Button
+    var progres=0
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -29,9 +31,6 @@ class FragmentPredaj(anketaa: Anketa): Fragment() {
         var view=inflater.inflate(R.layout.fragment_predaj,container, false)
         progresTekst=view.findViewById(R.id.progresTekst)
         dugmePredaj=view.findViewById(R.id.dugmePredaj)
-        var brojOdgovora= PitanjaAnketaRepository.dajOdgovoreZaAnketu(anketa.naziv).size
-        var brojPitanja=PitanjaAnketaRepository.dajBrojPitanja(anketa.naziv,anketa.nazivIstrazivanja)
-        var progres=izracunajProges(brojOdgovora.toDouble(),brojPitanja)
         progresTekst.text=progres.toInt().toString()+"%"
         var status=anketa.dajStatusAnkete()
         if (status=="crvena" || status=="plava"){
@@ -43,6 +42,15 @@ class FragmentPredaj(anketaa: Anketa): Fragment() {
         return view
     }
 
+    override fun onResume() {
+        super.onResume()
+        var brojOdgovora= PitanjeAnketaRepository.dajMojeOdgovoreZaAnketu(anketa).size
+        var brojPitanja=PitanjeAnketaRepository.dajBrojPitanja(anketa.naziv,anketa.nazivIstrazivanja)
+        progres=izracunajProges(brojOdgovora.toDouble(),brojPitanja)
+        Log.v("FragmentPredaj","broj odgovora: $brojOdgovora, brojPitanja: $brojPitanja, progres: $progres")
+        progresTekst.text=progres.toInt().toString()+"%"
+
+    }
     private fun izracunajProges(brojOdgovora: Double, brojPitanja: Int): Int{
         var broj:Double=(brojOdgovora/brojPitanja)*100.0
         var vrati=broj.toInt()

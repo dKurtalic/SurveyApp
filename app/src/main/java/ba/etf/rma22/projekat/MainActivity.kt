@@ -22,7 +22,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        viewPager=findViewById(R.id.viewpager)
+        viewPager=findViewById(R.id.pager)
+      //  viewPager.offscreenPageLimit=2
         fragments= arrayListOf(FragmentAnkete(),FragmentIstrazivanje())
         vpAdapter= ViewPagerAdapter(fragments,this)
         viewPager.adapter=vpAdapter

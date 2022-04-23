@@ -10,11 +10,12 @@ import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import ba.etf.rma22.projekat.MainActivity
 import ba.etf.rma22.projekat.R
 import ba.etf.rma22.projekat.data.models.Anketa
 import ba.etf.rma22.projekat.data.repositories.AnketaRepository
-import ba.etf.rma22.projekat.data.repositories.PitanjaAnketaRepository
+import ba.etf.rma22.projekat.data.repositories.PitanjeAnketaRepository
 import ba.etf.rma22.projekat.viewmodel.AnketaViewModel
 
 class FragmentAnkete(): Fragment() {
@@ -35,13 +36,13 @@ class FragmentAnkete(): Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         var view=inflater.inflate(R.layout.fragment_anketa,container,false)
         anketaAdapter= AnketaAdapter(arrayListOf()){ otvoriAnketu(it)}
         listaAnketa=view.findViewById(R.id.listaAnketa)
         listaAnketa.adapter=anketaAdapter
         anketaAdapter.updateAnkete(anketaViewModel.getAll())
         listaAnketa.layoutManager=GridLayoutManager(view.context,2,GridLayoutManager.VERTICAL,false)
-
         spinner=view.findViewById(R.id.filterAnketa)
         val opcije: List<String> = listOf("Sve moje ankete", "Sve ankete", "Urađene ankete", "Buduće ankete", "Prošle ankete")
         val adapterSpinner = ArrayAdapter(view.context, android.R.layout.simple_list_item_1, opcije)
@@ -54,17 +55,17 @@ class FragmentAnkete(): Fragment() {
     private fun otvoriAnketu(anketa: Anketa) {
         var status=anketa.dajStatusAnkete()
         if (status!="zuta"){
-            var pitanja= PitanjaAnketaRepository.getPitanja(anketa.naziv,anketa.nazivIstrazivanja)
+            var pitanja= PitanjeAnketaRepository.getPitanja(anketa.naziv,anketa.nazivIstrazivanja)
             if(pitanja.isNotEmpty()){
                 MainActivity.vpAdapter.removeAll()
                 var brojac=0
                 for (i in pitanja){
-                    MainActivity.vpAdapter.add(brojac, FragmentPitanje(i.tekst,i.opcije,anketa,brojac))
+                    MainActivity.vpAdapter.add(brojac, FragmentPitanje(i,anketa,brojac))
                     brojac++
                 }
 
                 MainActivity.vpAdapter.add(brojac,FragmentPredaj(anketa))
-                PitanjaAnketaRepository.otvorenaAnketa(anketa)
+                PitanjeAnketaRepository.otvorenaAnketa(anketa)
 
             }
         }
