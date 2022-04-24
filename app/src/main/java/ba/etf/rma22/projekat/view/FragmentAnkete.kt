@@ -1,6 +1,7 @@
 package ba.etf.rma22.projekat.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import ba.etf.rma22.projekat.MainActivity
 import ba.etf.rma22.projekat.R
+import ba.etf.rma22.projekat.data.listOfAllSurveys
 import ba.etf.rma22.projekat.data.models.Anketa
 import ba.etf.rma22.projekat.data.repositories.AnketaRepository
 import ba.etf.rma22.projekat.data.repositories.PitanjeAnketaRepository
@@ -22,15 +24,18 @@ class FragmentAnkete(): Fragment() {
     companion object{
         var godina=0
         lateinit var anketaAdapter: AnketaAdapter
-        fun newInstance():FragmentAnkete=FragmentAnkete()
+       // var listaSvihAnketa: MutableList<Anketa> = mutableListOf()
     }
-
-
 
     private lateinit var listaAnketa: RecyclerView
     private var anketaViewModel= AnketaViewModel()
     private lateinit var spinner: Spinner
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        //listaSvihAnketa=anketaViewModel.getAll().toMutableList()
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,7 +46,7 @@ class FragmentAnkete(): Fragment() {
         anketaAdapter= AnketaAdapter(arrayListOf()){ otvoriAnketu(it)}
         listaAnketa=view.findViewById(R.id.listaAnketa)
         listaAnketa.adapter=anketaAdapter
-        anketaAdapter.updateAnkete(anketaViewModel.getAll())
+        anketaAdapter.updateAnkete(listOfAllSurveys)
         listaAnketa.layoutManager=GridLayoutManager(view.context,2,GridLayoutManager.VERTICAL,false)
         spinner=view.findViewById(R.id.filterAnketa)
         val opcije: List<String> = listOf("Sve moje ankete", "Sve ankete", "Urađene ankete", "Buduće ankete", "Prošle ankete")
@@ -52,6 +57,12 @@ class FragmentAnkete(): Fragment() {
         return view
 
     }
+    override fun onResume() {
+        super.onResume()
+        Log.v("FragmentAnkete", listOfAllSurveys[0].progres.toString()+", nazivAnkete: "+ listOfAllSurveys[0].naziv+", ima progres "+ listOfAllSurveys.get(0).progres.toString())
+        anketaAdapter.updateAnkete(listOfAllSurveys)
+
+    }
     private fun otvoriAnketu(anketa: Anketa) {
         var status=anketa.dajStatusAnkete()
         if (status!="zuta"){
@@ -60,19 +71,16 @@ class FragmentAnkete(): Fragment() {
                 MainActivity.vpAdapter.removeAll()
                 var brojac=0
                 for (i in pitanja){
-                    MainActivity.vpAdapter.add(brojac, FragmentPitanje(i,anketa,brojac))
+                    MainActivity.vpAdapter.add(brojac, FragmentPitanje(i,anketa,brojac,
+                        listOfAllSurveys))
                     brojac++
                 }
-
-                MainActivity.vpAdapter.add(brojac,FragmentPredaj(anketa))
+                MainActivity.vpAdapter.add(brojac,FragmentPredaj(anketa, listOfAllSurveys))
                 PitanjeAnketaRepository.otvorenaAnketa(anketa)
-
             }
         }
-
-        //
-
     }
+
 
     private fun postaviSpinner(){
         spinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
@@ -97,6 +105,8 @@ class FragmentAnkete(): Fragment() {
         else if (spinner.selectedItem.toString()=="Prošle ankete") anketaAdapter.updateAnkete(
             AnketaRepository.getNotTaken())
     }
+
+
 
 
 

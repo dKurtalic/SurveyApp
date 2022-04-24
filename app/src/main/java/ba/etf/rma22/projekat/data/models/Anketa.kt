@@ -8,12 +8,12 @@ data class Anketa(
     val nazivIstrazivanja: String,
     val datumPocetak: Date,
     val datumKraj: Date,
-    val datumRada: Date?,
+    var datumRada: Date?,
     val trajanje: Int,
     val nazivGrupe: String,
-    val progres: Float,
+    var progres: Float,
 
-) {
+    ) {
 
 
     private var status:String=""
@@ -22,6 +22,9 @@ data class Anketa(
     }
     override fun equals(other: Any?): Boolean {
         return other is Anketa && this.naziv == other.naziv && this.nazivIstrazivanja == other.nazivIstrazivanja
+    }
+    fun setProgres(prog:Int){
+        progres= prog.toFloat()
     }
     fun IzracunajStatusAnkete():String{
             val kalendar: Calendar= Calendar.getInstance()

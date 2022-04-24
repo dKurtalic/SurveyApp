@@ -11,13 +11,16 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import ba.etf.rma22.projekat.MainActivity
 import ba.etf.rma22.projekat.R
+import ba.etf.rma22.projekat.data.listOfAllSurveys
 import ba.etf.rma22.projekat.data.models.Anketa
 import ba.etf.rma22.projekat.data.models.Pitanje
 import ba.etf.rma22.projekat.data.models.PitanjeAnketa
+import ba.etf.rma22.projekat.data.promijeniPodatke
 import ba.etf.rma22.projekat.data.repositories.PitanjeAnketaRepository
+import kotlin.math.roundToInt
 
 
-class FragmentPitanje(pitanje: Pitanje, anketa: Anketa, brojac:Int): Fragment() {
+class FragmentPitanje(pitanje: Pitanje, anketa: Anketa, brojac:Int,lista:List<Anketa>): Fragment() {
     private var anketa=anketa
     private var pitanje=pitanje
     private var tekst=pitanje.tekst
@@ -26,7 +29,7 @@ class FragmentPitanje(pitanje: Pitanje, anketa: Anketa, brojac:Int): Fragment() 
     private lateinit var tekstPitanja: TextView
     private lateinit var odgovoriLista: ListView
     private lateinit var dugmeZaustavi: Button
-
+    private var listaSvihAnketa=lista.toMutableList()
     private lateinit var view1:View
 
     override fun onCreateView(
@@ -35,7 +38,6 @@ class FragmentPitanje(pitanje: Pitanje, anketa: Anketa, brojac:Int): Fragment() 
         savedInstanceState: Bundle?
     ): View? {
         MainActivity.viewPager.offscreenPageLimit=2
-        Log.v("Fragment pitanje: ","podeseno na 100")
         view1=inflater.inflate(R.layout.fragment_pitanje,container, false)
         tekstPitanja=view1.findViewById(R.id.tekstPitanja)
         odgovoriLista=view1.findViewById(R.id.odgovoriLista)
@@ -68,6 +70,20 @@ class FragmentPitanje(pitanje: Pitanje, anketa: Anketa, brojac:Int): Fragment() 
         MainActivity.vpAdapter.add(0,FragmentAnkete())
         MainActivity.vpAdapter.add(1,FragmentIstrazivanje())
         MainActivity.viewPager.currentItem=0
+
+       var progres:Float=izracunajProges((PitanjeAnketaRepository.dajMojeOdgovoreZaAnketu(anketa).size).toDouble(), PitanjeAnketaRepository.dajBrojPitanja(anketa.naziv,anketa.nazivIstrazivanja)).toFloat()
+        progres /= 100F
+
+        val indeks= listOfAllSurveys.indexOf(listaSvihAnketa.find { ank->ank==anketa })
+        promijeniPodatke(indeks,Anketa(anketa.naziv,anketa.nazivIstrazivanja,anketa.datumPocetak,anketa.datumKraj, anketa.datumRada,anketa.trajanje,anketa.nazivGrupe,progres))
+        FragmentAnkete.anketaAdapter.updateAnkete(listOfAllSurveys)
+    }
+
+    private fun izracunajProges(brojOdgovora: Double, brojPitanja: Int): Int{
+        var broj:Double=(brojOdgovora/brojPitanja)*100.0
+        var vrati=broj.toInt()
+        var novi=vrati/20.0
+        return (novi.roundToInt()*20)
     }
 
 }

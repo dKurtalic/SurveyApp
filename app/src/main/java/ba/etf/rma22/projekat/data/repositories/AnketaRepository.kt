@@ -23,7 +23,6 @@ object AnketaRepository {
         }
     }
 
-
   fun getMyAnkete():List<Anketa>{
       return mojeAnkete.ifEmpty { emptyList()};
     }

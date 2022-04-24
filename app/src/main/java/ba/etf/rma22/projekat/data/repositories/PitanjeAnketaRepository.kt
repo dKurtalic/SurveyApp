@@ -54,7 +54,6 @@ object PitanjeAnketaRepository {
         val nazivAnkete=anketa.naziv
 
        var pom= mojiodgovori.stream().filter { pa -> pa.anketa==nazivAnkete }.toList()
-        Log.v("PitanjeAnketaRepo","dajMojeOdgZaAnketu.size(): $pom.size")
         return pom
 
     }
@@ -65,7 +64,6 @@ object PitanjeAnketaRepository {
             var pa=PitanjeAnketa(pitanje.naziv,anketa.naziv,anketa.nazivIstrazivanja)
             pa.postaviOdgovor(odgovor)
             mojiodgovori.add(pa)
-            Log.v("PitanjeAnketaRepo","upisan odg $odgovor")
         }
     }
    /* fun dajOdgovoreZaAnketu(nazivAnkete:String):List<String>{

@@ -1,6 +1,7 @@
 package ba.etf.rma22.projekat.view
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,9 +42,7 @@ class AnketaAdapter(
             holder.imageView.setImageResource(id)
             var pom=dajProgres(anketaArray[position].progres)
             holder.progres.progress= pom
-
            postaviIzgledAnkete(anketaArray[position].dajStatusAnkete(),holder,position)
-
 
         holder.itemView.setOnClickListener { onItemClick(anketaArray[position]) }
     }
@@ -63,6 +62,7 @@ class AnketaAdapter(
     }
 
 
+
     private fun dajDatum(datum:Date?):String{
         var dan=datum!!.date
         var mjesec=datum!!.month
@@ -70,9 +70,9 @@ class AnketaAdapter(
         godina+=1900
         var danString:String
         var mjesecString: String
-        if (dan<10) danString ="0"+dan
+        if (dan<10) danString = "0$dan"
             else danString=dan.toString()
-        if (mjesec<10) mjesecString="0"+mjesec
+        if (mjesec<10) mjesecString= "0$mjesec"
             else mjesecString=mjesec.toString()
         return "$danString.$mjesecString.$godina"
     }
@@ -97,7 +97,6 @@ class AnketaAdapter(
         this.anketaArray=listaAnketa
         notifyDataSetChanged()
     }
-    fun getAnketaArray():List<Anketa>{return anketaArray}
 
 }
 

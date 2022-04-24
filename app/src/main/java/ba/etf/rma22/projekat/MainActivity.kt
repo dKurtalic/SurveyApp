@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         viewPager=findViewById(R.id.pager)
-      //  viewPager.offscreenPageLimit=2
         fragments= arrayListOf(FragmentAnkete(),FragmentIstrazivanje())
         vpAdapter= ViewPagerAdapter(fragments,this)
         viewPager.adapter=vpAdapter

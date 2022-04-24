@@ -45,7 +45,6 @@ fun dajSvaPitanjaPoIdu():List<PitanjeAnketa>{
         /*PitanjeAnketa("Aktivna anketa_1", "Aktivna anketa"),
         PitanjeAnketa("Aktivna anketa_2", "Aktivna anketa"),
         PitanjeAnketa("Aktivna anketa_3", "Aktivna anketa"),
-
          */
         )
 
