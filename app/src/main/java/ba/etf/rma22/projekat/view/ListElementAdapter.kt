@@ -29,25 +29,13 @@ ArrayAdapter<String>(context, layoutResource, elements) {
         answer=view.findViewById(R.id.answ)
         answer.text=elements[position]
 
-      /*  var pa=PitanjeAnketa(pitanje.naziv, anketa.naziv, anketa.nazivIstrazivanja)
-        if (pa.daLiJeOdgovoreno()){
-            if (answer.text.toString()==pa.dajOdgovor())
-                obojiOdgovor(answer)
-        }
 
-       */
 
         var pom=PitanjeAnketaRepository.dajOdgovorZaPitanje(pitanje,anketa)
         if (answer.text.toString()==pom){
             obojiOdgovor(answer)
         }
 
-       /* if (PitanjeAnketaRepository.dajOdgovoreZaAnketu(anketa.naziv).size>trenutnaPozicija){
-        if (PitanjeAnketaRepository.dajOdgovoreZaAnketu(anketa.naziv)[trenutnaPozicija] ==answer.text.toString())
-            obojiOdgovor(answer)
-        }
-
-        */
 
         return view
     }

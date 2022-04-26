@@ -7,4 +7,10 @@ class GrupaViewModel {
     fun getGroupsByIstrazivanje(nazivIstrazivanja:String):List<Grupa>{
        return GrupaRepository.getGroupsByIstrazivanje(nazivIstrazivanja)
     }
+    fun upisiMeUGrupu(nazivIstrazivanja: String){
+        GrupaRepository.upisiMe(nazivIstrazivanja)
+    }
+    fun getAllGroups(): List<Grupa> {
+        return GrupaRepository.getAllGroups()
+    }
 }

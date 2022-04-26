@@ -12,10 +12,8 @@ data class Anketa(
     val trajanje: Int,
     val nazivGrupe: String,
     var progres: Float,
-
-    ) {
-
-
+    )
+{
     private var status:String=""
     init {
         dajStatusAnkete()
@@ -23,10 +21,11 @@ data class Anketa(
     override fun equals(other: Any?): Boolean {
         return other is Anketa && this.naziv == other.naziv && this.nazivIstrazivanja == other.nazivIstrazivanja
     }
-    fun setProgres(prog:Int){
-        progres= prog.toFloat()
+
+    override fun hashCode(): Int {
+        return super.hashCode()
     }
-    fun IzracunajStatusAnkete():String{
+    private fun izracunajStatusAnkete():String{
             val kalendar: Calendar= Calendar.getInstance()
             kalendar.set(LocalDateTime.now().year, LocalDateTime.now().monthValue, LocalDateTime.now().dayOfMonth)
             val danasnjiDatum:Date=kalendar.time
@@ -39,13 +38,7 @@ data class Anketa(
             return status
         }
     fun dajStatusAnkete():String {
-        if (status=="") status=IzracunajStatusAnkete()
+        if (status=="") status=izracunajStatusAnkete()
         return status
     }
-
-    fun promijeniStatusAnkete(noviStatus:String){
-        status=noviStatus
-    }
-
-
 }

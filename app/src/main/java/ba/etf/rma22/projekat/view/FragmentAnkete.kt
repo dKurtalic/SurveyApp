@@ -1,7 +1,6 @@
 package ba.etf.rma22.projekat.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,6 @@ import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
 import ba.etf.rma22.projekat.MainActivity
 import ba.etf.rma22.projekat.R
 import ba.etf.rma22.projekat.data.listOfAllSurveys
@@ -20,29 +18,22 @@ import ba.etf.rma22.projekat.data.repositories.AnketaRepository
 import ba.etf.rma22.projekat.data.repositories.PitanjeAnketaRepository
 import ba.etf.rma22.projekat.viewmodel.AnketaViewModel
 
-class FragmentAnkete(): Fragment() {
+class FragmentAnkete: Fragment() {
     companion object{
         var godina=0
         lateinit var anketaAdapter: AnketaAdapter
-       // var listaSvihAnketa: MutableList<Anketa> = mutableListOf()
     }
 
     private lateinit var listaAnketa: RecyclerView
     private var anketaViewModel= AnketaViewModel()
     private lateinit var spinner: Spinner
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        //listaSvihAnketa=anketaViewModel.getAll().toMutableList()
-    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        var view=inflater.inflate(R.layout.fragment_anketa,container,false)
+        val view=inflater.inflate(R.layout.fragment_anketa,container,false)
         anketaAdapter= AnketaAdapter(arrayListOf()){ otvoriAnketu(it)}
         listaAnketa=view.findViewById(R.id.listaAnketa)
         listaAnketa.adapter=anketaAdapter
@@ -55,18 +46,17 @@ class FragmentAnkete(): Fragment() {
         postaviSpinner()
         spinner.setSelection(1)
         return view
-
     }
     override fun onResume() {
         super.onResume()
-        Log.v("FragmentAnkete", listOfAllSurveys[0].progres.toString()+", nazivAnkete: "+ listOfAllSurveys[0].naziv+", ima progres "+ listOfAllSurveys.get(0).progres.toString())
         anketaAdapter.updateAnkete(listOfAllSurveys)
-
+        spinner.setSelection(1)
     }
     private fun otvoriAnketu(anketa: Anketa) {
-        var status=anketa.dajStatusAnkete()
-        if (status!="zuta"){
-            var pitanja= PitanjeAnketaRepository.getPitanja(anketa.naziv,anketa.nazivIstrazivanja)
+        val status=anketa.dajStatusAnkete()
+
+        if (status!="zuta" && AnketaRepository.getMyAnkete().contains(anketa)){
+            val pitanja= PitanjeAnketaRepository.getPitanja(anketa.naziv,anketa.nazivIstrazivanja)
             if(pitanja.isNotEmpty()){
                 MainActivity.vpAdapter.removeAll()
                 var brojac=0
@@ -76,7 +66,6 @@ class FragmentAnkete(): Fragment() {
                     brojac++
                 }
                 MainActivity.vpAdapter.add(brojac,FragmentPredaj(anketa, listOfAllSurveys))
-                PitanjeAnketaRepository.otvorenaAnketa(anketa)
             }
         }
     }
@@ -93,21 +82,18 @@ class FragmentAnkete(): Fragment() {
         }
     }
 
-    private fun filtrirajAnkete():Unit{
-        if (spinner.selectedItem.toString()=="Sve moje ankete") anketaAdapter.updateAnkete(
-            AnketaRepository.getMyAnkete())
-        else if (spinner.selectedItem.toString()=="Sve ankete") anketaAdapter.updateAnkete(
-            AnketaRepository.getAll())
-        else if (spinner.selectedItem.toString()=="Urađene ankete") anketaAdapter.updateAnkete(
-            AnketaRepository.getDone())
-        else if (spinner.selectedItem.toString()=="Buduće ankete") anketaAdapter.updateAnkete(
-            AnketaRepository.getFuture())
-        else if (spinner.selectedItem.toString()=="Prošle ankete") anketaAdapter.updateAnkete(
-            AnketaRepository.getNotTaken())
-    }
-
-
-
-
-
+    private fun filtrirajAnkete(){
+        when {
+            spinner.selectedItem.toString()=="Sve moje ankete" -> anketaAdapter.updateAnkete(
+                anketaViewModel.getMyAnkete())
+            spinner.selectedItem.toString()=="Sve ankete" -> anketaAdapter.updateAnkete(
+                anketaViewModel.getAll())
+            spinner.selectedItem.toString()=="Urađene ankete" -> anketaAdapter.updateAnkete(
+                anketaViewModel.getDone())
+            spinner.selectedItem.toString()=="Buduće ankete" -> anketaAdapter.updateAnkete(
+                anketaViewModel.getFuture())
+            spinner.selectedItem.toString()=="Prošle ankete" -> anketaAdapter.updateAnkete(
+                anketaViewModel.getNotTaken())
+         }
+     }
 }

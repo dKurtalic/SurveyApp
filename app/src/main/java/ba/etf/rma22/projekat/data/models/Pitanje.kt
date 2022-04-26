@@ -4,9 +4,4 @@ class Pitanje(
     var naziv: String,
     var tekst: String,
     var opcije: List<String>
-) {
-
-
-
-
-}
+)

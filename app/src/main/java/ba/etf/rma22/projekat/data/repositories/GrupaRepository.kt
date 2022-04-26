@@ -10,9 +10,9 @@ object GrupaRepository {
         upisiMe("Grupa0")
     }
     fun upisiMe(naziv:String){
-        var g:Grupa= getAllGroups().stream().filter { grupa->grupa.naziv.equals(naziv)}.findFirst().get()
+        val g:Grupa= getAllGroups().stream().filter { grupa-> grupa.naziv == naziv }.findFirst().get()
         if (!mojeGrupe.contains(g))
-        mojeGrupe.add(g)
+         mojeGrupe.add(g)
     }
 
     fun getAllGroups(): List<Grupa> {

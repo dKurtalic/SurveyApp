@@ -12,4 +12,10 @@
     <string name="Odaberite_godinu">Odaberite godinu</string>
     <string name="Odaberite_istraživanje">Odaberite istraživanje</string>
     <string name="Odaberite_grupu">Odaberite grupu</string>
+
+    <string name="Anketa_urađena">Anketa urađena</string>
+    <string name="Vrijeme_aktiviranja">Vrijeme aktiviranja</string>
+    <string name="Vrijeme_zatvaranja">Vrijeme zatvaranja</string>
+    <string name="Anketa_zatvorena">Anketa zatvorena</string>
+
 </resources>

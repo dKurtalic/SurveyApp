@@ -105,7 +105,7 @@ class FragmentIstrazivanje: Fragment() {
                 dodajIstrazivanjeDugme.isEnabled=false;
             }
         }
-        dodajIstrazivanjeDugme.setOnClickListener {upisiMe(view.context)}
+        dodajIstrazivanjeDugme.setOnClickListener {upisiMe()}
         return view
     }
 
@@ -117,7 +117,7 @@ class FragmentIstrazivanje: Fragment() {
         var adapterGrupa2 = ArrayAdapter(context, android.R.layout.simple_list_item_1, grupe.getGroupsByIstrazivanje(odabirIstrazivanja.selectedItem.toString()))
         odabirGrupa.adapter=adapterGrupa2
     }
-    private fun upisiMe(context:Context){
+    private fun upisiMe(){
         FragmentAnkete.godina=odabirGodina.selectedItemPosition
         AnketaRepository.upisiMe(odabirIstrazivanja.selectedItem.toString(), odabirGrupa.selectedItem.toString())
         IstrazivanjeRepository.upisiMeNaIstrazivanje(odabirIstrazivanja.selectedItem.toString())

@@ -17,5 +17,10 @@ class AnketaViewModel {
     fun getNotTaken():List<Anketa>{
         return AnketaRepository.getNotTaken()
     }
-
+    fun getMyAnkete():List<Anketa>{
+        return AnketaRepository.getMyAnkete()
+    }
+    fun upisiMe(istrazivanje: String, grupa: String){
+        AnketaRepository.upisiMe(istrazivanje,grupa)
+    }
 }

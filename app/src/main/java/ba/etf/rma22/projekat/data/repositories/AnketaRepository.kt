@@ -8,45 +8,42 @@ import kotlin.streams.toList
 
 object AnketaRepository {
 
-
-    private var mojeAnkete: ArrayList<Anketa> = arrayListOf()
+   private var mojeAnkete: MutableList<Anketa> = mutableListOf()
     init {
         upisiMe("ETF istraživanje","Grupa0")
     }
 
     fun upisiMe(istrazivanje: String, grupa: String){
-        var a = getAll().stream().filter { ank -> ank.nazivIstrazivanja.equals(istrazivanje) &&
-                ank.nazivGrupe.equals(grupa)}.toList()
+        val a = getAll().stream().filter { ank -> ank.nazivIstrazivanja == istrazivanje &&
+                ank.nazivGrupe == grupa }.toList()
         for (ank in a){
         if (!mojeAnkete.contains(ank))
-            mojeAnkete.add(ank)
+             mojeAnkete.add(ank)
         }
     }
 
-  fun getMyAnkete():List<Anketa>{
-      return mojeAnkete.ifEmpty { emptyList()};
+    fun getMyAnkete():List<Anketa>{
+      return mojeAnkete.ifEmpty { emptyList()}
     }
     fun getAll():List<Anketa>{
         return dajListuAnketa().ifEmpty { emptyList() }
     }
     fun getDone():List<Anketa>{
-        var vrati= getMyAnkete().filter { anketa->anketa.datumRada!=null }
+        val vrati= getMyAnkete().filter { anketa->anketa.datumRada!=null }
         return vrati.ifEmpty { emptyList() }
     }
     fun getFuture():List<Anketa>{
         val kalendar: Calendar = Calendar.getInstance()
         kalendar.set(LocalDateTime.now().year,LocalDateTime.now().monthValue, LocalDateTime.now().dayOfMonth)
         val danasnjiDatum: Date =kalendar.time
-        var vrati= getMyAnkete().filter { anketa->anketa.datumPocetak.after(danasnjiDatum) }
+        val vrati= getMyAnkete().filter { anketa->anketa.datumPocetak.after(danasnjiDatum) }
         return vrati.ifEmpty { emptyList() }
     }
     fun getNotTaken():List<Anketa>{
         val kalendar: Calendar = Calendar.getInstance()
         kalendar.set(LocalDateTime.now().year,LocalDateTime.now().monthValue, LocalDateTime.now().dayOfMonth)
         val danasnjiDatum: Date =kalendar.time
-        var vrati= getMyAnkete().filter { anketa->anketa.datumRada==null && anketa.datumKraj.before(danasnjiDatum) }
+        val vrati= getMyAnkete().filter { anketa->anketa.datumRada==null && anketa.datumKraj.before(danasnjiDatum) }
         return vrati.ifEmpty { emptyList() }
     }
-
-
 }

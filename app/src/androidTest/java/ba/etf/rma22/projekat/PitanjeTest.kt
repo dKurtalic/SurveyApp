@@ -1,6 +1,5 @@
 package ba.etf.rma22.projekat
 
-import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
@@ -13,6 +12,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import ba.etf.rma22.projekat.data.repositories.AnketaRepository
 import ba.etf.rma22.projekat.data.repositories.PitanjeAnketaRepository
 import org.hamcrest.CoreMatchers
+import org.hamcrest.core.AllOf.allOf
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -32,11 +32,8 @@ class PitanjeTest {
             hasDescendant(withText(ankete[0].nazivIstrazivanja))), click()))
         val pitanja = PitanjeAnketaRepository.getPitanja(ankete[0].naziv, ankete[0].nazivIstrazivanja)
         for ((indeks,pitanje) in pitanja.withIndex()) {
-            Log.v("indeks: ", indeks.toString())
-            Log.v("R.id.tekstPitanja: ", R.id.tekstPitanja.toString())
-            Log.v("pitanja[indeks].tekst: ",pitanja[indeks].tekst)
             onView(withId(R.id.pager)).perform(ViewPager2Actions.scrollToPosition(indeks))
-            onView(withId(R.id.tekstPitanja)).check(matches(withText(pitanja[indeks].tekst)))
+            onView(allOf(isDisplayed(),withId(R.id.tekstPitanja))).check(matches(withText(pitanja[indeks].tekst)))
         }
     }
 
