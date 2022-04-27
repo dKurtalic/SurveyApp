@@ -1,6 +1,7 @@
 package ba.etf.rma22.projekat.data.repositories
 
 import ba.etf.rma22.projekat.data.dajListuAnketa
+import ba.etf.rma22.projekat.data.listOfAllSurveys
 import ba.etf.rma22.projekat.data.models.Anketa
 import java.time.LocalDateTime
 import java.util.*
@@ -23,7 +24,15 @@ object AnketaRepository {
     }
 
     fun getMyAnkete():List<Anketa>{
-      return mojeAnkete.ifEmpty { emptyList()}
+        var konacnaLista= mutableListOf<Anketa>()
+        var sveAnkete= listOfAllSurveys
+        for (i in sveAnkete){
+            for (j in mojeAnkete){
+                if (i.naziv==j.naziv && i.nazivIstrazivanja==j.nazivIstrazivanja)
+                    konacnaLista.add(i)
+            }
+        }
+      return konacnaLista.ifEmpty { emptyList()}
     }
     fun getAll():List<Anketa>{
         return dajListuAnketa().ifEmpty { emptyList() }

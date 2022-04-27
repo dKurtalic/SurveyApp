@@ -20,16 +20,27 @@ import ba.etf.rma22.projekat.viewmodel.PitanjeAnketaViewModel
 import kotlin.math.roundToInt
 
 
-class FragmentPitanje(pitanje: Pitanje, anketa: Anketa, brojac:Int,lista:List<Anketa>): Fragment() {
-    private var anketa=anketa
-    private var pitanje=pitanje
-    private var tekst=pitanje.tekst
-    private var redniBroj=brojac
-    private var odgovori:List<String> =pitanje.opcije
+class FragmentPitanje: Fragment() {
+    private lateinit var anketa:Anketa
+    private lateinit var pitanje:Pitanje
+    private var redniBroj=0
+    private lateinit var listaSvihAnketa:List<Anketa>
+    companion object{
+      fun newInstance(pitanje:Pitanje,anketa:Anketa, brojac:Int, lista:List<Anketa>):
+              FragmentPitanje=FragmentPitanje().apply {
+                this.anketa=anketa
+                this.pitanje=pitanje
+                this.redniBroj=brojac
+                this.listaSvihAnketa=lista.toMutableList()
+              }
+            }
+
+    private lateinit var tekst:String
+    private lateinit var odgovori:List<String>
     private lateinit var tekstPitanja: TextView
     private lateinit var odgovoriLista: ListView
     private lateinit var dugmeZaustavi: Button
-    private var listaSvihAnketa=lista.toMutableList()
+
     private lateinit var view1:View
     private var pitanjeAnketaVM=PitanjeAnketaViewModel()
 
@@ -38,6 +49,8 @@ class FragmentPitanje(pitanje: Pitanje, anketa: Anketa, brojac:Int,lista:List<An
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        tekst=pitanje.tekst
+        odgovori=pitanje.opcije
         MainActivity.viewPager.offscreenPageLimit=2
         view1=inflater.inflate(R.layout.fragment_pitanje,container, false)
         tekstPitanja=view1.findViewById(R.id.tekstPitanja)

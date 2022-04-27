@@ -19,26 +19,33 @@ import java.util.*
 import kotlin.math.roundToInt
 
 
-class FragmentPredaj(anketaa: Anketa, lista:List<Anketa>): Fragment() {
+class FragmentPredaj: Fragment() {
 
-    var anketa=anketaa
+    lateinit var anketa:Anketa
+    lateinit var listaSvihAnketa:MutableList<Anketa>
+    lateinit var pomoc:List<Anketa>
+    companion object{
+    fun newInstance(anketaa:Anketa, lista:List<Anketa>):FragmentPredaj=FragmentPredaj().apply {
+        this.anketa=anketaa
+        this.listaSvihAnketa=lista.toMutableList()
+        this.pomoc=lista
+        }
+    }
     private var pitanjeAnketaVM=PitanjeAnketaViewModel()
-    private var nazivAnkete=anketaa.naziv
-    var nazivIstrazivanja=anketaa.nazivIstrazivanja
+    private lateinit var nazivAnkete:String
+    private lateinit var nazivIstrazivanja:String
     private lateinit var progresTekst: TextView
     private lateinit var dugmePredaj: Button
     private var progres=0
-    companion object{
-      var listaSvihAnketa:MutableList<Anketa> = mutableListOf()
-    }
-    private var pomoc=lista
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-       listaSvihAnketa =pomoc.toMutableList()
+        nazivAnkete=anketa.naziv
+        nazivIstrazivanja=anketa.naziv
+        listaSvihAnketa =pomoc.toMutableList()
         val view=inflater.inflate(R.layout.fragment_predaj,container, false)
         progresTekst=view.findViewById(R.id.progresTekst)
         dugmePredaj=view.findViewById(R.id.dugmePredaj)

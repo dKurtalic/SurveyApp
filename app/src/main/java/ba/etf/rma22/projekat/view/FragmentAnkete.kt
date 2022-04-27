@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ba.etf.rma22.projekat.MainActivity
 import ba.etf.rma22.projekat.R
-import ba.etf.rma22.projekat.data.listOfAllSurveys
+import ba.etf.rma22.projekat.data.dajListuAnketa
 import ba.etf.rma22.projekat.data.models.Anketa
 import ba.etf.rma22.projekat.viewmodel.AnketaViewModel
 import ba.etf.rma22.projekat.viewmodel.PitanjeAnketaViewModel
@@ -40,7 +40,7 @@ class FragmentAnkete: Fragment() {
         anketaAdapter= AnketaAdapter(arrayListOf()){ otvoriAnketu(it)}
         listaAnketa=view.findViewById(R.id.listaAnketa)
         listaAnketa.adapter=anketaAdapter
-        anketaAdapter.updateAnkete(listOfAllSurveys)
+        anketaAdapter.updateAnkete(dajListuAnketa())
         listaAnketa.layoutManager=GridLayoutManager(view.context,2,GridLayoutManager.VERTICAL,false)
         spinner=view.findViewById(R.id.filterAnketa)
         val opcije: List<String> = listOf("Sve moje ankete", "Sve ankete", "Urađene ankete", "Buduće ankete", "Prošle ankete")
@@ -52,7 +52,7 @@ class FragmentAnkete: Fragment() {
     }
     override fun onResume() {
         super.onResume()
-        anketaAdapter.updateAnkete(listOfAllSurveys)
+        anketaAdapter.updateAnkete(dajListuAnketa())
         spinner.setSelection(1)
     }
     private fun otvoriAnketu(anketa: Anketa) {
@@ -64,11 +64,11 @@ class FragmentAnkete: Fragment() {
                 MainActivity.vpAdapter.removeAll()
                 var brojac=0
                 for (i in pitanja){
-                    MainActivity.vpAdapter.add(brojac, FragmentPitanje(i,anketa,brojac,
-                        listOfAllSurveys))
+                    MainActivity.vpAdapter.add(brojac, FragmentPitanje.newInstance(i,anketa,brojac,
+                        dajListuAnketa()))
                     brojac++
                 }
-                MainActivity.vpAdapter.add(brojac,FragmentPredaj(anketa, listOfAllSurveys))
+                MainActivity.vpAdapter.add(brojac,FragmentPredaj.newInstance(anketa, dajListuAnketa()))
             }
         }
     }

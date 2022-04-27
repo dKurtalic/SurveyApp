@@ -2,6 +2,7 @@ package ba.etf.rma22.projekat
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
@@ -36,6 +37,12 @@ class MySpirala2AndroidTest {
     @get:Rule
     val intentsTestRule = ActivityScenarioRule(MainActivity::class.java)
 
+/*
+    NAPOMENA: Prvo se pokreće test1, zatim test2 jer se test2 oslanja na test1. Ako Želimo individualno
+    testiranje, otkomentarisati dio u testu2
+
+ */
+
     @Test
     fun testZaZadatak1 (){
         val anketaVM=AnketaViewModel()
@@ -48,63 +55,69 @@ class MySpirala2AndroidTest {
 
         onView(withId(R.id.pager)).perform(ViewPager2Actions.scrollToLast())
         onView(withId(R.id.odabirGodina)).perform(click())
-        onData(CoreMatchers.allOf(Is(CoreMatchers.instanceOf(String::class.java)), Is("4"))).perform(click())
+        onData(CoreMatchers.allOf(Is(CoreMatchers.instanceOf(String::class.java)), Is("5"))).perform(click())
         onView(withId(R.id.dodajIstrazivanjeDugme)).perform(click())
-        onView(withText("Uspješno ste upisani u grupu: Grupa3 istraživanja: PFSA istraživanje!"))
+        onView(withText("Uspješno ste upisani u grupu: Grupa4 istraživanja: Veliko istraživanje!"))
 
         onView(withId(R.id.pager)).perform(ViewPager2Actions.scrollToFirst())
         onView(withId(R.id.filterAnketa)).perform(click())
         onData(CoreMatchers.allOf(Is(CoreMatchers.instanceOf(String::class.java)),Is("Sve moje ankete"))).perform(click())
         val mojeAnketePoslijeUpisa=anketaVM.getMyAnkete()
-        onView(withText("PFSA istraživanje"))
+        onView(withText("Veliko istraživanje"))
         onView(withId(R.id.listaAnketa)).check(UtilTestClass.hasItemCount(mojeAnketePoslijeUpisa.size))
     }
     @Test
     fun testZaZadatak2 (){
+      /*  onView(withId(R.id.pager)).perform(ViewPager2Actions.scrollToFirst())
+        onView(withId(R.id.pager)).perform(ViewPager2Actions.scrollToLast())
+        onView(withId(R.id.odabirGodina)).perform(click())
+        onData(CoreMatchers.allOf(Is(CoreMatchers.instanceOf(String::class.java)), Is("5"))).perform(click())
+        onView(withId(R.id.dodajIstrazivanjeDugme)).perform(click())
+
         onView(withId(R.id.pager)).perform(ViewPager2Actions.scrollToFirst())
-        val mojeAnkete = AnketaRepository.getMyAnkete()
-
-        //pošto postoje ankete na koje je korisnik upisan po default-u, iskoristit ću njih
-
+        onView(withId(R.id.filterAnketa)).perform(click())
+        onData(CoreMatchers.allOf(Is(CoreMatchers.instanceOf(String::class.java)),Is("Sve moje ankete"))).perform(click())
         //otvaram anketu
+       */
+
+        val mojeNoveAnkete=AnketaRepository.getMyAnkete()
+
         onView(withId(R.id.listaAnketa)).perform(
-                RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>
-                (CoreMatchers.allOf(hasDescendant(withText(mojeAnkete[0].naziv)),
-                hasDescendant(withText(mojeAnkete[0].nazivIstrazivanja))), click()))
+            RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>
+                (CoreMatchers.allOf(hasDescendant(withText(mojeNoveAnkete[3].naziv)),
+                hasDescendant(withText(mojeNoveAnkete[3].nazivIstrazivanja))), click()))
 
-                val pitanjaZaAnketu : List<Pitanje> = PitanjeAnketaRepository.getPitanja(mojeAnkete[0].naziv,mojeAnkete[0].nazivIstrazivanja)
+        val pitanjaZaAnketu : List<Pitanje> = PitanjeAnketaRepository.getPitanja(mojeNoveAnkete[3].naziv,mojeNoveAnkete[3].nazivIstrazivanja)
 
-                //odgovaram na prvo pitanje
-                var indeks=0
-                onView(withId(R.id.pager)).perform(ViewPager2Actions.scrollToPosition(indeks))
-                onView(AllOf.allOf(isDisplayed(), withId(R.id.tekstPitanja))).check(matches(withText(pitanjaZaAnketu[indeks].tekst)))
-                onData(anything()).inAdapterView(AllOf.allOf(isDisplayed(),withId(R.id.odgovoriLista))).atPosition(0).perform(click())
+        //odgovaram na prvo pitanje
+        var indeks=0
+        onView(withId(R.id.pager)).perform(ViewPager2Actions.scrollToPosition(indeks))
+        onView(AllOf.allOf(isDisplayed(), withId(R.id.tekstPitanja))).check(matches(withText(pitanjaZaAnketu[indeks].tekst)))
+        onData(anything()).inAdapterView(AllOf.allOf(isDisplayed(),withId(R.id.odgovoriLista))).atPosition(0).perform(click())
 
-                //testiram dugme zatvori
-                onView(AllOf.allOf(isDisplayed(),withId(R.id.dugmeZaustavi))).perform(click())
+        //testiram dugme zatvori
+        onView(AllOf.allOf(isDisplayed(),withId(R.id.dugmeZaustavi))).perform(click())
 
-                //opet otvaram anketu
-                onView(withId(R.id.listaAnketa)).perform(
-                    RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>
-                    (CoreMatchers.allOf(hasDescendant(withText(mojeAnkete[0].naziv)),
-                    hasDescendant(withText(mojeAnkete[0].nazivIstrazivanja))), click()))
+        //opet otvaram anketu
+        onView(withId(R.id.listaAnketa)).perform(
+            RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>
+                (CoreMatchers.allOf(hasDescendant(withText(mojeNoveAnkete[3].naziv)),
+                hasDescendant(withText(mojeNoveAnkete[3].nazivIstrazivanja))), click()))
 
-              indeks+=1
-              onView(withId(R.id.pager)).perform(ViewPager2Actions.scrollToPosition(indeks))
-              onData(anything()).inAdapterView(AllOf.allOf(isDisplayed(),withId(R.id.odgovoriLista))).atPosition(1).perform(click())
+        indeks+=2
+        onView(withId(R.id.pager)).perform(ViewPager2Actions.scrollToPosition(indeks))
 
-              indeks+=2
-              onView(withId(R.id.pager)).perform(ViewPager2Actions.scrollToPosition(indeks))
-
-              //predajemAnketu
-              onView(withText("60%"))
-              onView(withId(R.id.dugmePredaj)).perform(click())
-
-              onView(withId(R.id.listaAnketa)).check(matches(hasDescendant(withText(mojeAnkete[0].naziv)))).check(matches(hasDescendant(withImage(R.drawable.plava))))
-        }
+        //predajemAnketu
+        onView(withText("60%"))
+        onView(withId(R.id.dugmePredaj)).perform(click())
+        onView(withId(R.id.pager)).perform(ViewPager2Actions.scrollToFirst())
+        onView(withId(R.id.filterAnketa)).perform(click())
+        onData(CoreMatchers.allOf(Is(CoreMatchers.instanceOf(String::class.java)),Is("Sve moje ankete"))).perform(click())
+        onView(withId(R.id.listaAnketa)).check(matches(hasDescendant(withText(mojeNoveAnkete[3].naziv)))).check(matches(hasDescendant(withImage(R.drawable.plava))))
 
     }
 
+}
 
 
   fun withImage(@DrawableRes id: Int) = object : TypeSafeMatcher<View>() {
