@@ -26,13 +26,16 @@ import org.hamcrest.Description
 import org.hamcrest.Matchers.*
 import org.hamcrest.TypeSafeMatcher
 import org.hamcrest.core.AllOf
+import org.junit.FixMethodOrder
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.junit.runners.MethodSorters
 import kotlin.math.abs
 import org.hamcrest.CoreMatchers.`is` as Is
 
 @RunWith(AndroidJUnit4::class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class MySpirala2AndroidTest {
     @get:Rule
     val intentsTestRule = ActivityScenarioRule(MainActivity::class.java)
@@ -42,6 +45,7 @@ class MySpirala2AndroidTest {
     testiranje, otkomentarisati dio u testu2
 
  */
+
 
     @Test
     fun testZaZadatak1 (){
