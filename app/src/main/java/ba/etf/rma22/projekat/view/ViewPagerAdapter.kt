@@ -4,8 +4,6 @@ package ba.etf.rma22.projekat.view
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.viewpager2.widget.ViewPager2
-import ba.etf.rma22.projekat.R
 
 class ViewPagerAdapter(
     private val fragments:MutableList<Fragment>,

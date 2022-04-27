@@ -14,9 +14,8 @@ import ba.etf.rma22.projekat.MainActivity
 import ba.etf.rma22.projekat.R
 import ba.etf.rma22.projekat.data.listOfAllSurveys
 import ba.etf.rma22.projekat.data.models.Anketa
-import ba.etf.rma22.projekat.data.repositories.AnketaRepository
-import ba.etf.rma22.projekat.data.repositories.PitanjeAnketaRepository
 import ba.etf.rma22.projekat.viewmodel.AnketaViewModel
+import ba.etf.rma22.projekat.viewmodel.PitanjeAnketaViewModel
 
 class FragmentAnkete: Fragment() {
     companion object{
@@ -27,6 +26,9 @@ class FragmentAnkete: Fragment() {
     private lateinit var listaAnketa: RecyclerView
     private var anketaViewModel= AnketaViewModel()
     private lateinit var spinner: Spinner
+    private var pitanjeAnketaVM=PitanjeAnketaViewModel()
+
+    var anketaVM=AnketaViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,8 +57,8 @@ class FragmentAnkete: Fragment() {
     private fun otvoriAnketu(anketa: Anketa) {
         val status=anketa.dajStatusAnkete()
 
-        if (status!="zuta" && AnketaRepository.getMyAnkete().contains(anketa)){
-            val pitanja= PitanjeAnketaRepository.getPitanja(anketa.naziv,anketa.nazivIstrazivanja)
+        if (status!="zuta" && anketaVM.getMyAnkete().contains(anketa)){
+            val pitanja= pitanjeAnketaVM.getPitanja(anketa.naziv,anketa.nazivIstrazivanja)
             if(pitanja.isNotEmpty()){
                 MainActivity.vpAdapter.removeAll()
                 var brojac=0

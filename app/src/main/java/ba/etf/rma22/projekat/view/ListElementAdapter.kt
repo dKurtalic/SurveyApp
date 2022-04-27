@@ -10,8 +10,7 @@ import androidx.annotation.LayoutRes
 import ba.etf.rma22.projekat.R
 import ba.etf.rma22.projekat.data.models.Anketa
 import ba.etf.rma22.projekat.data.models.Pitanje
-import ba.etf.rma22.projekat.data.models.PitanjeAnketa
-import ba.etf.rma22.projekat.data.repositories.PitanjeAnketaRepository
+import ba.etf.rma22.projekat.viewmodel.PitanjeAnketaViewModel
 
 class ListElementAdapter(context: Context,
                          @LayoutRes private val layoutResource: Int,
@@ -23,6 +22,7 @@ ArrayAdapter<String>(context, layoutResource, elements) {
     private lateinit var answer:TextView
     private var pitanje=pitanje
     var anketa=anketa
+    var pitanjeAnketaVM=PitanjeAnketaViewModel()
     override fun getView(position: Int, newView: View?, parent: ViewGroup): View {
         var view=newView
         view = LayoutInflater.from(context).inflate(R.layout.custom_cell, parent, false)
@@ -31,7 +31,7 @@ ArrayAdapter<String>(context, layoutResource, elements) {
 
 
 
-        var pom=PitanjeAnketaRepository.dajOdgovorZaPitanje(pitanje,anketa)
+        var pom=pitanjeAnketaVM.dajOdgovorZaPitanje(pitanje,anketa)
         if (answer.text.toString()==pom){
             obojiOdgovor(answer)
         }

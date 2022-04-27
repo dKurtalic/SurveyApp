@@ -19,6 +19,6 @@ object GrupaRepository {
         return dajListuGrupa().ifEmpty { emptyList() }
     }
     fun getGroupsByIstrazivanje (nazivIstrazivanja: String) : List<Grupa> {
-        return dajListuGrupa().filter { grupa -> grupa.nazivIstrazivanja==nazivIstrazivanja }
+        return dajListuGrupa().filter { grupa -> grupa.nazivIstrazivanja==nazivIstrazivanja }.ifEmpty { emptyList() }
     }
 }

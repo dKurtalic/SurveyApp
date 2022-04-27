@@ -16,7 +16,7 @@ import ba.etf.rma22.projekat.data.models.Anketa
 import ba.etf.rma22.projekat.data.models.Pitanje
 import ba.etf.rma22.projekat.data.models.PitanjeAnketa
 import ba.etf.rma22.projekat.data.promijeniPodatke
-import ba.etf.rma22.projekat.data.repositories.PitanjeAnketaRepository
+import ba.etf.rma22.projekat.viewmodel.PitanjeAnketaViewModel
 import kotlin.math.roundToInt
 
 
@@ -31,6 +31,7 @@ class FragmentPitanje(pitanje: Pitanje, anketa: Anketa, brojac:Int,lista:List<An
     private lateinit var dugmeZaustavi: Button
     private var listaSvihAnketa=lista.toMutableList()
     private lateinit var view1:View
+    private var pitanjeAnketaVM=PitanjeAnketaViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,11 +53,11 @@ class FragmentPitanje(pitanje: Pitanje, anketa: Anketa, brojac:Int,lista:List<An
         odgovoriLista.setOnItemClickListener { parent, view, position, id ->
             if (anketa.dajStatusAnkete()!="crvena" && anketa.dajStatusAnkete()!="plava"){
             var odg=view.findViewById<TextView>(R.id.answ)
-                if (!PitanjeAnketaRepository.mojiodgovori.contains(PitanjeAnketa(pitanje.naziv,anketa.naziv,anketa.nazivIstrazivanja))){
+                if (!pitanjeAnketaVM.getMojiOdgovori().contains(PitanjeAnketa(pitanje.naziv,anketa.naziv,anketa.nazivIstrazivanja))){
                     listAdapter.obojiOdgovor(odg)
                     var pitanjee= PitanjeAnketa(pitanje.naziv, anketa.naziv, anketa.nazivIstrazivanja)
                     pitanjee.postaviOdgovor(odg.text.toString())
-                    PitanjeAnketaRepository.upisiOdgovor(anketa, pitanje ,odg.text.toString())
+                    pitanjeAnketaVM.upisiOdgovor(anketa, pitanje ,odg.text.toString())
                 }
 
             }
@@ -71,7 +72,7 @@ class FragmentPitanje(pitanje: Pitanje, anketa: Anketa, brojac:Int,lista:List<An
         MainActivity.vpAdapter.add(1,FragmentIstrazivanje())
         MainActivity.viewPager.currentItem=0
 
-       var progres:Float=izracunajProges((PitanjeAnketaRepository.dajMojeOdgovoreZaAnketu(anketa).size).toDouble(), PitanjeAnketaRepository.dajBrojPitanja(anketa.naziv,anketa.nazivIstrazivanja)).toFloat()
+       var progres:Float=izracunajProges((pitanjeAnketaVM.dajMojeOdgovoreZaAnketu(anketa).size).toDouble(), pitanjeAnketaVM.dajBrojPitanja(anketa.naziv,anketa.nazivIstrazivanja)).toFloat()
         progres /= 100F
 
         val indeks= listOfAllSurveys.indexOf(listaSvihAnketa.find { ank->ank==anketa })

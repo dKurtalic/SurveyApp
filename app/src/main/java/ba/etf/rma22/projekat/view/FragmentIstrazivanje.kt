@@ -2,6 +2,7 @@ package ba.etf.rma22.projekat.view
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,7 +56,6 @@ class FragmentIstrazivanje: Fragment() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if (odabirGodina.selectedItem.toString()!=null )  {
                     odabirIstrazivanja.isEnabled=true
-                    dodajIstrazivanjeDugme.isEnabled=false
                     if (view != null) {
                         popuniSpinnerIstrazivanja(view.context)
                     }
@@ -68,19 +68,18 @@ class FragmentIstrazivanje: Fragment() {
                     odabirGrupa.isEnabled=false
                     dodajIstrazivanjeDugme.isEnabled=false
                 }
+                dodajIstrazivanjeDugme.isEnabled = odabirGodina.selectedItem.toString() != "" && odabirIstrazivanja.selectedItem.toString() != "" && odabirGrupa.selectedItem.toString() != ""
+
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 popuniSpinnerIstrazivanja(view.context)
-                popuniSpinnerGrupa(view.context)
-                odabirIstrazivanja.isEnabled=false
-                odabirGrupa.isEnabled=false
-                dodajIstrazivanjeDugme.isEnabled=false
+                dodajIstrazivanjeDugme.isEnabled = odabirGodina.selectedItem.toString() != "" && odabirIstrazivanja.selectedItem.toString() != "" && odabirGrupa.selectedItem.toString() != ""
+
             }
         }
         odabirIstrazivanja.onItemSelectedListener = object : AdapterView.OnItemSelectedListener  {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if (odabirIstrazivanja.selectedItem.toString()!=null)  {
-                    dodajIstrazivanjeDugme.isEnabled=false
                     odabirGrupa.isEnabled=true
                     if (view != null) {
                         popuniSpinnerGrupa(view.context)
@@ -90,16 +89,17 @@ class FragmentIstrazivanje: Fragment() {
                     odabirGrupa.isEnabled=false
                     dodajIstrazivanjeDugme.isEnabled=false
                 }
+                dodajIstrazivanjeDugme.isEnabled = odabirGodina.selectedItem.toString() != "" && odabirIstrazivanja.selectedItem.toString() != "" && odabirGrupa.selectedItem.toString() != ""
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 popuniSpinnerGrupa(view.context)
                 odabirGrupa.isEnabled=false
-                dodajIstrazivanjeDugme.isEnabled=false;
+                dodajIstrazivanjeDugme.isEnabled = odabirGodina.selectedItem.toString() != "" && odabirIstrazivanja.selectedItem.toString() != "" && odabirGrupa.selectedItem.toString() != ""
             }
         }
         odabirGrupa.onItemSelectedListener = object : AdapterView.OnItemSelectedListener  {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                dodajIstrazivanjeDugme.isEnabled = odabirGrupa.selectedItem.toString()!=null
+                dodajIstrazivanjeDugme.isEnabled = odabirGodina.selectedItem.toString() != "" && odabirIstrazivanja.selectedItem.toString() != "" && odabirGrupa.selectedItem.toString() != ""
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 dodajIstrazivanjeDugme.isEnabled=false;
@@ -114,6 +114,8 @@ class FragmentIstrazivanje: Fragment() {
         odabirIstrazivanja.adapter=adapterIstrazivanja2
     }
     private fun popuniSpinnerGrupa(context:Context){
+        var items=grupe.getGroupsByIstrazivanje(odabirIstrazivanja.selectedItem.toString())
+        Log.v("FragmentIstr",items.size.toString())
         var adapterGrupa2 = ArrayAdapter(context, android.R.layout.simple_list_item_1, grupe.getGroupsByIstrazivanje(odabirIstrazivanja.selectedItem.toString()))
         odabirGrupa.adapter=adapterGrupa2
     }
@@ -124,6 +126,6 @@ class FragmentIstrazivanje: Fragment() {
         GrupaRepository.upisiMe(odabirGrupa.selectedItem.toString())
 
         MainActivity.vpAdapter.refreshFragment(1,FragmentPoruka("Uspješno ste upisani u grupu: "+odabirGrupa.selectedItem.toString()+" istraživanja: "+ odabirIstrazivanja.selectedItem.toString()+"!"))
-        }
+    }
 }
 

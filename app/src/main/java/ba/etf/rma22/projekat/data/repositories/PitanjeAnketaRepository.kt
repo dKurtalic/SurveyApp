@@ -23,6 +23,9 @@ object PitanjeAnketaRepository {
         return getPitanja(nazivAnkete,nazivIstrazivanja).size
      }
 
+    fun getMojiOdgovori(): MutableList<PitanjeAnketa> {
+        return mojiodgovori
+    }
     fun dajOdgovorZaPitanje(pitanje:Pitanje, anketa:Anketa):String{
         val nazivPitanja=pitanje.naziv
         val nazivAnkete=anketa.naziv

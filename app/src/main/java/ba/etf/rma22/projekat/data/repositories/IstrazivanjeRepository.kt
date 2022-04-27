@@ -11,6 +11,9 @@ object IstrazivanjeRepository {
     init {
         upisiMeNaIstrazivanje("ETF istraživanje")
     }
+    fun getMojaIstrazivanja(): ArrayList<Istrazivanje> {
+        return mojaIstrazivanja
+    }
     fun getAll():List<Istrazivanje>{
        return dajListuIstrazivanja()
     }

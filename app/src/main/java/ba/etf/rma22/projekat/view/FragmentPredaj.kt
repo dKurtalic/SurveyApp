@@ -12,7 +12,7 @@ import ba.etf.rma22.projekat.R
 import ba.etf.rma22.projekat.data.listOfAllSurveys
 import ba.etf.rma22.projekat.data.models.Anketa
 import ba.etf.rma22.projekat.data.promijeniPodatke
-import ba.etf.rma22.projekat.data.repositories.PitanjeAnketaRepository
+import ba.etf.rma22.projekat.viewmodel.PitanjeAnketaViewModel
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
@@ -21,7 +21,7 @@ import kotlin.math.roundToInt
 
 class FragmentPredaj(anketaa: Anketa, lista:List<Anketa>): Fragment() {
     var anketa=anketaa
-
+    private var pitanjeAnketaVM=PitanjeAnketaViewModel()
     private var nazivAnkete=anketaa.naziv
     var nazivIstrazivanja=anketaa.nazivIstrazivanja
     private lateinit var progresTekst: TextView
@@ -54,8 +54,8 @@ class FragmentPredaj(anketaa: Anketa, lista:List<Anketa>): Fragment() {
 
     override fun onResume() {
         super.onResume()
-        val brojOdgovora= PitanjeAnketaRepository.dajMojeOdgovoreZaAnketu(anketa).size
-        val brojPitanja=PitanjeAnketaRepository.dajBrojPitanja(anketa.naziv,anketa.nazivIstrazivanja)
+        val brojOdgovora= pitanjeAnketaVM.dajMojeOdgovoreZaAnketu(anketa).size
+        val brojPitanja=pitanjeAnketaVM.dajBrojPitanja(anketa.naziv,anketa.nazivIstrazivanja)
         progres=izracunajProges(brojOdgovora.toDouble(),brojPitanja)
         progresTekst.text= "$progres%"
     }

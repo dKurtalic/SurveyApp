@@ -16,4 +16,7 @@ class IstrazivanjeViewModel {
     fun popuniSpinner(god:Int): ArrayList<Istrazivanje> {
         return IstrazivanjeRepository.zaSpinner(god)
     }
+    fun getMojaIstrazivanja(): ArrayList<Istrazivanje> {
+        return IstrazivanjeRepository.getMojaIstrazivanja()
+    }
 }
