@@ -21,6 +21,7 @@ class FragmentAnkete: Fragment() {
     companion object{
         var godina=0
         lateinit var anketaAdapter: AnketaAdapter
+        fun newInstance():FragmentAnkete=FragmentAnkete()
     }
 
     private lateinit var listaAnketa: RecyclerView

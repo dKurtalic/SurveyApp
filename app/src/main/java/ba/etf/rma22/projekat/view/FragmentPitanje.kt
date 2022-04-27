@@ -68,8 +68,8 @@ class FragmentPitanje(pitanje: Pitanje, anketa: Anketa, brojac:Int,lista:List<An
 
     private fun prekiniAnketu(){
         MainActivity.vpAdapter.removeAll()
-        MainActivity.vpAdapter.add(0,FragmentAnkete())
-        MainActivity.vpAdapter.add(1,FragmentIstrazivanje())
+        MainActivity.vpAdapter.add(0,FragmentAnkete.newInstance())
+        MainActivity.vpAdapter.add(1,FragmentIstrazivanje.newInstance())
         MainActivity.viewPager.currentItem=0
 
        var progres:Float=izracunajProges((pitanjeAnketaVM.dajMojeOdgovoreZaAnketu(anketa).size).toDouble(), pitanjeAnketaVM.dajBrojPitanja(anketa.naziv,anketa.nazivIstrazivanja)).toFloat()

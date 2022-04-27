@@ -21,6 +21,6 @@ class AnketaViewModel {
         return AnketaRepository.getMyAnkete()
     }
     fun upisiMe(istrazivanje: String, grupa: String){
-        AnketaRepository.upisiMe(istrazivanje,grupa)
+        return AnketaRepository.upisiMe(istrazivanje,grupa)
     }
 }

@@ -15,6 +15,9 @@ import ba.etf.rma22.projekat.R
 import ba.etf.rma22.projekat.data.repositories.AnketaRepository
 import ba.etf.rma22.projekat.data.repositories.GrupaRepository
 import ba.etf.rma22.projekat.data.repositories.IstrazivanjeRepository
+import ba.etf.rma22.projekat.viewmodel.AnketaViewModel
+import ba.etf.rma22.projekat.viewmodel.GrupaViewModel
+import ba.etf.rma22.projekat.viewmodel.IstrazivanjeViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
@@ -25,10 +28,11 @@ class FragmentIstrazivanje: Fragment() {
     private lateinit var odabirGodina: Spinner
     private lateinit var odabirGrupa: Spinner
     private lateinit var odabirIstrazivanja: Spinner
-    private lateinit var istrazivanja: IstrazivanjeRepository
-    private lateinit var grupe: GrupaRepository
     private lateinit var dodajIstrazivanjeDugme: FloatingActionButton
 
+   private var istrazivanjaVM=IstrazivanjeViewModel()
+   private var grupeVM=GrupaViewModel()
+   private var anketeVM= AnketaViewModel()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,13 +47,11 @@ class FragmentIstrazivanje: Fragment() {
         odabirGodina.setSelection(FragmentAnkete.godina)
 
         odabirIstrazivanja=view.findViewById(R.id.odabirIstrazivanja)
-        istrazivanja= IstrazivanjeRepository
-        val adapterIstrazivanja = ArrayAdapter (view.context, android.R.layout.simple_list_item_1, istrazivanja.zaSpinner(odabirGodina.selectedItem.toString().toInt()))
+        val adapterIstrazivanja = ArrayAdapter (view.context, android.R.layout.simple_list_item_1, istrazivanjaVM.popuniSpinner(odabirGodina.selectedItem.toString().toInt()))
         odabirIstrazivanja.adapter=adapterIstrazivanja
 
         odabirGrupa=view.findViewById(R.id.odabirGrupa)
-        grupe= GrupaRepository
-        val adapterGrupe = ArrayAdapter (view.context, android.R.layout.simple_list_item_1, grupe.getAllGroups())
+        val adapterGrupe = ArrayAdapter (view.context, android.R.layout.simple_list_item_1, grupeVM.getAllGroups())
         odabirGrupa.adapter=adapterGrupe
 
         odabirGodina.onItemSelectedListener = object : AdapterView.OnItemSelectedListener  {
@@ -110,20 +112,20 @@ class FragmentIstrazivanje: Fragment() {
     }
 
     private fun popuniSpinnerIstrazivanja(context: Context) {
-        var adapterIstrazivanja2 = ArrayAdapter(context, android.R.layout.simple_list_item_1, istrazivanja.zaSpinner(odabirGodina.selectedItem.toString().toInt()))
+        var adapterIstrazivanja2 = ArrayAdapter(context, android.R.layout.simple_list_item_1, istrazivanjaVM.popuniSpinner(odabirGodina.selectedItem.toString().toInt()))
         odabirIstrazivanja.adapter=adapterIstrazivanja2
     }
     private fun popuniSpinnerGrupa(context:Context){
-        var items=grupe.getGroupsByIstrazivanje(odabirIstrazivanja.selectedItem.toString())
+        var items=grupeVM.getGroupsByIstrazivanje(odabirIstrazivanja.selectedItem.toString())
         Log.v("FragmentIstr",items.size.toString())
-        var adapterGrupa2 = ArrayAdapter(context, android.R.layout.simple_list_item_1, grupe.getGroupsByIstrazivanje(odabirIstrazivanja.selectedItem.toString()))
+        var adapterGrupa2 = ArrayAdapter(context, android.R.layout.simple_list_item_1, grupeVM.getGroupsByIstrazivanje(odabirIstrazivanja.selectedItem.toString()))
         odabirGrupa.adapter=adapterGrupa2
     }
     private fun upisiMe(){
         FragmentAnkete.godina=odabirGodina.selectedItemPosition
-        AnketaRepository.upisiMe(odabirIstrazivanja.selectedItem.toString(), odabirGrupa.selectedItem.toString())
-        IstrazivanjeRepository.upisiMeNaIstrazivanje(odabirIstrazivanja.selectedItem.toString())
-        GrupaRepository.upisiMe(odabirGrupa.selectedItem.toString())
+        anketeVM.upisiMe(odabirIstrazivanja.selectedItem.toString(), odabirGrupa.selectedItem.toString())
+        istrazivanjaVM.upisiMeNaIstrazivanje(odabirIstrazivanja.selectedItem.toString())
+        grupeVM.upisiMe(odabirGrupa.selectedItem.toString())
 
         MainActivity.vpAdapter.refreshFragment(1,FragmentPoruka("Uspješno ste upisani u grupu: "+odabirGrupa.selectedItem.toString()+" istraživanja: "+ odabirIstrazivanja.selectedItem.toString()+"!"))
     }

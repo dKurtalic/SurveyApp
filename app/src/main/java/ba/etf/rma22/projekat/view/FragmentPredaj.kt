@@ -20,6 +20,7 @@ import kotlin.math.roundToInt
 
 
 class FragmentPredaj(anketaa: Anketa, lista:List<Anketa>): Fragment() {
+
     var anketa=anketaa
     private var pitanjeAnketaVM=PitanjeAnketaViewModel()
     private var nazivAnkete=anketaa.naziv
