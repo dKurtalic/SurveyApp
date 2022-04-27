@@ -19,7 +19,7 @@ class PitanjeAnketaViewModel {
         return PitanjeAnketaRepository.dajMojeOdgovoreZaAnketu(anketa)
     }
     fun upisiOdgovor(anketa: Anketa,pitanje: Pitanje,odgovor:String){
-        PitanjeAnketaRepository.upisiOdgovor(anketa,pitanje, odgovor)
+       return PitanjeAnketaRepository.upisiOdgovor(anketa,pitanje, odgovor)
     }
     fun getMojiOdgovori(): MutableList<PitanjeAnketa> {
         return PitanjeAnketaRepository.getMojiOdgovori()

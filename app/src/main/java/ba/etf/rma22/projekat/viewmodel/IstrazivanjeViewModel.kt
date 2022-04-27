@@ -11,7 +11,7 @@ class IstrazivanjeViewModel {
         return IstrazivanjeRepository.getAll()
     }
     fun upisiMeNaIstrazivanje(nazivIstrazivanja:String){
-        IstrazivanjeRepository.upisiMeNaIstrazivanje(nazivIstrazivanja )
+       return IstrazivanjeRepository.upisiMeNaIstrazivanje(nazivIstrazivanja )
     }
     fun popuniSpinner(god:Int): ArrayList<Istrazivanje> {
         return IstrazivanjeRepository.zaSpinner(god)

@@ -71,7 +71,7 @@ class FragmentPredaj(anketaa: Anketa, lista:List<Anketa>): Fragment() {
 
         MainActivity.vpAdapter.removeAll()
         MainActivity.vpAdapter.add(0,FragmentAnkete())
-        MainActivity.vpAdapter.add(1,FragmentPoruka("Završili ste anketu $nazivAnkete u okviru istraživanja $nazivIstrazivanja"))
+        MainActivity.vpAdapter.add(1,FragmentPoruka.newInstance("Završili ste anketu $nazivAnkete u okviru istraživanja $nazivIstrazivanja"))
         MainActivity.viewPager.currentItem=1
 
         val localDate=LocalDate.now()

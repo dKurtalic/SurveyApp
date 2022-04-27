@@ -127,7 +127,7 @@ class FragmentIstrazivanje: Fragment() {
         istrazivanjaVM.upisiMeNaIstrazivanje(odabirIstrazivanja.selectedItem.toString())
         grupeVM.upisiMe(odabirGrupa.selectedItem.toString())
 
-        MainActivity.vpAdapter.refreshFragment(1,FragmentPoruka("Uspješno ste upisani u grupu: "+odabirGrupa.selectedItem.toString()+" istraživanja: "+ odabirIstrazivanja.selectedItem.toString()+"!"))
+        MainActivity.vpAdapter.refreshFragment(1,FragmentPoruka.newInstance("Uspješno ste upisani u grupu: "+odabirGrupa.selectedItem.toString()+" istraživanja: "+ odabirIstrazivanja.selectedItem.toString()+"!"))
     }
 }
 
