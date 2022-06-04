@@ -44,7 +44,7 @@ class PocetniTest {
         onView(withId(R.id.pager)).perform(ViewPager2Actions.scrollToPosition(0))
         onView(withId(R.id.filterAnketa)).perform(click())
         onData(allOf(Is(instanceOf(String::class.java)), Is("Sve moje ankete"))).perform(click())
-        val ankete = AnketaRepository.getMyAnkete()
+        val ankete = AnketaRepository.getUpisane()
         onView(withId(R.id.listaAnketa)).check(hasItemCount(ankete.size))
         for (anketa in ankete) {
             itemTest(R.id.listaAnketa, anketa)

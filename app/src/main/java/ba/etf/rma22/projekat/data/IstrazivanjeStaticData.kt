@@ -1,7 +1,7 @@
 package ba.etf.rma22.projekat.data
 
 import ba.etf.rma22.projekat.data.models.Istrazivanje
-
+/*
 fun dajListuIstrazivanja():List<Istrazivanje> {
     return listOf(
         Istrazivanje("ETF istraživanje",1),
@@ -12,3 +12,5 @@ fun dajListuIstrazivanja():List<Istrazivanje> {
         Istrazivanje("Malo istraživanje",1)
     )
 }
+
+ */

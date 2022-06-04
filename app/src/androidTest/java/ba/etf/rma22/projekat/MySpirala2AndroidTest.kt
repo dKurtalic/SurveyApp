@@ -2,7 +2,6 @@ package ba.etf.rma22.projekat
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
@@ -84,7 +83,7 @@ class MySpirala2AndroidTest {
         //otvaram anketu
        */
 
-        val mojeNoveAnkete=AnketaRepository.getMyAnkete()
+        val mojeNoveAnkete=AnketaRepository.getUpisane()
 
         onView(withId(R.id.listaAnketa)).perform(
             RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>

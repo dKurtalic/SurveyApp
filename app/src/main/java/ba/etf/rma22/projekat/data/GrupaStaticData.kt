@@ -1,7 +1,7 @@
 package ba.etf.rma22.projekat.data
 
 import ba.etf.rma22.projekat.data.models.Grupa
-
+/*
 fun dajListuGrupa(): List<Grupa> {
     return listOf(
         Grupa("Grupa0","ETF istraživanje"),
@@ -16,3 +16,5 @@ fun dajListuGrupa(): List<Grupa> {
         Grupa("Grupa5", "Malo istraživanje")
     )
 }
+
+ */

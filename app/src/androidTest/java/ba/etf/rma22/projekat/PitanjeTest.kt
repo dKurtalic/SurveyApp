@@ -27,7 +27,7 @@ class PitanjeTest {
         onView(withId(R.id.pager)).perform(ViewPager2Actions.scrollToFirst())
         onView(withId(R.id.filterAnketa)).perform(click())
         Espresso.onData(CoreMatchers.allOf(CoreMatchers.`is`(CoreMatchers.instanceOf(String::class.java)), CoreMatchers.`is`("Sve moje ankete"))).perform(click())
-        val ankete = AnketaRepository.getMyAnkete()
+        val ankete = AnketaRepository.getUpisane()
         onView(withId(R.id.listaAnketa)).perform(RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(CoreMatchers.allOf(hasDescendant(withText(ankete[0].naziv)),
             hasDescendant(withText(ankete[0].nazivIstrazivanja))), click()))
         val pitanja = PitanjeAnketaRepository.getPitanja(ankete[0].naziv, ankete[0].nazivIstrazivanja)
@@ -42,7 +42,7 @@ class PitanjeTest {
         onView(withId(R.id.pager)).perform(ViewPager2Actions.scrollToFirst())
         onView(withId(R.id.filterAnketa)).perform(click())
         Espresso.onData(CoreMatchers.allOf(CoreMatchers.`is`(CoreMatchers.instanceOf(String::class.java)), CoreMatchers.`is`("Sve moje ankete"))).perform(click())
-        val ankete = AnketaRepository.getMyAnkete()
+        val ankete = AnketaRepository.getUpisane()
         onView(withId(R.id.listaAnketa)).perform(RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(CoreMatchers.allOf(hasDescendant(withText(ankete[0].naziv)),
             hasDescendant(withText(ankete[0].nazivIstrazivanja))), click()))
         onView(withId(R.id.pager)).perform(ViewPager2Actions.scrollToLast())

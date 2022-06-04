@@ -3,7 +3,7 @@ package ba.etf.rma22.projekat.data
 import android.util.Log
 import ba.etf.rma22.projekat.data.models.Anketa
 import java.util.*
-
+/*
 fun dajSveDatume():List<Date>{
     val kalendar: Calendar= Calendar.getInstance()
     kalendar.set(2006,6,5)
@@ -60,3 +60,5 @@ fun promijeniPodatke(index:Int,novaAnketa:Anketa){
     listOfAllSurveys.set(index,novaAnketa)
     Log.v("AnketaStaticData", "noviProgres: "+listOfAllSurveys[0].progres.toString())
 }
+
+ */

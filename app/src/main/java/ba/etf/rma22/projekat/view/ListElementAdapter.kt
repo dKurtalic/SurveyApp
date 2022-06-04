@@ -1,6 +1,7 @@
 package ba.etf.rma22.projekat.view
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,18 +10,24 @@ import android.widget.TextView
 import androidx.annotation.LayoutRes
 import ba.etf.rma22.projekat.R
 import ba.etf.rma22.projekat.data.models.Anketa
+import ba.etf.rma22.projekat.data.models.AnketaTaken
+import ba.etf.rma22.projekat.data.models.Odgovor
 import ba.etf.rma22.projekat.data.models.Pitanje
+import ba.etf.rma22.projekat.data.repositories.PitanjeAnketaRepository
 import ba.etf.rma22.projekat.viewmodel.PitanjeAnketaViewModel
+import kotlinx.coroutines.*
 
 class ListElementAdapter(context: Context,
                          @LayoutRes private val layoutResource: Int,
                          private var elements: List<String>,anketa: Anketa,trenutnaPozicija:Int,
-                         pitanje: Pitanje
+                         pitanje: Pitanje,pokusaj: AnketaTaken
 ):
 ArrayAdapter<String>(context, layoutResource, elements) {
     private var trenutnaPozicija=trenutnaPozicija
     private lateinit var answer:TextView
     private var pitanje=pitanje
+    private var pokusaj=pokusaj
+
     var anketa=anketa
     var pitanjeAnketaVM=PitanjeAnketaViewModel()
     override fun getView(position: Int, newView: View?, parent: ViewGroup): View {
@@ -29,22 +36,28 @@ ArrayAdapter<String>(context, layoutResource, elements) {
         answer=view.findViewById(R.id.answ)
         answer.text=elements[position]
 
+        GlobalScope.launch {
+            var pom:Int?=-1
+            async {
+                pom=PitanjeAnketaRepository.dajOdgovorZaPitanje(pitanje,anketa,pokusaj)
+              //  Log.v("ListElAd", "Trebao je bit oznacen odg $pom,a trenutna pozicija je $position")
+                withContext(Dispatchers.Main){
+                    if (pom!=null && position == pom){
+                   //     Log.v("ListElAd","obojen je")
+                       obojiOdgovor(answer)
+                    }
+                 //   else Log.v("ListElAd","Nije obojen")
+                }
+            }
 
-
-        var pom=pitanjeAnketaVM.dajOdgovorZaPitanje(pitanje,anketa)
-        if (answer.text.toString()==pom){
-            obojiOdgovor(answer)
-        }
-
+            }
 
         return view
     }
      fun obojiOdgovor(p:View){
         var view1 = p as TextView
         var plava= view1.resources.getColor(R.color.plava)
-        var black=view1.resources.getColor(R.color.black)
-        if (p.currentTextColor!=plava) view1.setTextColor(plava)
-        else view1.setTextColor(black)
+        view1.setTextColor(plava)
     }
 
     override fun getCount(): Int {

@@ -4,7 +4,7 @@ import ba.etf.rma22.projekat.data.models.Pitanje
 import ba.etf.rma22.projekat.data.models.PitanjeAnketa
 import kotlin.streams.toList
 
-
+/*
 fun dajSvaPitanja():List<Pitanje>{
     return listOf(
         Pitanje("Anketa1_1","Da li ste vegetarijanac/ka?", listOf("Da","Ne")),
@@ -53,3 +53,5 @@ fun dajSvaPitanja():List<Pitanje>{
 }
 
 
+
+ */

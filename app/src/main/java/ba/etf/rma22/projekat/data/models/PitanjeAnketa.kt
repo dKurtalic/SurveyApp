@@ -5,7 +5,7 @@ import android.util.Log
 class PitanjeAnketa(
     var naziv:String, //naziv pitanja
     var anketa:String, // naziv ankete
-    var nazivIstrazivanja:String
+    var nazivIstrazivanja:String?
 ) {
 
     private var odgovoreno=false

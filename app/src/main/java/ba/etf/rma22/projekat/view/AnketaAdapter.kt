@@ -11,13 +11,18 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ba.etf.rma22.projekat.R
 import ba.etf.rma22.projekat.data.models.Anketa
+import ba.etf.rma22.projekat.data.repositories.TakeAnketaRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
 import java.util.*
 import kotlin.math.roundToInt
 
 class AnketaAdapter(
     private var anketaArray:List<Anketa>,
-    private val onItemClick: (anketa:Anketa)->Unit):
+    private val onItemClick: ((anketa:Anketa)->Unit)?):
     RecyclerView.Adapter<AnketaAdapter.AnketaViewHolder>()  {
 
     inner class AnketaViewHolder(pogled: View): RecyclerView.ViewHolder(pogled){
@@ -35,21 +40,32 @@ class AnketaAdapter(
 
     override fun onBindViewHolder(holder: AnketaViewHolder, position: Int) {
             holder.nazivAnkete.text=anketaArray[position].naziv
-            holder.opisTekst.text=anketaArray[position].nazivIstrazivanja
+          if (anketaArray[position].nazivIstrazivanja==null) holder.opisTekst.text="Nepoznato istrazivanje"
+            else holder.opisTekst.text=anketaArray[position].nazivIstrazivanja
             val statusAnkete:String= dajStatusAnkete(position)
+
             val context : Context=holder.datumTekst.context
             val id=context.resources.getIdentifier(statusAnkete,"drawable",context.packageName)
             holder.imageView.setImageResource(id)
+
             var pom=dajProgres(anketaArray[position].progres)
             holder.progres.progress= pom
-           postaviIzgledAnkete(anketaArray[position].dajStatusAnkete(),holder,position)
+           postaviIzgledAnkete(statusAnkete,holder,position)
 
-        holder.itemView.setOnClickListener { onItemClick(anketaArray[position]) }
+        holder.itemView.setOnClickListener { onItemClick!!(anketaArray[position]) }
     }
     private fun postaviIzgledAnkete(statusAnkete: String, holder: AnketaViewHolder,position:Int){
-        if (statusAnkete.equals("plava")) holder.datumTekst.text="Anketa urađena: "+ dajDatum(anketaArray[position].datumRada)
-        else if (statusAnkete.equals("zuta")) holder.datumTekst.text="Vrijeme aktiviranja: "+dajDatum(anketaArray[position].datumPocetak)
-        else if (statusAnkete.equals("zelena")) holder.datumTekst.text="Vrijeme zatvaranja: "+dajDatum(anketaArray[position].datumKraj)
+
+        if (statusAnkete.equals("plava")) {
+            holder.datumTekst.text="Anketa urađena: "+ dajDatum(anketaArray[position].datumRada)
+        }
+        else if (statusAnkete.equals("zuta")) {
+            holder.datumTekst.text="Vrijeme aktiviranja: "+dajDatum(anketaArray[position].datumPocetak)
+        }
+        else if (statusAnkete.equals("zelena")){
+            if (anketaArray[position].datumKraj==null) holder.datumTekst.text="Nepoznato"
+            else holder.datumTekst.text="Vrijeme zatvaranja: "+dajDatum(anketaArray[position].datumKraj)
+        }
         else holder.datumTekst.text="Anketa zatvorena: "+dajDatum(anketaArray[position].datumKraj)
     }
 
@@ -65,7 +81,7 @@ class AnketaAdapter(
 
     private fun dajDatum(datum:Date?):String{
         var dan=datum!!.date
-        var mjesec=datum!!.month
+        var mjesec=datum!!.month+1
         var godina=datum!!.year
         godina+=1900
         var danString:String
@@ -77,23 +93,32 @@ class AnketaAdapter(
         return "$danString.$mjesecString.$godina"
     }
 
+
     private fun dajStatusAnkete(position : Int):String {
-        val kalendar: Calendar= Calendar.getInstance()
-        kalendar.set(LocalDateTime.now().year,LocalDateTime.now().monthValue, LocalDateTime.now().dayOfMonth)
-        val danasnjiDatum:Date=kalendar.time
-        if (anketaArray[position].datumRada!=null) return "plava"
-        else if (anketaArray[position].datumPocetak.after(danasnjiDatum)) return "zuta"
-        else if(anketaArray[position].datumPocetak.before(danasnjiDatum) &&
-            anketaArray[position].datumKraj.after(danasnjiDatum)) return "zelena"
-        else if (anketaArray[position].datumPocetak.before(danasnjiDatum) &&
-            anketaArray[position].datumKraj.before(danasnjiDatum) && anketaArray[position].datumRada==null) return "crvena"
-        return "zelena"
+
+               // var pokusaj = TakeAnketaRepository.getPocetuAnketu(anketaArray[position].id)
+
+                // if (pocetniStatus!="") return pocetniStatus
+                val kalendar: Calendar = Calendar.getInstance()
+                kalendar.set(LocalDateTime.now().year, LocalDateTime.now().monthValue, LocalDateTime.now().dayOfMonth)
+                val danasnjiDatum: Date = kalendar.time
+                if (anketaArray[position].datumRada != null) return "plava"
+                else if (anketaArray[position].datumPocetak!!.after(danasnjiDatum)) return "zuta"
+                else if (anketaArray[position].datumPocetak!!.before(danasnjiDatum) && anketaArray[position].datumKraj != null && anketaArray[position].datumKraj?.after(danasnjiDatum) == true) return "zelena"
+                else if (anketaArray[position].datumPocetak!!.before(danasnjiDatum) && anketaArray[position].datumKraj != null && anketaArray[position].datumKraj?.before(danasnjiDatum) == true && anketaArray[position].datumRada == null) return "crvena"
+                else return "zelena"
+
+
+        var pocetniStatus=anketaArray[position].dajStatusAnkete()
+        Log.v("AnketaAdapter","pocetniStatus: $pocetniStatus")
+
+
     }
 
     override fun getItemCount(): Int {
         return anketaArray.count()
     }
-    fun updateAnkete(listaAnketa: List<Anketa>){
+    fun updateAnkete(listaAnketa:List<Anketa>):Unit{
         this.anketaArray=listaAnketa
         notifyDataSetChanged()
     }

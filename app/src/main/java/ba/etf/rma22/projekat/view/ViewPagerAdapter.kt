@@ -1,9 +1,14 @@
 package ba.etf.rma22.projekat.view
 
 
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ViewPagerAdapter(
     private val fragments:MutableList<Fragment>,
@@ -18,12 +23,16 @@ class ViewPagerAdapter(
         return fragments[position]
     }
     fun refreshFragment(index: Int, fragment: Fragment) {
-        fragments[index] = fragment
-        notifyItemChanged(index)
+
+                fragments[index] = fragment
+                notifyItemChanged(index)
+
     }
     fun add(index: Int, fragment: Fragment) {
-        fragments.add(index, fragment)
-        notifyItemChanged(index)
+
+                fragments.add(index, fragment)
+                notifyItemChanged(index)
+
     }
     fun addAll(list:List<Fragment>) {
         var brojac=0
@@ -35,19 +44,23 @@ class ViewPagerAdapter(
 
     }
     fun remove(index: Int) {
-        fragments.removeAt(index)
-        notifyItemChanged(index)
+
+                fragments.removeAt(index)
+                notifyItemChanged(index)
+
     }
     fun removeAll(){
-        var size:Int= itemCount
-        size-=1
 
-        for (i in size downTo 0){
-            remove(i)
-            notifyItemChanged(i)
-        }
-        notifyDataSetChanged()
+                var size: Int = itemCount
+                size -= 1
 
+                for (i in size downTo 0) {
+                    remove(i)
+                    notifyItemChanged(i)
+                }
+                Log.v("VPAdapter","Nakon remove all "+fragments.size.toString())
+
+                notifyDataSetChanged()
     }
 
     override fun getItemId(position: Int): Long {
