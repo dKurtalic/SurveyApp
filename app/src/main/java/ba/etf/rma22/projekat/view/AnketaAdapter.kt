@@ -79,7 +79,7 @@ class AnketaAdapter(
         else if (statusAnkete.equals("zuta")) {
             holder.datumTekst.text="Vrijeme aktiviranja: "+dajDatum(anketaArray[position].datumPocetak)
         }
-        else if (statusAnkete.equals("zelena")){
+        else if (statusAnkete.equals("zelena") ){
             if (anketaArray[position].datumKraj==null) holder.datumTekst.text="Nepoznato"
             else holder.datumTekst.text="Vrijeme zatvaranja: "+dajDatum(anketaArray[position].datumKraj)
         }

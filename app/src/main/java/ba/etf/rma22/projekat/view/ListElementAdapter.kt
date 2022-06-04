@@ -43,10 +43,8 @@ ArrayAdapter<String>(context, layoutResource, elements) {
               //  Log.v("ListElAd", "Trebao je bit oznacen odg $pom,a trenutna pozicija je $position")
                 withContext(Dispatchers.Main){
                     if (pom!=null && position == pom){
-                   //     Log.v("ListElAd","obojen je")
                        obojiOdgovor(answer)
                     }
-                 //   else Log.v("ListElAd","Nije obojen")
                 }
             }
 
