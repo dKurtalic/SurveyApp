@@ -62,7 +62,7 @@ class FragmentPredaj: Fragment() {
         dugmePredaj=view.findViewById(R.id.dugmePredaj)
         progresTekst.text= "$progres%"
         val status=anketa.dajStatusAnkete()
-        if (status=="crvena" || status=="plava"){
+        if (status=="crvena" || status=="plava" || pokusaj.progres==100.0  ){
             dugmePredaj.isEnabled=false
         }
         else {
