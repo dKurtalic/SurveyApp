@@ -15,7 +15,6 @@ import ba.etf.rma22.projekat.R
 import ba.etf.rma22.projekat.data.models.Grupa
 import ba.etf.rma22.projekat.data.models.Istrazivanje
 import ba.etf.rma22.projekat.data.repositories.AnketaRepository
-import ba.etf.rma22.projekat.data.repositories.GrupaRepository
 import ba.etf.rma22.projekat.data.repositories.IstrazivanjeIGrupaRepository
 import ba.etf.rma22.projekat.viewmodel.AnketaViewModel
 import ba.etf.rma22.projekat.viewmodel.GrupaViewModel
@@ -136,8 +135,7 @@ class FragmentIstrazivanje: Fragment() {
        GlobalScope.launch {
 
            var sveGrupe=IstrazivanjeIGrupaRepository.getGrupe()
-            if (odabirGrupa.selectedItem!=null) Log.v("FragmentIstrazivanje1",odabirGrupa.selectedItem.toString())
-           else Log.v("FragmentIstrazivanje2","null je")
+
            delay(200)
            for (i in sveGrupe!!){
                if (i.naziv==odabirGrupa.selectedItem.toString()){
@@ -145,7 +143,6 @@ class FragmentIstrazivanje: Fragment() {
                    break
                }
            } }
-       Log.v("FragmentIstrazivanje3","Trenutna grupa: "+trenutnaGrupa?.naziv)
         return trenutnaGrupa
     }
 
@@ -216,7 +213,6 @@ class FragmentIstrazivanje: Fragment() {
      */
 
     fun upisiMe(){
-        Log.v("Frg",(odabirGrupa.selectedItem as Grupa).naziv)
       istrazivanjaVM.upisiUGrupu((odabirGrupa.selectedItem as Grupa).id )
         MainActivity.vpAdapter.refreshFragment(1,FragmentPoruka.newInstance("Uspješno ste upisani u grupu: "+odabirGrupa.selectedItem.toString()+" istraživanja: "+ odabirIstrazivanja.selectedItem.toString()+"!"))
     }

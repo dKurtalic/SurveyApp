@@ -29,11 +29,7 @@ class IstrazivanjeViewModel {
             }
         }
     }
-    /*
-    ova ne bi trebalo da treba
-    fun upisiMeNaIstrazivanje(nazivIstrazivanja:String){
-       return IstrazivanjeRepository.upisiMeNaIstrazivanje(nazivIstrazivanja )
-    }*/
+
     suspend fun popuniSpinner(god:Int) : ArrayList<Istrazivanje>{
             return (IstrazivanjeIGrupaRepository.zaSpinner(god) as ArrayList<Istrazivanje>?)!!
 

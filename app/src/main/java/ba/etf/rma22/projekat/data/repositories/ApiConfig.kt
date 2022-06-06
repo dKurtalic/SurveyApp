@@ -2,15 +2,16 @@ package ba.etf.rma22.projekat.data.repositories
 
 class ApiConfig {
    companion object {
-       var baseUrl="https://rma22ws.herokuapp.com "
+       var baseURL="https://rma22ws.herokuapp.com"
    }
 
+
   fun postaviBaseURL(baseUrl1:String){
-      baseUrl=baseUrl1
+      baseURL=baseUrl1
   }
 
     fun getBaseUrl():String{
-        return baseUrl
+        return baseURL
     }
 
 }

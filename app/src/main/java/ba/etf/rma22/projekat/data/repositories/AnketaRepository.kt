@@ -1,6 +1,6 @@
 package ba.etf.rma22.projekat.data.repositories
 
-import android.util.Log
+
 import ba.etf.rma22.projekat.data.models.Anketa
 import ba.etf.rma22.projekat.data.models.AnketaTaken
 import kotlinx.coroutines.Dispatchers
@@ -44,11 +44,9 @@ object AnketaRepository {
                     var privremene = anketeZaGrupu(i.id)
                     if (privremene != null) {
                         mojeAnk.addAll(privremene)
-                        Log.v("AnketaRepository","dodalo se "+privremene.size.toString())
                     }
                 }
             }
-            Log.v("AnketaRepo", mojeAnk.size.toString())
 
             return@withContext mojeAnk
         }
@@ -74,7 +72,7 @@ object AnketaRepository {
             for (pokusaj in zavrseniPokusaji){
                 if (upisaneAnkete != null) {
                     for (anketa in upisaneAnkete){
-                        if (anketa.id==pokusaj.anketaId){
+                        if (anketa.id==pokusaj.AnketumId){
                             zavrseneAnkete.add(anketa)
                         }
                     }
@@ -115,7 +113,6 @@ object AnketaRepository {
     suspend fun anketeZaGrupu(gid: Int): List<Anketa>? {
         return withContext(Dispatchers.IO) {
             var respond = ApiAdapter.retrofit.getAnketeZaGrupu(gid).body()
-            Log.v("AnketaRepository", "ankete za grupu sa gid $gid, vel: "+respond?.size.toString())
             return@withContext respond
         }
     }

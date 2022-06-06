@@ -1,7 +1,6 @@
 package ba.etf.rma22.projekat.data.repositories
 
 
-import android.util.Log
 import ba.etf.rma22.projekat.data.models.Anketa
 import ba.etf.rma22.projekat.data.models.AnketaTaken
 import ba.etf.rma22.projekat.data.models.Pitanje
@@ -46,7 +45,6 @@ object PitanjeAnketaRepository {
                     odgovor=i.odgovoreno
             }
         }
-        Log.v("PitanjeAnketaRepo","odgovor za pitanje s idem $p.id je $odgovor")
         if (odgovor!=-1)  return odgovor
         else return null
     }

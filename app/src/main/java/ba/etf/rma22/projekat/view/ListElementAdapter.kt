@@ -1,7 +1,6 @@
 package ba.etf.rma22.projekat.view
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,7 +39,6 @@ ArrayAdapter<String>(context, layoutResource, elements) {
             var pom:Int?=-1
             async {
                 pom=PitanjeAnketaRepository.dajOdgovorZaPitanje(pitanje,anketa,pokusaj)
-              //  Log.v("ListElAd", "Trebao je bit oznacen odg $pom,a trenutna pozicija je $position")
                 withContext(Dispatchers.Main){
                     if (pom!=null && position == pom){
                        obojiOdgovor(answer)

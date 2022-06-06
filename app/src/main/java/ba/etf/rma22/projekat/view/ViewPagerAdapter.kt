@@ -58,7 +58,6 @@ class ViewPagerAdapter(
                     remove(i)
                     notifyItemChanged(i)
                 }
-                Log.v("VPAdapter","Nakon remove all "+fragments.size.toString())
 
                 notifyDataSetChanged()
     }

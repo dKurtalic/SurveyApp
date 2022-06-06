@@ -95,7 +95,7 @@ class MySpirala2AndroidTest {
         //odgovaram na prvo pitanje
         var indeks=0
         onView(withId(R.id.pager)).perform(ViewPager2Actions.scrollToPosition(indeks))
-        onView(AllOf.allOf(isDisplayed(), withId(R.id.tekstPitanja))).check(matches(withText(pitanjaZaAnketu[indeks].tekst)))
+        onView(AllOf.allOf(isDisplayed(), withId(R.id.tekstPitanja))).check(matches(withText(pitanjaZaAnketu[indeks].tekstPitanja)))
         onData(anything()).inAdapterView(AllOf.allOf(isDisplayed(),withId(R.id.odgovoriLista))).atPosition(0).perform(click())
 
         //testiram dugme zatvori

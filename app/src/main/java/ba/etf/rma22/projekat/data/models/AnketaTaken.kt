@@ -13,7 +13,7 @@ class AnketaTaken(
     @SerializedName("student") var student: String,
     @SerializedName("progres") var progres:Double,
     @SerializedName("datumRada") var datumRada:Date,
-    @SerializedName("AnketumId") var anketaId:Int
+    @SerializedName("AnketumId") var AnketumId:Int
 ) {
 
 }

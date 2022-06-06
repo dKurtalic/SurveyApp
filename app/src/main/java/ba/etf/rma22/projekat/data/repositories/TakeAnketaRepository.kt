@@ -11,12 +11,10 @@ object TakeAnketaRepository {
         return withContext(Dispatchers.IO){
             try {
                 var zapocetaAnketa = getPocetuAnketu(idAnkete)
-                Log.v("TakeAnkRepo1", zapocetaAnketa?.id.toString())
                 if (zapocetaAnketa == null) {
                     var ank: AnketaTaken =
                         ApiAdapter.retrofit.zapocniAnketu(AccountRepository.getHash(), idAnkete)
                             .body()!!
-                    Log.v("TakeAnkRepo2", ank.id.toString())
                     return@withContext ank
                 } else return@withContext zapocetaAnketa
             } catch (e:Exception){
@@ -29,8 +27,9 @@ object TakeAnketaRepository {
 
     suspend fun getPoceteAnkete():List<AnketaTaken>?{
         return withContext(Dispatchers.IO){
-            var r=ApiAdapter.retrofit.getPoceteAnkete(AccountRepository.getHash())
-            return@withContext r.body()
+            var r=ApiAdapter.retrofit.getPoceteAnkete(AccountRepository.getHash()).body()
+            if(r==null || (r!=null && r.isEmpty())) return@withContext null
+            else return@withContext r
         }
     }
     suspend fun getPocetuAnketu(anketaId:Int):AnketaTaken?{
@@ -39,7 +38,7 @@ object TakeAnketaRepository {
             var anketa: AnketaTaken? = null
             if (zapocetiPokusaji != null) {
                 for (i in zapocetiPokusaji){
-                    if (anketaId==i.anketaId){
+                    if (anketaId==i.AnketumId){
                         anketa=i
                     }
                 }

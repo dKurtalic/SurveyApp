@@ -8,11 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.viewpager2.widget.ViewPager2
 import ba.etf.rma22.projekat.MainActivity
 import ba.etf.rma22.projekat.R
 import ba.etf.rma22.projekat.data.models.*
-import ba.etf.rma22.projekat.data.repositories.OdgovorRepository
 import ba.etf.rma22.projekat.data.repositories.PitanjeAnketaRepository
 import ba.etf.rma22.projekat.data.repositories.TakeAnketaRepository
 import ba.etf.rma22.projekat.viewmodel.OdgovorViewModel
@@ -49,7 +47,6 @@ class FragmentPitanje: Fragment() {
     private var odabraniOdgovor: Int?=-1
     private lateinit var view1:View
     private var pitanjeAnketaVM=PitanjeAnketaViewModel()
-    private var odgRepo= OdgovorRepository()
     private var odgVM= OdgovorViewModel()
     private lateinit var listAdapter: ListElementAdapter
 
@@ -59,7 +56,7 @@ class FragmentPitanje: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        tekst=pitanje.tekst
+        tekst=pitanje.tekstPitanja
         odgovori=pitanje.opcije
         MainActivity.viewPager.offscreenPageLimit=2
         view1=inflater.inflate(R.layout.fragment_pitanje,container, false)
@@ -76,7 +73,7 @@ class FragmentPitanje: Fragment() {
         odgovoriLista.setOnItemClickListener { parent, view, position, id ->
             if (anketa.dajStatusAnkete()!="crvena" && anketa.dajStatusAnkete()!="plava"){
             var odg=view.findViewById<TextView>(R.id.answ)
-                var odgRepo=OdgovorRepository()
+
                 GlobalScope.launch {
                //     if (!odgRepo.getOdgovoriAnketa(anketa.id)!!.contains(PitanjeAnketa(pitanje.naziv,anketa.naziv,anketa.nazivIstrazivanja))){
                     listAdapter.obojiOdgovor(odg)

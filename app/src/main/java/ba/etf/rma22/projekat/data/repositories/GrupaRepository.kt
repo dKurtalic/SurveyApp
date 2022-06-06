@@ -1,5 +1,5 @@
 package ba.etf.rma22.projekat.data.repositories
-
+/*
 import ba.etf.rma22.projekat.data.models.Grupa
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -31,3 +31,5 @@ object GrupaRepository {
         }
     }
 }
+
+ */

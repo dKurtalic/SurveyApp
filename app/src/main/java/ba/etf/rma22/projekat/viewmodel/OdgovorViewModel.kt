@@ -11,11 +11,10 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class OdgovorViewModel {
-    var odgRepo=OdgovorRepository()
     val scope = CoroutineScope(Job() + Dispatchers.Main)
     fun postaviOdgovorAnketa(idAnketa:Int,pokusaj:AnketaTaken, idPitanje:Int, odgovor:Int){
         scope.launch {
-           var odgg:Int?= odgRepo.postaviOdgovorAnketa(pokusaj.id,idPitanje,odgovor)
+           var odgg:Int?= OdgovorRepository.postaviOdgovorAnketa(pokusaj.id,idPitanje,odgovor)
 
         }
     }

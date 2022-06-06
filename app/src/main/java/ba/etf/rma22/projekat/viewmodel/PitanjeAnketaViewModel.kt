@@ -33,11 +33,11 @@ class PitanjeAnketaViewModel {
       fun dajOdgovorZaPitanje(pitanje: Pitanje,anketa: Anketa, pokusaj:AnketaTaken,onSuccess:(Odgovor)->Unit, onError: () -> Unit) {
        scope.launch {
            var pitanja=PitanjeAnketaRepository.getPitanja(anketa.id)
-           var odgRepo=OdgovorRepository()
+
            var odgovori=TakeAnketaRepository.getMojiOdgovori(pokusaj.id)
            var indeks=0
            for (i in pitanja!!){
-               if (i.tekst==pitanje.tekst) break
+               if (i.tekstPitanja==pitanje.tekstPitanja) break
                indeks++
            }
            var odgovor= odgovori!![indeks]
@@ -58,8 +58,7 @@ class PitanjeAnketaViewModel {
     }
     fun upisiOdgovor(anketa: Anketa, pokusaj: AnketaTaken, pitanje: Pitanje, odgovor:Int){
        scope.launch {
-           var odgRepo= OdgovorRepository()
-           odgRepo.postaviOdgovorAnketa(pokusaj.id,pitanje.id,odgovor)
+           OdgovorRepository.postaviOdgovorAnketa(pokusaj.id,pitanje.id,odgovor)
        }
     }
 

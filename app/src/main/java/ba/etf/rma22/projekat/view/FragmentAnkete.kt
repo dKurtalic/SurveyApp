@@ -72,7 +72,6 @@ class FragmentAnkete: Fragment() {
         GlobalScope.launch {
             async {
                 val status: String = anketa.dajStatusAnkete()
-                if (status != null) Log.v("FragmentAnkete", "status: $status")
                 var moje = emptyList<Anketa>()
                 var mojeAnkete = AnketaRepository.getUpisane()
                 if (mojeAnkete != null) moje = mojeAnkete
@@ -83,11 +82,6 @@ class FragmentAnkete: Fragment() {
 
                         pitanjaZaAnketu = PitanjeAnketaRepository.getPitanja(anketa.id)
 
-                        if (pitanjaZaAnketu != null) Log.v(
-                            "FragmentAnkete",
-                            "pitanja size " + pitanjaZaAnketu?.size
-                        )
-                        else Log.v("FragmentAnkete", "0 je")
 
                         if (pitanjaZaAnketu?.isNotEmpty() == true) {
                             MainActivity.vpAdapter.removeAll()

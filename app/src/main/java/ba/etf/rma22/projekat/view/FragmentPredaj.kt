@@ -1,7 +1,6 @@
 package ba.etf.rma22.projekat.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,7 +32,6 @@ class FragmentPredaj: Fragment() {
     lateinit var listaSvihAnketa:MutableList<Anketa>
     lateinit var pomoc:List<Anketa>
     lateinit var pokusaj:AnketaTaken
-    var odgRepo=OdgovorRepository()
     companion object{
     fun newInstance(anketaa:Anketa, lista:List<Anketa>,pokusaj: AnketaTaken):FragmentPredaj=FragmentPredaj().apply {
         this.anketa=anketaa
@@ -88,8 +86,8 @@ class FragmentPredaj: Fragment() {
    fun izracunajProges(brojOdgovora: Double, brojPitanja: Int): Int{
         val broj:Double=(brojOdgovora/brojPitanja)*100.0
         val vrati=broj.toInt()
-        val novi=vrati/20.0
-        return (novi.roundToInt()*20)
+        val novi=(vrati/20.0).roundToInt()
+        return (novi*20)
     }
 
     private fun predajAnketu(){
@@ -101,7 +99,6 @@ class FragmentPredaj: Fragment() {
 
         anketa.promijeniStatusAnkete("plava")
         anketa.datumRada=pokusaj.datumRada
-        Log.v("FagmentPredaj","datum rada.: "+anketa.datumRada)
 
     }
 
