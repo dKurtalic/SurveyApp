@@ -1,11 +1,15 @@
 package ba.etf.rma22.projekat.data.models
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+@Entity
 class Grupa (
-    @SerializedName("id") var id:Int,
-    @SerializedName("naziv") var naziv:String,
-    @SerializedName("IstrazivanjeId") var istrazivanjeId: Int) {
+    @PrimaryKey @SerializedName("id") var id:Int,
+    @ColumnInfo(name = "naziv") @SerializedName("naziv") var naziv:String,
+    @ColumnInfo(name = "istrazivanjeId") @SerializedName("IstrazivanjeId") var istrazivanjeId: Int) {
     override fun toString(): String {
         return naziv
     }

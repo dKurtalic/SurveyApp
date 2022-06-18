@@ -1,71 +1,105 @@
 package ba.etf.rma22.projekat.data.repositories
 
+import android.content.Context
 import android.util.Log
+import ba.etf.rma22.projekat.AppDatabase
+import ba.etf.rma22.projekat.data.models.Anketa
 import ba.etf.rma22.projekat.data.models.AnketaTaken
 import ba.etf.rma22.projekat.data.models.Odgovor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-object TakeAnketaRepository {
-    suspend fun zapocniAnketu(idAnkete:Int): AnketaTaken?   {
-        return withContext(Dispatchers.IO){
-            try {
-                var zapocetaAnketa = getPocetuAnketu(idAnkete)
-                if (zapocetaAnketa == null) {
-                    var ank: AnketaTaken =
-                        ApiAdapter.retrofit.zapocniAnketu(AccountRepository.getHash(), idAnkete)
-                            .body()!!
-                    return@withContext ank
-                } else return@withContext zapocetaAnketa
-            } catch (e:Exception){
-                return@withContext null
-            }
-        }
-    }
-
-
-
-    suspend fun getPoceteAnkete():List<AnketaTaken>?{
-        return withContext(Dispatchers.IO){
-            var r=ApiAdapter.retrofit.getPoceteAnkete(AccountRepository.getHash()).body()
-            if(r==null || (r!=null && r.isEmpty())) return@withContext null
-            else return@withContext r
-        }
-    }
-    suspend fun getPocetuAnketu(anketaId:Int):AnketaTaken?{
-        return withContext(Dispatchers.IO){
-            var zapocetiPokusaji= getPoceteAnkete()
-            var anketa: AnketaTaken? = null
-            if (zapocetiPokusaji != null) {
-                for (i in zapocetiPokusaji){
-                    if (anketaId==i.AnketumId){
-                        anketa=i
-                    }
+class TakeAnketaRepository {
+    companion object{
+        lateinit private var context: Context
+        fun setContext(c:Context){ this.context =c}
+        fun getContext():Context{return context }
+        suspend fun zapocniAnketu(idAnkete:Int): AnketaTaken?   {
+            return withContext(Dispatchers.IO){
+                try {
+                    var zapocetaAnketa = getPocetuAnketu(idAnkete)
+                    if (zapocetaAnketa == null) {
+                        var ank: AnketaTaken =
+                            ApiAdapter.retrofit.zapocniAnketu(AccountRepository.getHash(), idAnkete)
+                                .body()!!
+                        return@withContext ank
+                    } else return@withContext zapocetaAnketa
+                } catch (e:Exception){
+                    return@withContext null
                 }
             }
-            return@withContext anketa
         }
-    }
-    suspend fun getMojiOdgovori(idPokusaja:Int):List<Odgovor>?{
-        return withContext(Dispatchers.IO){
-            var rez = ApiAdapter.retrofit.getOdgovoriZaAnketu(AccountRepository.getHash(),idPokusaja).body()
-            return@withContext rez
-        }
-    }
-    suspend fun daLiJeZapocetaAnketa(idAnkete:Int):Boolean{
-        return withContext(Dispatchers.IO){
-            var bool=false
-            var zapocete= getPoceteAnkete()
-            if (zapocete != null) {
-                for (i in zapocete){
-                    if (i.id==idAnkete) {
-                        bool=true
-                        break
+
+
+
+        suspend fun getPoceteAnkete():List<AnketaTaken>?{
+            return withContext(Dispatchers.IO){
+                if (!AnketaRepository.isOnline(context)){
+                    var poceteAnkete = mutableListOf<AnketaTaken>()
+                    var database= AppDatabase.getInstance(context)
+                    var pokusaji= database.anketaTakenDAO().getSvePokusaje()
+                    var sveAnkete=database.anketaDAO().getAll()
+                    if (sveAnkete!=null && pokusaji!=null){
+                        for (i in sveAnkete){
+                            for (j in pokusaji){
+                                if (i.id==j.AnketumId){
+                                    poceteAnkete.add(j)
+                                }
+                            }
+                        }
                     }
+
+                   return@withContext poceteAnkete
+                }
+                else {
+                    Log.v("TakeAnketaRepo","ima interneta za pocete ankete")
+                    var r=ApiAdapter.retrofit.getPoceteAnkete(AccountRepository.getHash()).body()
+                    if(r==null || (r!=null && r.isEmpty())) return@withContext null
+                    else return@withContext r
                 }
             }
-            return@withContext bool
         }
+        suspend fun getPocetuAnketu(anketaId:Int):AnketaTaken?{
+            return withContext(Dispatchers.IO){
+
+                var zapocetiPokusaji= getPoceteAnkete()
+                if (zapocetiPokusaji==null) Log.v("TakeAnketaRepository","pokusaji.size: null")
+                else Log.v("TakeAnketaRepository","pokusaji.size: "+zapocetiPokusaji.size)
+                var anketa: AnketaTaken? = null
+                if (zapocetiPokusaji != null) {
+                    for (i in zapocetiPokusaji){
+                        if (anketaId==i.AnketumId){
+                            anketa=i
+                        }
+                    }
+                }
+                if (anketa!=null)Log.v("TakeAnketaRepostory","vraca se "+anketa.AnketumId)
+                else Log.v("TakeAnketaRepostory","vraca se null" )
+                return@withContext anketa
+            }
+        }
+        suspend fun getMojiOdgovori(idPokusaja:Int):List<Odgovor>?{
+            return withContext(Dispatchers.IO){
+                var rez = ApiAdapter.retrofit.getOdgovoriZaAnketu(AccountRepository.getHash(),idPokusaja).body()
+                return@withContext rez
+            }
+        }
+        suspend fun daLiJeZapocetaAnketa(idAnkete:Int):Boolean{
+            return withContext(Dispatchers.IO){
+                var bool=false
+                var zapocete= getPoceteAnkete()
+                if (zapocete != null) {
+                    for (i in zapocete){
+                        if (i.id==idAnkete) {
+                            bool=true
+                            break
+                        }
+                    }
+                }
+                return@withContext bool
+            }
+        }
+
     }
 
 }

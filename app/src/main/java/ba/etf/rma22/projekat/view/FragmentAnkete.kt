@@ -29,6 +29,7 @@ class FragmentAnkete: Fragment() {
         lateinit var anketaAdapter: AnketaAdapter
         fun newInstance():FragmentAnkete=FragmentAnkete()
     }
+    var cont=this.context
     var ankw=AnketaViewModel()
     var pawm=PitanjeAnketaViewModel()
     lateinit var sveAnkete:List<Anketa>
@@ -53,7 +54,7 @@ class FragmentAnkete: Fragment() {
             val adapterSpinner = ArrayAdapter(view.context, android.R.layout.simple_list_item_1, opcije)
             spinner!!.adapter=adapterSpinner
              postaviSpinner()
-            ankw.getAll(::onSuccess1, ::onError)
+            spinner!!.setSelection(1)
         return view
 
     }
@@ -67,8 +68,6 @@ class FragmentAnkete: Fragment() {
         }
     }
      private fun otvoriAnketu(anketa: Anketa) {
-
-
         GlobalScope.launch {
             async {
                 val status: String = anketa.dajStatusAnkete()

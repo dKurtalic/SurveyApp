@@ -26,7 +26,7 @@ interface Api {
     suspend fun dajGrupuSIdem(@Path("id") gid:Int):Response<Grupa>
 
     @GET("/student/{id}")
-    suspend fun getStudent(@Path("id") id:Int): Response<Account>
+    suspend fun getStudent(@Path("id") id:String): Response<Account>
 
     @POST("/student/{id}/anketataken/{ktid}/odgovor")
     suspend fun postaviOdgovorAnketa(@Path("id") hashStudenta: String,@Path("ktid") ktid:Int, @Body odgovor:PitanjeOdgovor): Response<Odgovor>

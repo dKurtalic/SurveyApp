@@ -1,5 +1,5 @@
 package ba.etf.rma22.projekat
-
+/*
 import android.content.Context
 import android.graphics.Bitmap
 import android.view.View
@@ -48,7 +48,6 @@ class MySpirala2AndroidTest {
 
     @Test
     fun testZaZadatak1 (){
-        val anketaVM=AnketaViewModel()
         val mojeAnkete=anketaVM.getMyAnkete()
 
         onView(withId(R.id.pager)).perform(ViewPager2Actions.scrollToFirst())
@@ -161,3 +160,5 @@ class BitmapUtil {
     }
 }
 
+
+ */

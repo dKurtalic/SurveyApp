@@ -1,20 +1,50 @@
 package ba.etf.rma22.projekat.data.repositories
 
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.util.Log
+import ba.etf.rma22.projekat.AppDatabase
 import ba.etf.rma22.projekat.data.models.Anketa
 import ba.etf.rma22.projekat.data.models.AnketaTaken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-object AnketaRepository {
-
+class AnketaRepository {
+companion object{
+    private lateinit var context: Context
+    fun setContext(context: Context){this.context=context}
+    fun getContext():Context{return context}
     suspend fun getById(id: Int): Anketa? {
         return withContext(Dispatchers.IO) {
             return@withContext ApiAdapter.retrofit.getAnketaById(id).body()
         }
     }
 
-    suspend fun getAll(): List<Anketa>? {
+    suspend fun getAll():List<Anketa>?{
+        var database= AppDatabase.getInstance(context)
+        return withContext(Dispatchers.IO){
+            if (!isOnline(context)){
+                Log.v("AnketaRepository","Nisam online")
+                var anketeDB=database.anketaDAO().getAll()
+
+                return@withContext anketeDB
+            }
+            else {
+                var anketeServis= getAllFromServis()
+                if (anketeServis !=null){
+                    for (a in anketeServis) {
+                        a.setStatus("")
+                        database.anketaDAO().insert(a)
+                    }
+                }
+                return@withContext anketeServis
+            }
+        }
+    }
+
+    suspend fun getAllFromServis(): List<Anketa>? {
         return withContext(Dispatchers.IO) {
             var offset = 1
             var sveAnkete = mutableListOf<Anketa>()
@@ -36,7 +66,33 @@ object AnketaRepository {
     }
 
     suspend fun getUpisane(): List<Anketa>? {
+        var database= AppDatabase.getInstance(context)
         return withContext(Dispatchers.IO) {
+            if (!isOnline(context)){
+                var anketeDB= database.anketaDAO().getUpisane()
+                return@withContext anketeDB
+            }
+            else {
+                var upisaneServer= getUpisaneSaServera()
+                var sveAnkete=getAll()
+                database.anketaDAO().obrisiAnkete()
+                if (sveAnkete!=null && upisaneServer!=null) {
+                    for (a1 in sveAnkete) {
+                        for (a2 in upisaneServer) {
+                            if (a1 == a2) {
+                                a1.upisana = 1
+                                database.anketaDAO().insert(a1)
+                            }
+                        }
+                    }
+                }
+                return@withContext upisaneServer
+            }
+        }
+    }
+
+    suspend fun getUpisaneSaServera():List<Anketa>?{
+        return withContext(Dispatchers.IO){
             var upisaneGrupe = ApiAdapter.retrofit.getUpisaneGrupe(AccountRepository.getHash()).body()
             var mojeAnk = mutableListOf<Anketa>()
             if (upisaneGrupe != null) {
@@ -50,11 +106,30 @@ object AnketaRepository {
 
             return@withContext mojeAnk
         }
+    }
 
+    suspend fun getDone():List<Anketa>?{
+        var database=AppDatabase.getInstance(context)
+        var zavrseneAnkete= mutableListOf<Anketa>()
+        return withContext(Dispatchers.IO) {
+            if (!isOnline(context)) {
+                var sveAnkete = database.anketaDAO().getAll()
+                for (a in sveAnkete) {
+                    if (a.izracunajStatusAnkete() == "plava") {
+                        zavrseneAnkete.add(a)
+                        return@withContext zavrseneAnkete
+                    }
+                }
+            } else {
+                var ankete = getDoneSaServera()
+                return@withContext ankete
+            }
+            return@withContext null
+        }
     }
 
 
-    suspend fun getDone(): List<Anketa>? {
+    suspend fun getDoneSaServera(): List<Anketa>? {
         return withContext(Dispatchers.IO) {
 
             var pokusaji=TakeAnketaRepository.getPoceteAnkete()
@@ -116,4 +191,26 @@ object AnketaRepository {
             return@withContext respond
         }
     }
+    fun isOnline(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (connectivityManager != null) {
+            val capabilities =
+                connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+            if (capabilities != null) {
+                if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_CELLULAR")
+                    return true
+                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_WIFI")
+                    return true
+                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_ETHERNET")
+                    return true
+                }
+            }
+        }
+        return false
+    }
+}
+
 }

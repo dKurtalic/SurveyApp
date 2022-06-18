@@ -16,7 +16,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.hamcrest.CoreMatchers.`is` as Is
 
-
+/*
 @RunWith(AndroidJUnit4::class)
 class PocetniTest {
 
@@ -63,3 +63,5 @@ class PocetniTest {
     }
 
 }
+
+ */

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import ba.etf.rma22.projekat.MainActivity
 import ba.etf.rma22.projekat.R
@@ -127,6 +128,9 @@ class FragmentIstrazivanje: Fragment() {
         else dodajIstrazivanjeDugme.isEnabled=false
 
         */
+        if (!AnketaRepository.isOnline(AnketaRepository.getContext())){
+            dodajIstrazivanjeDugme.isEnabled=false
+        }
         dodajIstrazivanjeDugme.setOnClickListener { upisiMe() }
         return view1
     }
@@ -213,6 +217,7 @@ class FragmentIstrazivanje: Fragment() {
      */
 
     fun upisiMe(){
+
       istrazivanjaVM.upisiUGrupu((odabirGrupa.selectedItem as Grupa).id )
         MainActivity.vpAdapter.refreshFragment(1,FragmentPoruka.newInstance("Uspješno ste upisani u grupu: "+odabirGrupa.selectedItem.toString()+" istraživanja: "+ odabirIstrazivanja.selectedItem.toString()+"!"))
     }

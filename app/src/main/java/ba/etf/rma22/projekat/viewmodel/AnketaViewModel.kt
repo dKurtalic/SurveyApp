@@ -1,5 +1,6 @@
 package ba.etf.rma22.projekat.viewmodel
 
+import android.util.Log
 import ba.etf.rma22.projekat.data.models.Anketa
 import ba.etf.rma22.projekat.data.repositories.AnketaRepository
 import kotlinx.coroutines.CoroutineScope
@@ -7,7 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class AnketaViewModel {
+class AnketaViewModel() {
  var offset=1
     val scope = CoroutineScope(Job() + Dispatchers.Main)
 

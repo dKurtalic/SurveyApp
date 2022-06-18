@@ -77,8 +77,8 @@ class FragmentPitanje: Fragment() {
                 GlobalScope.launch {
                //     if (!odgRepo.getOdgovoriAnketa(anketa.id)!!.contains(PitanjeAnketa(pitanje.naziv,anketa.naziv,anketa.nazivIstrazivanja))){
                     listAdapter.obojiOdgovor(odg)
-                    var pitanjee= PitanjeAnketa(pitanje.naziv, anketa.naziv, anketa.nazivIstrazivanja)
-                    pitanjee.postaviOdgovor(odg.text.toString())
+                  //  var pitanjee= PitanjeAnketa(pitanje.naziv, anketa.naziv, anketa.nazivIstrazivanja)
+                  //  pitanjee.postaviOdgovor(odg.text.toString())
                    // odgRepo.postaviOdgovorAnketa(anketa.id,pitanje.id,position)
                     Log.v("FragmentPitanje", "idpokusaj ${pokusaj.id}")
                     odgVM.postaviOdgovorAnketa(anketa.id,pokusaj,pitanje.id,position)

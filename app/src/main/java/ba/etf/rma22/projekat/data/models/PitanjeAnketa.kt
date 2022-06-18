@@ -1,16 +1,25 @@
 package ba.etf.rma22.projekat.data.models
 
 import android.util.Log
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
+@Entity
 class PitanjeAnketa(
-    var naziv:String, //naziv pitanja
-    var anketa:String, // naziv ankete
-    var nazivIstrazivanja:String?
+    @PrimaryKey @ColumnInfo(name="id") var id:Int,
+    @ColumnInfo(name="naziv")var naziv:String, //naziv pitanja
+    @ColumnInfo(name="anketa")var anketa:String, // naziv ankete
+    @ColumnInfo(name="nazivIstrazivanja")var nazivIstrazivanja:String?
 ) {
 
     private var odgovoreno=false
     private var odgovor:String =""
 
+    fun setOdgovoreno(odgovoreno:Boolean){this.odgovoreno=odgovoreno}
+    fun getOdgovoreno():Boolean{return this.odgovoreno}
+    fun setOdgovor(odgovor:String){this.odgovor=odgovor}
+    fun getOdgovor():String{return this.odgovor}
 
     fun postaviOdgovor(odg:String){
       if (!odgovoreno)  {

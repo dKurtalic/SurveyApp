@@ -56,18 +56,18 @@ class AnketaAdapter(
             var pom = 0
 
             if (pokusaj != null) {
-               pom= dajProgres(pokusaj!!.progres)
+                pom= dajProgres(pokusaj!!.progres)
             }
 
-           withContext(Dispatchers.Main){
-               holder.progres.progress = pom
-               postaviIzgledAnkete(statusAnkete, holder, position,pokusaj)
-               val id = context.resources.getIdentifier(statusAnkete, "drawable", context.packageName)
-               holder.imageView.setImageResource(id)
-           }
+            withContext(Dispatchers.Main){
+                holder.progres.progress = pom
+                postaviIzgledAnkete(statusAnkete, holder, position,pokusaj)
+                val id = context.resources.getIdentifier(statusAnkete, "drawable", context.packageName)
+                holder.imageView.setImageResource(id)
+            }
         }
 
-            holder.itemView.setOnClickListener { onItemClick!!(anketaArray[position]) }
+        holder.itemView.setOnClickListener { onItemClick!!(anketaArray[position]) }
 
     }
     private fun postaviIzgledAnkete(statusAnkete: String, holder: AnketaViewHolder,position:Int,pokusaj:AnketaTaken?){
@@ -104,23 +104,23 @@ class AnketaAdapter(
         var danString:String
         var mjesecString: String
         if (dan<10) danString = "0$dan"
-            else danString=dan.toString()
+        else danString=dan.toString()
         if (mjesec<10) mjesecString= "0$mjesec"
-            else mjesecString=mjesec.toString()
+        else mjesecString=mjesec.toString()
         return "$danString.$mjesecString.$godina"
     }
 
 
     private fun dajStatusAnkete(position : Int,pokusaj:AnketaTaken?):String {
-                val kalendar: Calendar = Calendar.getInstance()
-                kalendar.set(LocalDateTime.now().year, LocalDateTime.now().monthValue, LocalDateTime.now().dayOfMonth)
-                val danasnjiDatum: Date = kalendar.time
+        val kalendar: Calendar = Calendar.getInstance()
+        kalendar.set(LocalDateTime.now().year, LocalDateTime.now().monthValue, LocalDateTime.now().dayOfMonth)
+        val danasnjiDatum: Date = kalendar.time
 
-                if (pokusaj!=null && pokusaj.datumRada!=null && pokusaj!!.progres==100.0) return "plava"
-                else if (anketaArray[position].datumPocetak!!.after(danasnjiDatum)) return "zuta"
-                else if (anketaArray[position].datumPocetak!!.before(danasnjiDatum) && anketaArray[position].datumKraj != null && anketaArray[position].datumKraj?.after(danasnjiDatum) == true) return "zelena"
-                else if (anketaArray[position].datumPocetak!!.before(danasnjiDatum) && anketaArray[position].datumKraj != null && anketaArray[position].datumKraj?.before(danasnjiDatum) == true && anketaArray[position].datumRada == null) return "crvena"
-                else return "zelena"
+        if (pokusaj!=null && pokusaj.datumRada!=null && pokusaj!!.progres==100.0) return "plava"
+        else if (anketaArray[position].datumPocetak!!.after(danasnjiDatum)) return "zuta"
+        else if (anketaArray[position].datumPocetak!!.before(danasnjiDatum) && anketaArray[position].datumKraj != null && anketaArray[position].datumKraj?.after(danasnjiDatum) == true) return "zelena"
+        else if (anketaArray[position].datumPocetak!!.before(danasnjiDatum) && anketaArray[position].datumKraj != null && anketaArray[position].datumKraj?.before(danasnjiDatum) == true && anketaArray[position].datumRada == null) return "crvena"
+        else return "zelena"
     }
 
     override fun getItemCount(): Int {

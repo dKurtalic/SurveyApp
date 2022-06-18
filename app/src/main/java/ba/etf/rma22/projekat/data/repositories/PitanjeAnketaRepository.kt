@@ -1,6 +1,7 @@
 package ba.etf.rma22.projekat.data.repositories
 
 
+import android.content.Context
 import ba.etf.rma22.projekat.data.models.Anketa
 import ba.etf.rma22.projekat.data.models.AnketaTaken
 import ba.etf.rma22.projekat.data.models.Pitanje
@@ -10,8 +11,11 @@ import kotlinx.coroutines.DisposableHandle
 import kotlinx.coroutines.withContext
 import kotlin.streams.toList
 
-object PitanjeAnketaRepository {
-
+class PitanjeAnketaRepository {
+companion object{
+    lateinit private var context: Context
+    fun setContext(c:Context){ this.context =c}
+    fun getContext():Context{return context }
     suspend fun getPitanja(idAnkete:Int):List<Pitanje>{
         return withContext(Dispatchers.IO){
             var rez=emptyList<Pitanje>()
@@ -23,7 +27,7 @@ object PitanjeAnketaRepository {
 
     suspend fun dajBrojPitanja(idAnkete:Int):Int{
         return getPitanja(idAnkete)!!.size
-     }
+    }
 
     suspend fun dajOdgovorZaPitanje(pitanje:Pitanje,anketa:Anketa,pokusaj: AnketaTaken):Int? {
         var pitanja=getPitanja(anketa.id)
@@ -48,24 +52,26 @@ object PitanjeAnketaRepository {
         if (odgovor!=-1)  return odgovor
         else return null
     }
-   /* fun dajOdgovorZaPitanje(pitanje:Pitanje, anketa:Anketa):String{
-        val nazivPitanja=pitanje.naziv
-        val nazivAnkete=anketa.naziv
-        val nazivIstrazivanja=anketa.nazivIstrazivanja
-        val pom= mojiodgovori.stream().filter { p -> p.naziv==nazivPitanja && p.nazivIstrazivanja==nazivIstrazivanja
-                && p.anketa==nazivAnkete}.findFirst()
-        return if( pom.isPresent){
-            pom.get().dajOdgovor()
-        } else ""
-     }
+    /* fun dajOdgovorZaPitanje(pitanje:Pitanje, anketa:Anketa):String{
+         val nazivPitanja=pitanje.naziv
+         val nazivAnkete=anketa.naziv
+         val nazivIstrazivanja=anketa.nazivIstrazivanja
+         val pom= mojiodgovori.stream().filter { p -> p.naziv==nazivPitanja && p.nazivIstrazivanja==nazivIstrazivanja
+                 && p.anketa==nazivAnkete}.findFirst()
+         return if( pom.isPresent){
+             pom.get().dajOdgovor()
+         } else ""
+      }
 
-    fun dajMojeOdgovoreZaAnketu(anketa:Anketa):List<PitanjeAnketa>{
-        val nazivAnkete=anketa.naziv
+     fun dajMojeOdgovoreZaAnketu(anketa:Anketa):List<PitanjeAnketa>{
+         val nazivAnkete=anketa.naziv
 
-        return mojiodgovori.stream().filter { pa -> pa.anketa==nazivAnkete }.toList()
-     }
+         return mojiodgovori.stream().filter { pa -> pa.anketa==nazivAnkete }.toList()
+      }
 
-    */
+     */
+
+}
 
 
 }
