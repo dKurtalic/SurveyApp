@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 class PitanjeOdgovor(
-    @SerializedName("odgovor") var odgovor:Int?,
+    @ColumnInfo(name="odgovor")@SerializedName("odgovor") var odgovor:Int?,
     @SerializedName("pitanje") var pitanje:Int?,
     @SerializedName("progres") var bodovi:Int?
 ) {

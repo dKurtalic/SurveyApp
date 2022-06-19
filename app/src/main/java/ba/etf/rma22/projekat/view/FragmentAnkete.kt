@@ -80,7 +80,7 @@ class FragmentAnkete: Fragment() {
                         var pokusaj: AnketaTaken = TakeAnketaRepository.zapocniAnketu(anketa.id)!!
 
                         pitanjaZaAnketu = PitanjeAnketaRepository.getPitanja(anketa.id)
-
+                        PitanjeAnketaRepository.upisiPitanja(anketa)
 
                         if (pitanjaZaAnketu?.isNotEmpty() == true) {
                             MainActivity.vpAdapter.removeAll()
@@ -111,6 +111,7 @@ class FragmentAnkete: Fragment() {
         }
           }
     private fun onSuccess1(x:List<Anketa>){
+        onSuccess(x)
         sveAnkete=x
     }
 
@@ -129,7 +130,7 @@ class FragmentAnkete: Fragment() {
         if (spinner!=null){
         when {
             spinner!!.selectedItem.toString()=="Sve moje ankete" -> anketaViewModel.getMyAnkete(::onSuccess,::onError)
-            spinner!!.selectedItem.toString()=="Sve ankete" -> anketaViewModel.getAll(::onSuccess,::onError)
+            spinner!!.selectedItem.toString()=="Sve ankete" -> anketaViewModel.getAll(::onSuccess1,::onError)
             spinner!!.selectedItem.toString()=="Urađene ankete" -> anketaViewModel.getDone(::onSuccess,::onError)
             spinner!!.selectedItem.toString()=="Buduće ankete" -> anketaViewModel.getFuture(::onSuccess,::onError)
             spinner!!.selectedItem.toString()=="Prošle ankete" -> anketaViewModel.getNotTaken(::onSuccess,::onError)

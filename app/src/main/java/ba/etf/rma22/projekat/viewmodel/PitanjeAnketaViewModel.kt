@@ -34,7 +34,7 @@ class PitanjeAnketaViewModel {
        scope.launch {
            var pitanja=PitanjeAnketaRepository.getPitanja(anketa.id)
 
-           var odgovori=TakeAnketaRepository.getMojiOdgovori(pokusaj.id)
+           var odgovori=TakeAnketaRepository.getMojiOdgovori(pokusaj)
            var indeks=0
            for (i in pitanja!!){
                if (i.tekstPitanja==pitanje.tekstPitanja) break
@@ -49,7 +49,7 @@ class PitanjeAnketaViewModel {
     }
     fun dajMojeOdgovoreZaAnketu(pokusaj: AnketaTaken,onSuccess:(List<Odgovor>)->Unit,onError: () -> Unit){
         scope.launch {
-            var odgovori = TakeAnketaRepository.getMojiOdgovori(pokusaj.id)
+            var odgovori = TakeAnketaRepository.getMojiOdgovori(pokusaj)
             when(odgovori){
                 is List<Odgovor> -> onSuccess?.invoke(odgovori)
                 else -> onError?.invoke()

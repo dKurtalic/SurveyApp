@@ -76,8 +76,8 @@ class FragmentPredaj: Fragment() {
                 var brojPitanja = PitanjeAnketaRepository.dajBrojPitanja(anketa.id)
                 var brojOdgovora = 0
 
-                if (TakeAnketaRepository.getMojiOdgovori(pokusaj.id) != null) brojOdgovora =
-                   TakeAnketaRepository.getMojiOdgovori(pokusaj.id)!!.size
+                if (TakeAnketaRepository.getMojiOdgovori(pokusaj) != null) brojOdgovora =
+                   TakeAnketaRepository.getMojiOdgovori(pokusaj)!!.size
                 progres = izracunajProges(brojOdgovora.toDouble(), brojPitanja)
                 progresTekst.text = "$progres%"
             }

@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 @Entity
 class Pitanje(
-    @PrimaryKey@SerializedName("id") var id:Int,
+    @PrimaryKey( autoGenerate = true) @SerializedName("id") var id:Int,
     @ColumnInfo(name="naziv")@SerializedName("naziv") var naziv: String,
     @ColumnInfo(name="tekstPitanja")@SerializedName("tekstPitanja") var tekstPitanja: String,
     @ColumnInfo(name="opcije")@SerializedName("opcije") var opcije: List<String>

@@ -18,7 +18,7 @@ class OdgovorViewModel {
 
         }
     }
-    fun getOdgovoriAnketa(pokusaj:Int, onSuccess:(List<Odgovor>)->Unit, onError: () -> Unit){
+    fun getOdgovoriAnketa(pokusaj:AnketaTaken, onSuccess:(List<Odgovor>)->Unit, onError: () -> Unit){
         scope.launch {
             var odgovori=TakeAnketaRepository.getMojiOdgovori(pokusaj)
             when (odgovori){

@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 class PitanjeAnketa(
-    @PrimaryKey @ColumnInfo(name="id") var id:Int,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name="id") var id:Int,
     @ColumnInfo(name="naziv")var naziv:String, //naziv pitanja
     @ColumnInfo(name="anketa")var anketa:String, // naziv ankete
     @ColumnInfo(name="nazivIstrazivanja")var nazivIstrazivanja:String?

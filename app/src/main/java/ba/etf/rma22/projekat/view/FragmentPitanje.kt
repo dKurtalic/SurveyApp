@@ -8,9 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import ba.etf.rma22.projekat.AppDatabase
 import ba.etf.rma22.projekat.MainActivity
 import ba.etf.rma22.projekat.R
 import ba.etf.rma22.projekat.data.models.*
+import ba.etf.rma22.projekat.data.repositories.AnketaRepository
 import ba.etf.rma22.projekat.data.repositories.PitanjeAnketaRepository
 import ba.etf.rma22.projekat.data.repositories.TakeAnketaRepository
 import ba.etf.rma22.projekat.viewmodel.OdgovorViewModel
@@ -75,13 +77,15 @@ class FragmentPitanje: Fragment() {
             var odg=view.findViewById<TextView>(R.id.answ)
 
                 GlobalScope.launch {
-               //     if (!odgRepo.getOdgovoriAnketa(anketa.id)!!.contains(PitanjeAnketa(pitanje.naziv,anketa.naziv,anketa.nazivIstrazivanja))){
+               //    if (!odgRepo.getOdgovoriAnketa(anketa.id)!!.contains(PitanjeAnketa(pitanje.naziv,anketa.naziv,anketa.nazivIstrazivanja))){
                     listAdapter.obojiOdgovor(odg)
                   //  var pitanjee= PitanjeAnketa(pitanje.naziv, anketa.naziv, anketa.nazivIstrazivanja)
                   //  pitanjee.postaviOdgovor(odg.text.toString())
                    // odgRepo.postaviOdgovorAnketa(anketa.id,pitanje.id,position)
                     Log.v("FragmentPitanje", "idpokusaj ${pokusaj.id}")
                     odgVM.postaviOdgovorAnketa(anketa.id,pokusaj,pitanje.id,position)
+
+
 
                 }
             //}
@@ -115,7 +119,7 @@ class FragmentPitanje: Fragment() {
 
                 MainActivity.viewPager.currentItem = 0
 
-                var odgovori=TakeAnketaRepository.getMojiOdgovori(pokusaj.id)
+                var odgovori=TakeAnketaRepository.getMojiOdgovori(pokusaj)
                 if (odgovori==null) odgovori= emptyList()
                 var progres: Float = izracunajProges(
                     odgovori.size.toDouble(),

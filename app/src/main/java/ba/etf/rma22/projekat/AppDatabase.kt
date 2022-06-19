@@ -6,7 +6,7 @@ import ba.etf.rma22.projekat.data.Converter
 import ba.etf.rma22.projekat.data.dao.*
 import ba.etf.rma22.projekat.data.models.*
 
-@Database(entities = arrayOf(Account::class, Anketa::class, Grupa::class, Istrazivanje::class, Pitanje::class, Odgovor::class,AnketaTaken::class,PitanjeAnketa::class), version =2)
+@Database(entities = arrayOf(Account::class, Anketa::class, Grupa::class, Istrazivanje::class, Pitanje::class, Odgovor::class,AnketaTaken::class,PitanjeAnketa::class), version = 5)
 @TypeConverters(Converter::class)
     abstract class AppDatabase : RoomDatabase() {
         abstract fun accountDAO(): AccountDAO
@@ -16,6 +16,7 @@ import ba.etf.rma22.projekat.data.models.*
         abstract fun pitanjeDAO(): PitanjeDAO
         abstract fun odgovorDAO(): OdgovorDAO
         abstract fun anketaTakenDAO(): AnketaTakenDAO
+        abstract fun pitanjeAnketaDAO(): PitanjeAnketaDAO
 
         companion object {
             private var INSTANCE: AppDatabase? = null

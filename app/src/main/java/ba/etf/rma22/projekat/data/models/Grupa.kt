@@ -9,7 +9,8 @@ import com.google.gson.annotations.SerializedName
 class Grupa (
     @PrimaryKey @SerializedName("id") var id:Int,
     @ColumnInfo(name = "naziv") @SerializedName("naziv") var naziv:String,
-    @ColumnInfo(name = "istrazivanjeId") @SerializedName("IstrazivanjeId") var istrazivanjeId: Int) {
+    @ColumnInfo(name = "istrazivanjeId") @SerializedName("IstrazivanjeId") var istrazivanjeId: Int,
+    var upisana:Int) {
     override fun toString(): String {
         return naziv
     }

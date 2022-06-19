@@ -1,6 +1,7 @@
 package ba.etf.rma22.projekat.data.repositories
 
 import android.content.Context
+import ba.etf.rma22.projekat.AppDatabase
 import ba.etf.rma22.projekat.data.models.AnketaTaken
 import ba.etf.rma22.projekat.data.models.Odgovor
 import ba.etf.rma22.projekat.data.models.PitanjeOdgovor
@@ -28,7 +29,7 @@ companion object{
             }
             var getPitanja = PitanjeAnketaRepository.getPitanja(pokusaj!!.AnketumId)!!.size
             var getOdgovori =0
-            var v =TakeAnketaRepository.getMojiOdgovori(pokusaj.id)
+            var v =TakeAnketaRepository.getMojiOdgovori(pokusaj)
             if (v!=null) getOdgovori= v.size
             var bodovi:Double=0.0
 
@@ -38,11 +39,17 @@ companion object{
 
 
             var pitanjeOdgovor=PitanjeOdgovor(odgovor,idPitanje,bodovi.toInt())
-            var odgovor=ApiAdapter.retrofit.postaviOdgovorAnketa(AccountRepository.getHash(),pokusaj.id,pitanjeOdgovor)
-            if (odgovor.code()==200) return@withContext bodovi.toInt()
+            var odgovorApi=ApiAdapter.retrofit.postaviOdgovorAnketa(AccountRepository.getHash(),pokusaj.id,pitanjeOdgovor)
+
+            var database=AppDatabase.getInstance(AnketaRepository.getContext())
+            var odg=Odgovor(1,odgovor,idPitanje)
+            database.odgovorDAO().insert(odg)
+
+            if (odgovorApi.code()==200) return@withContext bodovi.toInt()
             else return@withContext -1
         }
     }
+
 
 
     suspend fun getOdgovoriAnketa(idAnkete:Int):List<Odgovor>? {
@@ -59,7 +66,7 @@ companion object{
             }
             var odgovori: List<Odgovor>? = emptyList()
             if (odgovarajuciPokusaj != null) odgovori =
-                TakeAnketaRepository.getMojiOdgovori(odgovarajuciPokusaj.id)
+                TakeAnketaRepository.getMojiOdgovori(odgovarajuciPokusaj)
             return@withContext odgovori
         }
     }

@@ -22,6 +22,8 @@ class TakeAnketaRepository {
                         var ank: AnketaTaken =
                             ApiAdapter.retrofit.zapocniAnketu(AccountRepository.getHash(), idAnkete)
                                 .body()!!
+                        var database=AppDatabase.getInstance(AnketaRepository.getContext())
+                        database.anketaTakenDAO().insert(ank)
                         return@withContext ank
                     } else return@withContext zapocetaAnketa
                 } catch (e:Exception){
@@ -32,11 +34,12 @@ class TakeAnketaRepository {
 
 
 
-        suspend fun getPoceteAnkete():List<AnketaTaken>?{
+        suspend fun getPoceteAnkete():List<AnketaTaken>?{ //ovo su zapravo pocetiPokusaji
+            var database= AppDatabase.getInstance(context)
             return withContext(Dispatchers.IO){
                 if (!AnketaRepository.isOnline(context)){
-                    var poceteAnkete = mutableListOf<AnketaTaken>()
-                    var database= AppDatabase.getInstance(context)
+                   /* var poceteAnkete = mutableListOf<AnketaTaken>()
+
                     var pokusaji= database.anketaTakenDAO().getSvePokusaje()
                     var sveAnkete=database.anketaDAO().getAll()
                     if (sveAnkete!=null && pokusaji!=null){
@@ -47,13 +50,16 @@ class TakeAnketaRepository {
                                 }
                             }
                         }
-                    }
+                    }*/
+                        var pocetiPokusaji=database.anketaTakenDAO().getSvePokusaje()
 
-                   return@withContext poceteAnkete
+                   return@withContext pocetiPokusaji
                 }
                 else {
-                    Log.v("TakeAnketaRepo","ima interneta za pocete ankete")
                     var r=ApiAdapter.retrofit.getPoceteAnkete(AccountRepository.getHash()).body()
+                    if (r!=null){
+                        for (i in r) database.anketaTakenDAO().insert(i)
+                    }
                     if(r==null || (r!=null && r.isEmpty())) return@withContext null
                     else return@withContext r
                 }
@@ -78,10 +84,17 @@ class TakeAnketaRepository {
                 return@withContext anketa
             }
         }
-        suspend fun getMojiOdgovori(idPokusaja:Int):List<Odgovor>?{
+        suspend fun getMojiOdgovori(pokusaj:AnketaTaken):List<Odgovor>?{
             return withContext(Dispatchers.IO){
-                var rez = ApiAdapter.retrofit.getOdgovoriZaAnketu(AccountRepository.getHash(),idPokusaja).body()
-                return@withContext rez
+                if (!AnketaRepository.isOnline(AnketaRepository.getContext())){
+                    var database=AppDatabase.getInstance(AnketaRepository.getContext())
+                    var odg=database.odgovorDAO().getOdgovorZaPitanje(pokusaj.AnketumId)
+                    return@withContext odg
+                }
+                else {
+                    var rez = ApiAdapter.retrofit.getOdgovoriZaAnketu(AccountRepository.getHash(), pokusaj.id).body()
+                    return@withContext rez
+                }
             }
         }
         suspend fun daLiJeZapocetaAnketa(idAnkete:Int):Boolean{

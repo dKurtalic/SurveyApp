@@ -162,6 +162,7 @@ class FragmentIstrazivanje: Fragment() {
                     }
                 }
                 if(konacnaLista.size==0) konacnaLista= istrazivanja as MutableList<Istrazivanje>
+                Log.v("FragmentIstrazivanje SPinner IStrazivanja","Velicina spinner istr: "+konacnaLista.size)
                 var adapterIstrazivanja2 = ArrayAdapter(view1.context, android.R.layout.simple_list_item_1, konacnaLista)
                 odabirIstrazivanja.adapter=adapterIstrazivanja2
             }
@@ -185,9 +186,12 @@ class FragmentIstrazivanje: Fragment() {
        else onError()
     }
     fun svaIstrazivanjaSuccess(x:List<Istrazivanje>){
+        Log.v("FragmentIstrazivanje, Spinner Grupa","Velicina getAllIstrazivanja: "+svaIstrazivanja.size)
         svaIstrazivanja=x
     }
     fun spinnerGrupeSuccess(x:List<Grupa>){
+        Log.v("FragmentIstrazivanje Spineer grupa","Velicina grupaZaIstrazivanje:"+x.size)
+
         GlobalScope.launch {
             withContext(Dispatchers.Main){
                 var adapterGrupa2 = ArrayAdapter(

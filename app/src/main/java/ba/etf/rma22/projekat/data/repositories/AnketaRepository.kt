@@ -28,7 +28,7 @@ companion object{
             if (!isOnline(context)){
                 Log.v("AnketaRepository","Nisam online")
                 var anketeDB=database.anketaDAO().getAll()
-
+                Log.v("AnketaRepository","Velicina: "+anketeDB.size)
                 return@withContext anketeDB
             }
             else {
@@ -73,17 +73,12 @@ companion object{
                 return@withContext anketeDB
             }
             else {
-                var upisaneServer= getUpisaneSaServera()
-                var sveAnkete=getAll()
-                database.anketaDAO().obrisiAnkete()
-                if (sveAnkete!=null && upisaneServer!=null) {
-                    for (a1 in sveAnkete) {
-                        for (a2 in upisaneServer) {
-                            if (a1 == a2) {
-                                a1.upisana = 1
-                                database.anketaDAO().insert(a1)
-                            }
-                        }
+                var upisaneServer:List<Anketa>?= getUpisaneSaServera()
+                if (upisaneServer != null) {
+                    for (a1 in upisaneServer) {
+                            a1.upisana = 1
+                            a1.setStatus("")
+                            database.anketaDAO().insert(a1)
                     }
                 }
                 return@withContext upisaneServer

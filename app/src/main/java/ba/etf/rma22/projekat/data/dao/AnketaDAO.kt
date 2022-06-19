@@ -17,4 +17,6 @@ interface AnketaDAO {
     @Query("DELETE FROM anketa")
     fun obrisiAnkete()
 
+    @Query("SELECT * FROM anketa WHERE id=:id1")
+    fun getAnketuSaIdem(id1:Int):Anketa
 }

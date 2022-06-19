@@ -25,7 +25,11 @@ class IstrazivanjeIGrupaRepository {
                     return@withContext database.istrazivanjeDAO().getIstrazivanja()
                 }
                 else{
-                    return@withContext getIstrazivanjaFromServer()
+                   var istr= getIstrazivanjaFromServer()
+                    if (istr!=null){
+                        for (i in istr) database.istrazivanjeDAO().insert(i)
+                    }
+                    return@withContext istr
                 }
             }
         }
@@ -43,32 +47,45 @@ class IstrazivanjeIGrupaRepository {
             }
         }
         suspend fun getIstrazivanja(offset:Int):List<Istrazivanje>?{
+
+            var database=AppDatabase.getInstance(context)
+            database.istrazivanjeDAO().deleteIstrazivanja()
             return withContext(Dispatchers.IO){
                 if (!AnketaRepository.isOnline(context)){
-                    var database=AppDatabase.getInstance(context)
                     var istrazivanja=database.istrazivanjeDAO().getIstrazivanja()
                     var vrati= mutableListOf<Istrazivanje>()
-                    for (i in 0..offset){
+                    for (i in 0 until offset-1){
                         vrati.add(istrazivanja[i])
                     }
                     return@withContext vrati
                 }
                 else {
                     var respond=ApiAdapter.retrofit.getIstrazivanja(offset).body()
+                    if (respond!=null){
+                        for ( i in respond){
+                            database.istrazivanjeDAO().insert(i)
+                        }
+                    }
+
                     return@withContext respond
                 }
 
             }
         }
         suspend fun getIstrazivanjaPoGodinama(godina:Int):List<Istrazivanje>?{
+            var database=AppDatabase.getInstance(context)
             return withContext(Dispatchers.IO){
                 if (!AnketaRepository.isOnline(context)){
-                    var database=AppDatabase.getInstance(context)
                     var istr= database.istrazivanjeDAO().getIstrazivanjaPoGodinama(godina)
                     return@withContext istr
                 }
                 else {
                     var istr= getIstrazivanjaPoGodinamaFromServer(godina)
+                    if (istr!=null){
+                        for ( i in istr){
+                            database.istrazivanjeDAO().insert(i)
+                        }
+                    }
                     return@withContext istr
                 }
             }
@@ -114,9 +131,22 @@ class IstrazivanjeIGrupaRepository {
             }
         }
         suspend fun getGrupe(): List<Grupa>? {
+            var database=AppDatabase.getInstance(context)
             return withContext(Dispatchers.IO){
-                var respond=ApiAdapter.retrofit.getGrupe()
-                return@withContext respond.body()
+                if (!AnketaRepository.isOnline(context)) {
+                    var grupe=database.grupaDAO().getAllGrupe()
+                    return@withContext grupe
+                }
+                else {
+                    var respond = ApiAdapter.retrofit.getGrupe().body()
+                    if (respond != null) {
+                        for (i in respond){
+                            database.grupaDAO().insertGrupa(i)
+                        }
+                    }
+
+                    return@withContext respond
+                }
             }
         }
         suspend fun getGrupuSIdem(gid:Int):Grupa?{
@@ -127,16 +157,28 @@ class IstrazivanjeIGrupaRepository {
         }
 
         suspend fun getGrupeZaIstrazivanje(idIstrazivanja:Int):List<Grupa>?{
+            var database=AppDatabase.getInstance(context)
+            var odgovarajuceGrupe = mutableListOf<Grupa>()
             return withContext(Dispatchers.IO){
-                var sveGrupe= getGrupe()
-                var odgovarajuceGrupe = mutableListOf<Grupa>()
-                if (sveGrupe != null) {
-                    for (i in sveGrupe){
-                        if (i.istrazivanjeId==idIstrazivanja){
-                            odgovarajuceGrupe.add(i)
+                if (!AnketaRepository.isOnline(context)) {
+                    odgovarajuceGrupe=database.grupaDAO().dajGrupeZaIstrazivanje(idIstrazivanja).toMutableList()
+                    return@withContext odgovarajuceGrupe
+                }
+                else {
+                    var sveGrupe= getGrupe()
+                    if (sveGrupe != null) {
+                        for (i in sveGrupe){
+                            if (i.istrazivanjeId==idIstrazivanja){
+                                odgovarajuceGrupe.add(i)
+                            }
                         }
                     }
+                    if (sveGrupe != null) {
+                        for (i in sveGrupe)
+                            database.grupaDAO().insertGrupa(i)
+                    }
                 }
+
                 return@withContext odgovarajuceGrupe
             }
         }
@@ -151,7 +193,21 @@ class IstrazivanjeIGrupaRepository {
         suspend fun upisiUGrupu(idGrupa:Int):Boolean{
             return withContext(Dispatchers.IO){
                 try{
-                    var respond=ApiAdapter.retrofit.upisiUGrupu(idGrupa,AccountRepository.getHash())
+                    var database= AppDatabase.getInstance(AnketaRepository.getContext())
+                    ApiAdapter.retrofit.upisiUGrupu(idGrupa,AccountRepository.getHash())
+                    var grupa= getGrupuSIdem(idGrupa)
+                    if (grupa != null) {
+                        grupa.upisana=1
+                        database.grupaDAO().insertGrupa(grupa)
+                        var anketeZaGrupu=AnketaRepository.anketeZaGrupu(idGrupa)
+                        if (anketeZaGrupu != null) {
+                            for (i in anketeZaGrupu){
+                                i.upisana=1
+                                database.anketaDAO().insert(i)
+                            }
+                        }
+                    }
+
                     return@withContext true
                 } catch(e:Exception){
                     return@withContext false
@@ -160,9 +216,22 @@ class IstrazivanjeIGrupaRepository {
             }
         }
         suspend fun getUpisaneGrupe():List<Grupa>?{
+            var database=AppDatabase.getInstance(context)
             return withContext(Dispatchers.IO){
-                val resp=ApiAdapter.retrofit.getUpisaneGrupe(AccountRepository.getHash())
-                return@withContext resp.body()
+                if (!AnketaRepository.isOnline(context)) {
+                    var grupe=database.grupaDAO().getUpisane()
+                    return@withContext grupe
+                }
+                else {
+                    val resp = ApiAdapter.retrofit.getUpisaneGrupe(AccountRepository.getHash()).body()
+                    if (resp!=null){
+                        for ( i in resp){
+                            i.upisana=1
+                            database.grupaDAO().insertGrupa(i)
+                        }
+                    }
+                    return@withContext resp
+                }
             }
         }
 
