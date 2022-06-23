@@ -1,8 +1,10 @@
 package ba.etf.rma22.projekat
 
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
@@ -12,6 +14,8 @@ import ba.etf.rma22.projekat.view.FragmentAnkete
 import ba.etf.rma22.projekat.view.FragmentIstrazivanje
 import ba.etf.rma22.projekat.view.FragmentPoruka
 import ba.etf.rma22.projekat.view.ViewPagerAdapter
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 class MainActivity : AppCompatActivity() {
@@ -19,7 +23,6 @@ class MainActivity : AppCompatActivity() {
        lateinit var viewPager:ViewPager2
        lateinit var vpAdapter:ViewPagerAdapter
        lateinit var fragments:ArrayList<Fragment>
-        var connection : Boolean = true
    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +39,14 @@ class MainActivity : AppCompatActivity() {
         PitanjeAnketaRepository.setContext(this)
         TakeAnketaRepository.setContext(this)
 
-        connection = AnketaRepository.isOnline(this)
+        //https://rma22ws.herokuapp.com/androidDone/57100ef2-8b05-4de5-b21f-215ac5bd2d4c
+
+        val payload = intent.getStringExtra("payload")
+        GlobalScope.launch {
+            if (payload != null) {
+                AccountRepository.postaviHash(payload)
+            } else AccountRepository.postaviHash(AccountRepository.getHash())
+        }
 
 
         viewPager.registerOnPageChangeCallback(object:ViewPager2.OnPageChangeCallback(){

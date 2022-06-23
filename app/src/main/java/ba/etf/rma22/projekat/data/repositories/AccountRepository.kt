@@ -25,19 +25,12 @@ class AccountRepository {
             return acHash
         }
 
-        /* suspend fun postaviHash(acHash: String): Boolean {
-            this.acHash = acHash
-            return true
-        }
-
-        */
 
         suspend fun postaviHash(accHash: String): Boolean {
             acHash = accHash
             return withContext(Dispatchers.Main) {
                 try {
                     var database = AppDatabase.getInstance(context)
-                    database.accountDAO().deleteAccount()
                     try {
                         var account = ApiAdapter.retrofit.getStudent(accHash).body()
                         if (account != null) database.accountDAO().insertAcc(account)

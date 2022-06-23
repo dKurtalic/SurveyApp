@@ -12,22 +12,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Projekat">
         <activity
+            android:windowSoftInputMode="adjustPan|adjustResize"
             android:name=".MainActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Projekat.NoActionBar">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <data
-                    android:scheme="intent"
-                    android:host="login"/>
+                <action android:name="android.intent.action.VIEW"></action>
+                <category android:name="android.intent.category.DEFAULT"></category>
+                <category android:name="android.intent.category.BROWSABLE"></category>
 
+                <data android:scheme="intent"
+                    android:host="login">
+                </data>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
