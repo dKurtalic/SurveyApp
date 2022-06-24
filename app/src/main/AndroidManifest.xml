@@ -19,12 +19,7 @@
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW"></action>
                 <category android:name="android.intent.category.DEFAULT"></category>
-                <category android:name="android.intent.category.BROWSABLE"></category>
 
-                <data android:scheme="intent"
-                    android:host="login">
-                </data>
-                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
