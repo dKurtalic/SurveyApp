@@ -40,13 +40,17 @@ class MainActivity : AppCompatActivity() {
         TakeAnketaRepository.setContext(this)
 
         //https://rma22ws.herokuapp.com/androidDone/57100ef2-8b05-4de5-b21f-215ac5bd2d4c
-
+/*
         val payload = intent.getStringExtra("payload")
-        GlobalScope.launch {
+       GlobalScope.launch {
             if (payload != null) {
                 AccountRepository.postaviHash(payload)
             } else AccountRepository.postaviHash(AccountRepository.getHash())
         }
+
+
+ */
+
 
 
         viewPager.registerOnPageChangeCallback(object:ViewPager2.OnPageChangeCallback(){
